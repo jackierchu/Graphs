@@ -20,7 +20,7 @@ public class Year {
       }
       else
           leap = false;
-    return leap }
+    return leap; }
     /** Print whether YEAR is a a leap year on System.out. */
     private static void checkLeapYear(int year) {
         if (isLeapYear(year)) {
