@@ -37,7 +37,13 @@ public class IntDList {
      * @return The number of elements in this list.
      */
     public int size() {
-        return 0;   // Your code here
+        int n;
+        n = 0;
+        for (DNode p = _front; p != null; p = p._next) {
+            n = n + 1;
+        }
+        return n;
+
     }
 
     /**
@@ -50,7 +56,21 @@ public class IntDList {
      * @return The integer value at index i
      */
     public int get(int i) {
-        return 0;   // Your code here
+        DNode x;
+        if (i >= 0) {
+            x = _front;
+            while (i > 0) {
+                i -= 1;
+                x = x._next;
+            }
+        } else {
+            x = _back;
+            while (i < -1) {
+                i += 1;
+                x = x._prev;
+            }
+        }
+        return x._val;
     }
 
     /**
@@ -58,7 +78,12 @@ public class IntDList {
      * @param d value to be inserted in the front
      */
     public void insertFront(int d) {
-        // Your code here 
+        _front = new DNode(null, d, _front);
+        if (_back == null) {
+            _back = _front;
+        } else {
+            _front._next._prev = _front;
+        }
     }
 
     /**
@@ -66,7 +91,12 @@ public class IntDList {
       * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        // Your code here 
+        _back = new DNode(_back, d, null);
+        if (_front == null) {
+            _front = _back;
+        } else {
+            _back._prev._next = _back;
+        }
     }
 
     /**
@@ -74,8 +104,14 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteBack() {
-        return 0;   // Your code here
-
+        int a = _back._val;
+        _back = _back._prev;
+        if (_back == null) {
+            _front = null;
+        } else {
+            _back._next = null;
+        }
+        return a;
     }
 
     /**
@@ -88,7 +124,16 @@ public class IntDList {
      *  System.out.println(a); //prints ab
      */
     public String toString() {
-        return null;   // Your code here
+        String out = new String();
+        out += "[";
+        for (DNode p = _front; p != null; p = p._next) {
+            if (p != _front) {
+                out += ", ";
+            }
+            out += p._val;
+        }
+        out += "]";
+        return out.toString();
     }
 
     /* DNode is a "static nested class", because we're only using it inside
