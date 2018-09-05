@@ -117,7 +117,7 @@ public class IntDList {
     /**
      *
      * @return a string representation of the IntDList in the form
-     *  [] (empty list) or [1, 2], etc.
+     *  [] (empty list) or [1, 2], etc..
      *  Hint:
      *  String a = "a";
      *  a += "b";
