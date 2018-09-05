@@ -29,7 +29,7 @@ public class CompoundInterest {
     /** Returns returns the value, in THIS_YEAR dollars, of an asset
      *  worth PRESENTVALUE that appreciates by RATE compounded
      *  annually in TARGETYEAR, assuming a simple model where inflation
-     *  compounds annually at a constant rate of INFLATIONRATE.
+     *  compounds annually at a constant rate of INFLATIONRATE..
      *
      *  For example, suppose PRESENTVALUE is 10, RATE is 12,
      *  TARGETYEAR is 2020, and INFLATIONRATE is 3.
