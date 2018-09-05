@@ -18,7 +18,7 @@ public class CompoundInterest {
      *  by RATE compounded annually. This method returns the value of that
      *  asset in the year given by TARGETYEAR.
      *
-     *  RATE is given as a percentage return. For example, if
+     *  RATE is given as a percentage return.. For example, if
      *  PRESENTVALUE is 10, the rate is 12, and the TARGETYEAR is 2020,
      *  then the futureValue will be 10*1.12*1.12 = 12.544. */
     static double futureValue(double presentValue, double rate,

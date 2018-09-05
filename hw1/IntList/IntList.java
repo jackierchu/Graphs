@@ -197,7 +197,7 @@ public class IntList {
      *  May modify the original list elements. Don't use 'new'
      *  or the sublist method.
      *  As with sublist, you can assume the items requested
-     *  exist, and that START and LEN are >= 0. */
+     *  exist, and that START and LEN are >= 0.. */
     static IntList dsublist(IntList L, int start, int len) {
         if(start < 0 || L == null || len <= 0)
             return null;
