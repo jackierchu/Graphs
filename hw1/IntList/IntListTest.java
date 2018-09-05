@@ -32,6 +32,25 @@ public class IntListTest {
 
     @Test
     public void testDcatenate() {
+        IntList One = new IntList(1, null);
+        IntList TwoOne = new IntList(2, One);
+        IntList ThreeTwoOne = new IntList(3, TwoOne);
+
+
+        assertEquals(IntList.dcatenate(IntList.list(),IntList.list(3,2,1)), ThreeTwoOne);
+        assertEquals(IntList.dcatenate(IntList.list(3,2,1),IntList.list()), ThreeTwoOne);
+        assertEquals(IntList.dcatenate(IntList.list(), IntList.list()), IntList.list());
+
+        assertEquals(IntList.dcatenate(IntList.list(2),IntList.list(1)), TwoOne);
+
+
+        IntList a = IntList.list(3,2);
+        IntList b = IntList.list(1);
+        IntList c = IntList.dcatenate(a, b);
+
+
+        assertEquals(ThreeTwoOne, c);
+
 
     }
 
@@ -42,6 +61,19 @@ public class IntListTest {
 
     @Test
     public void testSubtail() {
+        IntList One = new IntList(1, null);
+        IntList TwoOne = new IntList(2, One);
+        IntList ThreeTwoOne = new IntList(3, TwoOne);
+
+        IntList subT = IntList.subTail(ThreeTwoOne, -1);
+        assertNull(subT);
+        subT = IntList.subTail(ThreeTwoOne, 0);
+        assertEquals(ThreeTwoOne, subT);
+        subT = IntList.subTail(ThreeTwoOne, 4);
+        assertNull(subT);
+
+        subT = IntList.subTail(ThreeTwoOne, 1);
+        assertEquals(TwoOne, subT);
 
     }
 
@@ -52,7 +84,21 @@ public class IntListTest {
 
     @Test
     public void testSublist() {
+        IntList One = new IntList(1, null);
+        IntList TwoOne = new IntList(2, One);
+        IntList ThreeTwoOne = new IntList(3, TwoOne);
 
+        IntList subT = IntList.sublist(ThreeTwoOne, -1,0);
+        assertNull(subT);
+        subT = IntList.sublist(ThreeTwoOne, 0,3);
+        assertEquals(ThreeTwoOne, subT);
+        subT = IntList.sublist(ThreeTwoOne, 4,10);
+        assertNull(subT);
+        subT = IntList.sublist(ThreeTwoOne, 0,0);
+        assertNull(subT);
+
+        subT = IntList.sublist(ThreeTwoOne, 1,2);
+        assertEquals(TwoOne, subT);
     }
 
     /** Tests that dSublist works properly. Again, don't use new.
@@ -61,9 +107,38 @@ public class IntListTest {
      *  to dSublist is the same after any call to dSublist
      */
 
+    private static IntList testSet() {
+        IntList One = new IntList(1, null);
+        IntList TwoOne = new IntList(2, One);
+        IntList ThreeTwoOne = new IntList(3, TwoOne);
+        return ThreeTwoOne;
+
+    }
     @Test
     public void testDsublist() {
-    }
+
+
+        IntList One = new IntList(1, null);
+        IntList TwoOne = new IntList(2, One);
+        IntList ThreeTwoOne = new IntList(3, TwoOne);
+
+
+        IntList subT = IntList.dsublist(testSet(), -1,0);
+        assertNull(subT);
+        subT = IntList.dsublist(testSet(), 0,3);
+        assertEquals(ThreeTwoOne, subT);
+        subT = IntList.dsublist(testSet(), 5,10);
+        assertNull(subT);
+        subT = IntList.dsublist(testSet(), 1,10);
+        assertEquals(testSet().tail, subT);
+        subT = IntList.dsublist(testSet(), 0,0);
+        assertNull(subT);
+
+        subT = IntList.dsublist(testSet(), 1,2);
+        assertEquals(testSet().tail, subT);
+
+
+        }
 
 
     /* Run the unit tests in this file. */
