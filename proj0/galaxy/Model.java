@@ -23,7 +23,7 @@ import static galaxy.Place.pl;
  *  top edge.  The four cells (x, y), (x+2, y), (x, y+2), and (x+2, y+2)
  *  meet at intersection (x+1, y+1).  Cells contain nonnegative integer
  *  values, or "marks". A cell containing 0 is said to be unmarked.
- *  @author // FIXME
+ *  @author // Jacqueline Chu
  */
 class Model {
 
@@ -47,17 +47,50 @@ class Model {
         copy(model);
     }
 
+    private int cols;
+    private int rows;
+    private ArrayList<Place> centers;
+    private int[][] boundaries;
+    private int[][] marks;
+
     /** Copies MODEL into me. */
     void copy(Model model) {
         if (model == this) {
             return;
         }
-        // FIXME
+        this.cols = model.cols();
+        this.rows = model.rows();
+
+        ArrayList<Place> tempCopy = new ArrayList<>();
+        int[][] markCopy = new int[xlim()][ylim()];
+        tempCopy.addAll(model.centers);
+        this.centers = tempCopy;
+        for (int i = 0; i < xlim(); i ++ ){
+            for (int j = 0; j < ylim(); j ++ ){
+                markCopy[i][j] = model.marks[i][j];
+            }
+        }
+        this.marks = markCopy;
+        this.boundaries = model.boundaries;
+
     }
 
     /** Sets the puzzle board size to COLS x ROWS, and clears it. */
     void init(int cols, int rows) {
-        // FIXME
+        this.cols = cols;
+        this.rows = rows;
+        this.centers = new ArrayList<>();
+        this.boundaries = new int[xlim()][ylim()];
+        for (int i = 1; i < xlim(); i+= 2){
+            boundaries[i][0] = 1;
+            boundaries[i][ylim()-1] = 1;
+        }
+        for (int j = 1; j < ylim(); j+= 2){
+            boundaries[0][j] = 1;
+            boundaries[xlim()-1][j] = 1;
+        }
+        this.marks = new int[xlim()][ylim()];
+
     }
 
     /** Clears the board (removes centers, boundaries that are not on the
@@ -78,12 +111,12 @@ class Model {
 
     /** Returns the number of vertical edges and cells in a row. */
     int xlim() {
-        return 0; // FIXME
+        return (this.cols * 2) + 1;
     }
 
     /** Returns the number of horizontal edges and cells in a column. */
     int ylim() {
-        return 0; // FIXME
+        return (this.rows * 2) + 1;
     }
 
     /** Returns true iff (X, Y) is a valid cell. */
@@ -138,19 +171,21 @@ class Model {
         return isIntersection(p.x, p.y);
     }
 
-    /** Returns true iff (X, Y) is a center. */
+    /** Returns true iff (X, Y) is a center. */ // FIXED
     boolean isCenter(int x, int y) {
-        return false; // FIXME
+        if (centers.contains(pl(x, y))) {
+            return true;
     }
-
+        return false;
+    }
     /** Returns true iff P is a center. */
     boolean isCenter(Place p) {
-        return false; // FIXME
+        return isCenter(p.x, p.y);
     }
 
-    /** Returns true iff (X, Y) is a boundary. */
+    /** Returns true iff (X, Y) is a boundary. */ // FIXED
     boolean isBoundary(int x, int y) {
-        return false; // FIXME
+        return (this.boundaries[x][y] != 0);
     }
 
     /** Returns true iff P is a boundary. */
@@ -178,7 +213,7 @@ class Model {
      *  it finds cells that are reachable using only vertical and horizontal
      *  moves starting from CELL that do not cross any boundaries and
      *  do not touch any cells that were initially in REGION. Requires
-     *  that CELL is a valid cell. */
+     *  that CELL is a valid cell. */ // FIXED
     private void accreteRegion(Place cell, HashSet<Place> region) {
         assert isCell(cell);
         if (region.contains(cell)) {
@@ -188,21 +223,20 @@ class Model {
         for (int i = 0; i < 4; i += 1) {
             int dx = (i % 2) * (2 * (i / 2) - 1),
                 dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
-            if (false) { // FIXME
+            if ((!isBoundary(cell.move(dx,dy))) && (!region.contains(cell.move(2*dx, 2*dy))))
                 accreteRegion(cell.move(2 * dx, 2 * dy), region);
             }
-        }
     }
-
+    private boolean SameCoordinate(Place X, Place Y) {return (X.x == Y.x) && (X.y == Y.y); }
     /** Returns true iff REGION is a correctly formed galaxy. A correctly formed
      *  galaxy has the following characteristics:
      *      - is symmetric about CENTER,
      *      - contains no interior boundaries, and
      *      - contains no other centers.
-     * Assumes that REGION is connected. */
+     * Assumes that REGION is connected. */ // FIXED
     private boolean isGalaxy(Place center, HashSet<Place> region) {
         for (Place cell : region) {
-            if (!region.contains(null)) { // FIXME
+            if (!region.contains(opposing(center, cell))) { // FIXME
                 return false;
             }
             for (int i = 0; i < 4; i += 1) {
@@ -211,7 +245,11 @@ class Model {
                 Place boundary = cell.move(dx, dy),
                     nextCell = cell.move(2 * dx, 2 * dy);
 
-                if (true) { // FIXME
+                if ((isBoundary(boundary) && (region.contains(nextCell)))) { // FIXME
+                    return false;
+                }
+
+                if (!isBoundary(boundary) && isCenter(boundary) && !SameCoordinate(boundary, center)) {
                     return false;
                 }
             }
@@ -219,9 +257,13 @@ class Model {
                 int dx = 2 * (i / 2) - 1,
                     dy = 2 * (i % 2) - 1;
                 Place intersection = cell.move(dx, dy);
-                if (true) { // FIXME
+                if (isCenter(intersection) && !SameCoordinate(intersection, center)) { // FIXME
                     return false;
                 }
+            }
+
+            if (isCenter(cell) && !SameCoordinate(center, cell)) {
+                return false;
             }
         }
         return true;
@@ -236,11 +278,21 @@ class Model {
      *      - contains no stray boundary edges, and
      *      - contains no other centers aside from CENTER.
      *  Otherwise, returns null. Requires that CENTER is not on the
-     *  periphery. */
+     *  periphery. */ // FIXED
     HashSet<Place> findGalaxy(Place center) {
         HashSet<Place> galaxy = new HashSet<>();
 
-        // FIXME
+        if(isCell(center)) {
+            accreteRegion(center, galaxy);
+        } else if (isIntersection(center.x, center.y)) {
+            accreteRegion(center.move(1, 1), galaxy);
+        } else if (isEdge(center.x, center.y)) {
+                if (isVert(center)) {
+                    accreteRegion(center.move(1,0), galaxy);
+                } else if (isHoriz(center)) {
+                    accreteRegion(center.move(0,1), galaxy);
+                }
+        }
 
         if (isGalaxy(center, galaxy)) {
             return galaxy;
@@ -279,12 +331,15 @@ class Model {
             }
         }
     }
+    boolean boundary;
 
     /** Toggles the presence of a boundary at the edge (X, Y). That is, negates
      *  the value of isBoundary(X, Y) (from true to false or vice-versa).
      *  Requires that (X, Y) is an edge. */
     void toggleBoundary(int x, int y) {
-        // FIXME
+        if (isEdge(x, y)) {
+            this.boundary = !isBoundary(x,y);
+        }
     }
 
     /** Places a center at (X, Y). Requires that X and Y are within bounds of
@@ -314,7 +369,7 @@ class Model {
     }
 
     /** Marks the cell at (X, Y) with value V. Requires that V must be greater
-     *  than or equal to 0, and that (X, Y) is a valid cell address. */
+     *  than or equal to 0, and that (X, Y) is a valid cell address. */ // FIXED
     void mark(int x, int y, int v) {
         if (!isCell(x, y)) {
             throw new IllegalArgumentException("bad cell coordinates");
@@ -322,33 +377,45 @@ class Model {
         if (v < 0) {
             throw new IllegalArgumentException("bad mark value");
         }
-        // FIXME
+        this.marks[x][y] = v;
     }
 
     /** Marks the cell at P with value V. Requires that V must be greater
-     *  than or equal to 0, and that P is a valid cell address. */
+     *  than or equal to 0, and that P is a valid cell address. */ // FIXED
     void mark(Place p, int v) {
         mark(p.x, p.y, v);
     }
 
     /** Sets the marks of all cells in CELLS to V. Requires that V must be
-     *  greater than or equal to 0. */
+     *  greater than or equal to 0. */ // FIXED
     void markAll(Collection<Place> cells, int v) {
         assert v >= 0;
-        // FIXME
+
+        for (Place c: cells) {
+            this.marks[c.x][c.y] = v;
+        }
     }
 
     /** Sets the marks of all cells to V. Requires that V must be greater than
-     *  or equal to 0. */
+     *  or equal to 0. */ // FIXED
     void markAll(int v) {
         assert v >= 0;
-        // FIXME
+
+        for (int x = 1; x < xlim(); x+= 2) {
+            for (int y = 1; y < ylim(); y+= 2) {
+                    this.marks[x][y] = v;
+            }
+        }
     }
 
     /** Returns the position of the cell that is opposite P using P0 as the
-     *  center, or null if that is not a valid cell address. */
+     *  center, or null if that is not a valid cell address. */ // FIXED
     Place opposing(Place p0, Place p) {
-        return null; // FIXME
+        Place opposed = p0.move(-(p.x-p0.x), -(p.y-p0.y));
+        if (isCell(opposed)) {
+            return opposed;
+        }
+        return null;
     }
 
     /** Returns a list of all cells "containing" PLACE if all of the cells are
