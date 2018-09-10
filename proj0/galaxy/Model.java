@@ -171,6 +171,14 @@ class Model {
         return isIntersection(p.x, p.y);
     }
 
+    boolean isFourPointIntersection(int x,int y) {
+        return y % 2 == 0 && x % 2 == 0 && y > 0 && x > 0 && y<ylim() && x<xlim();
+    }
+
+    boolean isTwoCenter(int x, int y) {
+        return (isEdge(x, y) && 0 < y && 0 < x);
+    }
+
     /** Returns true iff (X, Y) is a center. */ // FIXED
     boolean isCenter(int x, int y) {
         if (centers.contains(pl(x, y))) {
@@ -236,7 +244,7 @@ class Model {
      * Assumes that REGION is connected. */ // FIXED
     private boolean isGalaxy(Place center, HashSet<Place> region) {
         for (Place cell : region) {
-            if (!region.contains(opposing(center, cell))) { // FIXME
+            if (!region.contains(opposing(center, cell))) {
                 return false;
             }
             for (int i = 0; i < 4; i += 1) {
@@ -245,7 +253,7 @@ class Model {
                 Place boundary = cell.move(dx, dy),
                     nextCell = cell.move(2 * dx, 2 * dy);
 
-                if ((isBoundary(boundary) && (region.contains(nextCell)))) { // FIXME
+                if ((isBoundary(boundary) && (region.contains(nextCell)))) {
                     return false;
                 }
 
@@ -257,7 +265,7 @@ class Model {
                 int dx = 2 * (i / 2) - 1,
                     dy = 2 * (i % 2) - 1;
                 Place intersection = cell.move(dx, dy);
-                if (isCenter(intersection) && !SameCoordinate(intersection, center)) { // FIXME
+                if (isCenter(intersection) && !SameCoordinate(intersection, center)) {
                     return false;
                 }
             }
@@ -301,6 +309,39 @@ class Model {
         }
     }
 
+    /** Returns a maximum of four cells that are adjacent to Cell c. */
+    Set<Place> adjacentRegion(Place c){
+        HashSet<Place> adjacent = new HashSet<>();
+        for (int i = 0; i < 4; i = i+1){
+            int dx = (i%2)*(2*(i/2) -1);
+            int dy = ((i+1) % 2) * (2*(i/2) -1);
+            Place adjacentCell = c.move(2*dx, 2*dy);
+            if (adjacentCell != null){
+                adjacent.add(adjacentCell);
+            }
+        }
+        return adjacent;
+    }
+
+    Set<Place> accreteMaxUnmarkedRegion (Place center, HashSet<Place> region, Place c) {
+        for (int i = 0; i < 4; i += 1) {
+            int dx = (i % 2) * (2 * (i/2) -1);
+            int dy = ((i + 1 ) % 2) * (2 * (i/2) -1);
+            Place adjacentCell = c.move(2*dx, 2*dy);
+            if (adjacentCell != null && isCell(adjacentCell) && !(region.contains(adjacentCell))){
+                Place opposite = opposing(center, adjacentCell);
+                if (mark(adjacentCell) == 0 && opposite != null && mark(opposite) == 0 & isCell(opposite)){
+                    region.add(adjacentCell);
+                    accreteMaxUnmarkedRegion(center, region, adjacentCell);
+                }
+
+            }
+
+        }
+        return region;
+    }
+
+
     /** Returns the largest, unmarked region around CENTER with the
      *  following characteristics:
      *      - contains all cells touching CENTER,
@@ -313,7 +354,18 @@ class Model {
         HashSet<Place> region = new HashSet<>();
         region.addAll(unmarkedContaining(center));
         markAll(region, 1);
-        // FIXME
+        if (isCell(center)) {
+            accreteMaxUnmarkedRegion(center, region, center);
+        }
+        else {
+            HashSet<Place> hardCopyRegion = new HashSet<>();
+            for (Place c: region) {
+                hardCopyRegion.add(c);
+            }
+            for (Place copyc:hardCopyRegion) {
+                accreteMaxUnmarkedRegion(center, region, copyc);
+            }
+        }
         markAll(region, 0);
         return region;
     }
@@ -337,20 +389,23 @@ class Model {
      *  the value of isBoundary(X, Y) (from true to false or vice-versa).
      *  Requires that (X, Y) is an edge. */
     void toggleBoundary(int x, int y) {
-        if (isEdge(x, y)) {
-            this.boundary = !isBoundary(x,y);
-        }
+        assert isEdge(x,y);
+        this.boundaries[x][y] = 1 - this.boundaries[x][y];
     }
 
     /** Places a center at (X, Y). Requires that X and Y are within bounds of
      *  the board. */
     void placeCenter(int x, int y) {
-        placeCenter(pl(x, y));
+        if (isCell(x, y) || isFourPointIntersection(x, y) || isTwoCenter(x, y)) {
+            if(!isCenter(x, y)){
+                centers.add(pl(x,y));
+            }
+        }
     }
 
     /** Places center at P. */
     void placeCenter(Place p) {
-        // FIXME
+        placeCenter(p.x, p.y);
     }
 
     /** Returns the current mark on cell (X, Y), or -1 if (X, Y) is not a valid
@@ -359,7 +414,7 @@ class Model {
         if (!isCell(x, y)) {
             return -1;
         }
-        return 0; // FIXME
+        return this.marks[x][y];
     }
 
     /** Returns the current mark on cell P, or -1 if P is not a valid cell
@@ -426,26 +481,44 @@ class Model {
      *  Otherwise, returns an empty list. */
     List<Place> unmarkedContaining(Place place) {
         if (isCell(place)) {
-            if (false) { // FIXME
+            if (mark(place) == 0) { 
                 return asList(place);
             }
         } else if (isVert(place)) {
-            if (false) { // FIXME
+            Place left = place.move(-1,0);
+            Place right = place.move(1,0);
+            if (mark(left) == 0 && mark(right) == 0) {
                 return asList(place.move(-1, 0), place.move(1, 0));
             }
         } else if (isHoriz(place)) {
-            if (false) { // FIXME
+            Place under = place.move(0,-1);
+            Place above = place.move(0,1);
+            if (mark(under) == 0 && mark(above) == 0) {
                 return asList(place.move(0, -1), place.move(0, 1));
             }
         } else {
             for (int i = 0; i < 4; i += 1) {
-                if (mark(place.move(0, 0)) != 0) { // FIXME
+                if (mark(place.move(2*(i/2) -1, 2*(i%2) -1)) != 0) {
                     return Collections.emptyList();
                 }
             }
-            return asList(null, null, null, null); // FIXME
+            return asList(place.move(-1, -1), place.move(-1, 1), place.move(1, -1),
+                    place.move(1,1));
         }
         return Collections.emptyList();
+    }
+
+    Boolean Adjacent(Place c, List<Place> region){
+        assert isCell(c);
+        for (int i = 0; i < 4; i = i + 1) {
+            int dx = (i%2) * (2* (i/2)-1);
+            int dy = ((i+1)%2) * (2 *(i/2) -1);
+            Place ad = c.move(2*dx, 2*dy);
+            if (ad != null && region.contains(ad)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Returns a list of all cells, c, such that:
@@ -459,10 +532,13 @@ class Model {
         ArrayList<Place> result = new ArrayList<>();
         for (Place r : region) {
             assert isCell(r);
+            Boolean Adjacent = Adjacent(r,region);
             for (int i = 0; i < 4; i += 1) {
-                Place p = r.move(0, 0); // FIXME
+                int dx = (i%2) * (2* (i/2) -1);
+                int dy = ((i+1) %2) * (2*(i/2) -1);
+                Place p = r.move(2*dx, 2*dy);
                 Place opp = opposing(center, p);
-                if (false) { // FIXME
+                if (mark(p) == 0 && opp != null && mark(opp) == 0 && !(result.contains(p)) && Adjacent) { // FIXME
                     result.add(p);
                 }
             }
@@ -473,7 +549,7 @@ class Model {
 
     /** Returns an unmodifiable view of the list of all centers. */
     List<Place> centers() {
-        return Collections.unmodifiableList(Collections.emptyList()); // FIXME
+        return Collections.unmodifiableList(this.centers);
     }
 
     @Override
