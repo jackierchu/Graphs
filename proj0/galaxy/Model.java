@@ -178,19 +178,28 @@ class Model {
         return isIntersection(p.x, p.y);
     }
 
-    boolean isFourPointIntersection(int x,int y) {
-        return y % 2 == 0 && x % 2 == 0 && y > 0 && x > 0 && y<ylim() && x<xlim();
+    /** Calculates four point intersection.
+     * @return  intersection
+     * @param x gives four point x intersection
+     * @param y gives four point y intersection*/
+    boolean isFourPointIntersection(int x, int y) {
+        return y % 2 == 0 && x % 2 == 0
+                && y > 0 && x > 0 && y < ylim() && x < xlim();
     }
 
+    /** gives you Two centers.
+     * @return two centers
+     * @param x gives two centers for x
+     * @param y gives two centers for y*/
     boolean isTwoCenter(int x, int y) {
         return (isEdge(x, y) && 0 < y && 0 < x);
     }
 
-    /** Returns true iff (X, Y) is a center. */ // FIXED
+    /** Returns true iff (X, Y) is a center. */
     boolean isCenter(int x, int y) {
         if (centers.contains(pl(x, y))) {
             return true;
-    }
+        }
         return false;
     }
     /** Returns true iff P is a center. */
@@ -198,7 +207,7 @@ class Model {
         return isCenter(p.x, p.y);
     }
 
-    /** Returns true iff (X, Y) is a boundary. */ // FIXED
+    /** Returns true iff (X, Y) is a boundary. */
     boolean isBoundary(int x, int y) {
         return (this.boundaries[x][y] != 0);
     }
@@ -228,7 +237,7 @@ class Model {
      *  it finds cells that are reachable using only vertical and horizontal
      *  moves starting from CELL that do not cross any boundaries and
      *  do not touch any cells that were initially in REGION. Requires
-     *  that CELL is a valid cell. */ // FIXED
+     *  that CELL is a valid cell. */
     private void accreteRegion(Place cell, HashSet<Place> region) {
         assert isCell(cell);
         if (region.contains(cell)) {
@@ -238,17 +247,27 @@ class Model {
         for (int i = 0; i < 4; i += 1) {
             int dx = (i % 2) * (2 * (i / 2) - 1),
                 dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
-            if ((!isBoundary(cell.move(dx,dy))) && (!region.contains(cell.move(2*dx, 2*dy))))
+            if ((!isBoundary(cell.move(dx, dy)))
+                    && (!region.contains(cell.move(2 * dx, 2 * dy)))) {
                 accreteRegion(cell.move(2 * dx, 2 * dy), region);
             }
+
+        }
     }
-    private boolean SameCoordinate(Place X, Place Y) {return (X.x == Y.x) && (X.y == Y.y); }
+
+    /** Same Coordinates for Place X and Place Y.
+     * @return same coordinates*/
+    private boolean sameCoordinate(Place X, Place Y) {
+
+        return (X.x == Y.x) && (X.y == Y.y);
+
+    }
     /** Returns true iff REGION is a correctly formed galaxy. A correctly formed
      *  galaxy has the following characteristics:
      *      - is symmetric about CENTER,
      *      - contains no interior boundaries, and
      *      - contains no other centers.
-     * Assumes that REGION is connected. */ // FIXED
+     * Assumes that REGION is connected. */
     private boolean isGalaxy(Place center, HashSet<Place> region) {
         for (Place cell : region) {
             if (!region.contains(opposing(center, cell))) {
@@ -257,14 +276,15 @@ class Model {
             for (int i = 0; i < 4; i += 1) {
                 int dx = (i % 2) * (2 * (i / 2) - 1),
                     dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
-                Place boundary = cell.move(dx, dy),
+                Place bound = cell.move(dx, dy),
                     nextCell = cell.move(2 * dx, 2 * dy);
 
-                if ((isBoundary(boundary) && (region.contains(nextCell)))) {
+                if ((isBoundary(bound) && (region.contains(nextCell)))) {
                     return false;
                 }
 
-                if (!isBoundary(boundary) && isCenter(boundary) && !SameCoordinate(boundary, center)) {
+                if (!isBoundary(bound) && isCenter(bound)
+                        && !sameCoordinate(bound, center)) {
                     return false;
                 }
             }
@@ -272,12 +292,13 @@ class Model {
                 int dx = 2 * (i / 2) - 1,
                     dy = 2 * (i % 2) - 1;
                 Place intersection = cell.move(dx, dy);
-                if (isCenter(intersection) && !SameCoordinate(intersection, center)) {
+                if (isCenter(intersection)
+                        && !sameCoordinate(intersection, center)) {
                     return false;
                 }
             }
 
-            if (isCenter(cell) && !SameCoordinate(center, cell)) {
+            if (isCenter(cell) && !sameCoordinate(center, cell)) {
                 return false;
             }
         }
@@ -293,20 +314,25 @@ class Model {
      *      - contains no stray boundary edges, and
      *      - contains no other centers aside from CENTER.
      *  Otherwise, returns null. Requires that CENTER is not on the
-     *  periphery. */ // FIXED
+     *  periphery. */
     HashSet<Place> findGalaxy(Place center) {
         HashSet<Place> galaxy = new HashSet<>();
 
-        if(isCell(center)) {
+        if (isCell(center)) {
             accreteRegion(center, galaxy);
         } else if (isIntersection(center.x, center.y)) {
             accreteRegion(center.move(1, 1), galaxy);
         } else if (isEdge(center.x, center.y)) {
-                if (isVert(center)) {
-                    accreteRegion(center.move(1,0), galaxy);
-                } else if (isHoriz(center)) {
-                    accreteRegion(center.move(0,1), galaxy);
-                }
+
+            if (isVert(center)) {
+
+                accreteRegion(center.move(1, 0), galaxy);
+
+            } else if (isHoriz(center)) {
+
+                accreteRegion(center.move(0, 1), galaxy);
+
+            }
         }
 
         if (isGalaxy(center, galaxy)) {
@@ -316,28 +342,37 @@ class Model {
         }
     }
 
-    /** Returns a maximum of four cells that are adjacent to Cell c. */
-    Set<Place> adjacentRegion(Place c){
+    /** Returns a maximum of four cells that are adjacent to Cell c.
+     * @param c parameter for c */
+    Set<Place> adjacentRegion(Place c) {
         HashSet<Place> adjacent = new HashSet<>();
-        for (int i = 0; i < 4; i = i+1){
-            int dx = (i%2)*(2*(i/2) -1);
-            int dy = ((i+1) % 2) * (2*(i/2) -1);
-            Place adjacentCell = c.move(2*dx, 2*dy);
-            if (adjacentCell != null){
+        for (int i = 0; i < 4; i = i + 1) {
+            int dx = (i % 2) * (2 * (i / 2) - 1);
+            int dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+            Place adjacentCell = c.move(2 * dx, 2 * dy);
+            if (adjacentCell != null) {
                 adjacent.add(adjacentCell);
             }
         }
         return adjacent;
     }
-
-    Set<Place> accreteMaxUnmarkedRegion (Place center, HashSet<Place> region, Place c) {
+    /** accretes the maximum unmarked regions.
+     * @return acrcrete the center for c
+     * @param center center
+     * @param region region
+     * @param c c
+     * */
+    Set<Place> accreteMaxUnmarkedRegion(Place center,
+                                         HashSet<Place> region, Place c) {
         for (int i = 0; i < 4; i += 1) {
-            int dx = (i % 2) * (2 * (i/2) -1);
-            int dy = ((i + 1 ) % 2) * (2 * (i/2) -1);
-            Place adjacentCell = c.move(2*dx, 2*dy);
-            if (adjacentCell != null && isCell(adjacentCell) && !(region.contains(adjacentCell))){
+            int dx = (i % 2) * (2 * (i / 2) - 1);
+            int dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+            Place adjacentCell = c.move(2 * dx, 2 * dy);
+            if (adjacentCell != null && isCell(adjacentCell)
+                    && !(region.contains(adjacentCell))) {
                 Place opposite = opposing(center, adjacentCell);
-                if (mark(adjacentCell) == 0 && opposite != null && mark(opposite) == 0 & isCell(opposite)){
+                if (mark(adjacentCell) == 0 && opposite != null
+                        && mark(opposite) == 0 & isCell(opposite)) {
                     region.add(adjacentCell);
                     accreteMaxUnmarkedRegion(center, region, adjacentCell);
                 }
@@ -363,8 +398,7 @@ class Model {
         markAll(region, 1);
         if (isCell(center)) {
             accreteMaxUnmarkedRegion(center, region, center);
-        }
-        else {
+        } else {
             HashSet<Place> hardCopyRegion = new HashSet<>();
             for (Place c: region) {
                 hardCopyRegion.add(c);
@@ -390,22 +424,21 @@ class Model {
             }
         }
     }
-    boolean boundary;
-
     /** Toggles the presence of a boundary at the edge (X, Y). That is, negates
      *  the value of isBoundary(X, Y) (from true to false or vice-versa).
      *  Requires that (X, Y) is an edge. */
     void toggleBoundary(int x, int y) {
-        assert isEdge(x,y);
+        assert isEdge(x, y);
         this.boundaries[x][y] = 1 - this.boundaries[x][y];
     }
 
     /** Places a center at (X, Y). Requires that X and Y are within bounds of
      *  the board. */
     void placeCenter(int x, int y) {
-        if (isCell(x, y) || isFourPointIntersection(x, y) || isTwoCenter(x, y)) {
-            if(!isCenter(x, y)){
-                centers.add(pl(x,y));
+        if (isCell(x, y) || isFourPointIntersection(x, y)
+                || isTwoCenter(x, y)) {
+            if (!isCenter(x, y)) {
+                centers.add(pl(x, y));
             }
         }
     }
@@ -431,7 +464,7 @@ class Model {
     }
 
     /** Marks the cell at (X, Y) with value V. Requires that V must be greater
-     *  than or equal to 0, and that (X, Y) is a valid cell address. */ // FIXED
+     *  than or equal to 0, and that (X, Y) is a valid cell address. */
     void mark(int x, int y, int v) {
         if (!isCell(x, y)) {
             throw new IllegalArgumentException("bad cell coordinates");
@@ -443,13 +476,13 @@ class Model {
     }
 
     /** Marks the cell at P with value V. Requires that V must be greater
-     *  than or equal to 0, and that P is a valid cell address. */ // FIXED
+     *  than or equal to 0, and that P is a valid cell address. */
     void mark(Place p, int v) {
         mark(p.x, p.y, v);
     }
 
     /** Sets the marks of all cells in CELLS to V. Requires that V must be
-     *  greater than or equal to 0. */ // FIXED
+     *  greater than or equal to 0. */
     void markAll(Collection<Place> cells, int v) {
         assert v >= 0;
 
@@ -459,23 +492,23 @@ class Model {
     }
 
     /** Sets the marks of all cells to V. Requires that V must be greater than
-     *  or equal to 0. */ // FIXED
+     *  or equal to 0. */
     void markAll(int v) {
         assert v >= 0;
 
-        for (int x = 1; x < xlim(); x+= 2) {
-            for (int y = 1; y < ylim(); y+= 2) {
-                    this.marks[x][y] = v;
+        for (int x = 1; x < xlim(); x += 2) {
+            for (int y = 1; y < ylim(); y +=  2) {
+                this.marks[x][y] = v;
             }
         }
     }
 
     /** Returns the position of the cell that is opposite P using P0 as the
-     *  center, or null if that is not a valid cell address. */ // FIXED
+     *  center, or null if that is not a valid cell address. */
     Place opposing(Place p0, Place p) {
         int newX = p0.x - (p.x - p0.x);
         int newY = p0.y - (p.y - p0.y);
-        if (0 < newX && newX < xlim() && 0 < newY && newY< ylim()) {
+        if (0 < newX && newX < xlim() && 0 < newY && newY < ylim()) {
             Place opposed = p0.move(-(p.x - p0.x), -(p.y - p0.y));
             if (isCell(opposed)) {
                 return opposed;
@@ -493,39 +526,44 @@ class Model {
      *  Otherwise, returns an empty list. */
     List<Place> unmarkedContaining(Place place) {
         if (isCell(place)) {
-            if (mark(place) == 0) { 
+            if (mark(place) == 0) {
                 return asList(place);
             }
         } else if (isVert(place)) {
-            Place left = place.move(-1,0);
-            Place right = place.move(1,0);
+            Place left = place.move(-1, 0);
+            Place right = place.move(1, 0);
             if (mark(left) == 0 && mark(right) == 0) {
                 return asList(place.move(-1, 0), place.move(1, 0));
             }
         } else if (isHoriz(place)) {
-            Place under = place.move(0,-1);
-            Place above = place.move(0,1);
+            Place under = place.move(0, -1);
+            Place above = place.move(0, 1);
             if (mark(under) == 0 && mark(above) == 0) {
                 return asList(place.move(0, -1), place.move(0, 1));
             }
         } else {
             for (int i = 0; i < 4; i += 1) {
-                if (mark(place.move(2*(i/2) -1, 2*(i%2) -1)) != 0) {
+                if (mark(place.move(2 * (i / 2) - 1, 2 * (i % 2) - 1)) != 0) {
                     return Collections.emptyList();
                 }
             }
-            return asList(place.move(-1, -1), place.move(-1, 1), place.move(1, -1),
-                    place.move(1,1));
+            return asList(place.move(-1, -1),
+                    place.move(-1, 1), place.move(1, -1),
+                    place.move(1, 1));
         }
         return Collections.emptyList();
     }
-
-    Boolean Adjacent(Place c, List<Place> region){
+    /** Returns true or false depending on
+     * if the adjacent for place c in a region.
+     * @return adjacent boolean
+     * @param c c
+     * @param region region*/
+    Boolean adjacent(Place c, List<Place> region) {
         assert isCell(c);
         for (int i = 0; i < 4; i = i + 1) {
-            int dx = (i%2) * (2* (i/2)-1);
-            int dy = ((i+1)%2) * (2 *(i/2) -1);
-            Place ad = c.move(2*dx, 2*dy);
+            int dx = (i % 2) * (2 * (i / 2) - 1);
+            int dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+            Place ad = c.move(2 * dx,  2 * dy);
             if (ad != null && region.contains(ad)) {
                 return true;
             }
@@ -544,13 +582,14 @@ class Model {
         ArrayList<Place> result = new ArrayList<>();
         for (Place r : region) {
             assert isCell(r);
-            Boolean Adjacent = Adjacent(r,region);
+            Boolean adjacent = adjacent(r, region);
             for (int i = 0; i < 4; i += 1) {
-                int dx = (i%2) * (2* (i/2) -1);
-                int dy = ((i+1) %2) * (2*(i/2) -1);
-                Place p = r.move(2*dx, 2*dy);
+                int dx = (i % 2) * (2 * (i / 2) - 1);
+                int dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+                Place p = r.move(2 * dx, 2 * dy);
                 Place opp = opposing(center, p);
-                if (mark(p) == 0 && opp != null && mark(opp) == 0 && !(result.contains(p)) && Adjacent) { // FIXME
+                if (mark(p) == 0 && opp != null && mark(opp) == 0
+                        && !(result.contains(p)) && adjacent) {
                     result.add(p);
                 }
             }
@@ -596,7 +635,5 @@ class Model {
         }
         return out.toString();
     }
-
-    // FIXME: Need representation.
 
 }
