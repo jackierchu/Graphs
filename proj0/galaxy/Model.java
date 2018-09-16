@@ -12,7 +12,8 @@ import static java.util.Arrays.asList;
 import static galaxy.Place.pl;
 
 
-/** The state of a Galaxies Puzzle.  Each cell, cell edge, and intersection of
+/**
+ * The state of a Galaxies Puzzle.  Each cell, cell edge, and intersection of
  *  edges has coordinates (x, y). For cells, x and y are positive and odd.
  *  For intersections, x and y are even.  For horizontal edges, x is odd and
  *  y is even.  For vertical edges, x is even and y is odd.  On a board
@@ -23,7 +24,8 @@ import static galaxy.Place.pl;
  *  top edge.  The four cells (x, y), (x+2, y), (x, y+2), and (x+2, y+2)
  *  meet at intersection (x+1, y+1).  Cells contain nonnegative integer
  *  values, or "marks". A cell containing 0 is said to be unmarked.
- *  @author // Jacqueline Chu
+ *
+ *  @author Jacqueline Chu
  */
 class Model {
 
@@ -47,10 +49,15 @@ class Model {
         copy(model);
     }
 
-    private int cols;
-    private int rows;
+    /** Initializes columns. */
+    private int col;
+    /** initializes rows. */
+    private int row;
+    /** initializes centers. */
     private ArrayList<Place> centers;
+    /** initializes boundaries. */
     private int[][] boundaries;
+    /** initializes marks. */
     private int[][] marks;
 
     /** Copies MODEL into me. */
@@ -58,15 +65,15 @@ class Model {
         if (model == this) {
             return;
         }
-        this.cols = model.cols();
-        this.rows = model.rows();
+        this.col = model.cols();
+        this.row = model.rows();
 
         ArrayList<Place> tempCopy = new ArrayList<>();
         int[][] markCopy = new int[xlim()][ylim()];
         tempCopy.addAll(model.centers);
         this.centers = tempCopy;
-        for (int i = 0; i < xlim(); i ++ ){
-            for (int j = 0; j < ylim(); j ++ ){
+        for (int i = 0; i < xlim(); i++) {
+            for (int j = 0; j < ylim(); j++) {
                 markCopy[i][j] = model.marks[i][j];
             }
         }
@@ -77,17 +84,17 @@ class Model {
 
     /** Sets the puzzle board size to COLS x ROWS, and clears it. */
     void init(int cols, int rows) {
-        this.cols = cols;
-        this.rows = rows;
+        this.col = cols;
+        this.row = rows;
         this.centers = new ArrayList<>();
         this.boundaries = new int[xlim()][ylim()];
-        for (int i = 1; i < xlim(); i+= 2){
+        for (int i = 1; i < xlim(); i += 2) {
             boundaries[i][0] = 1;
-            boundaries[i][ylim()-1] = 1;
+            boundaries[i][ylim() - 1] = 1;
         }
-        for (int j = 1; j < ylim(); j+= 2){
+        for (int j = 1; j < ylim(); j += 2) {
             boundaries[0][j] = 1;
-            boundaries[xlim()-1][j] = 1;
+            boundaries[xlim() - 1][j] = 1;
         }
         this.marks = new int[xlim()][ylim()];
 
@@ -111,12 +118,12 @@ class Model {
 
     /** Returns the number of vertical edges and cells in a row. */
     int xlim() {
-        return (this.cols * 2) + 1;
+        return (this.col * 2) + 1;
     }
 
     /** Returns the number of horizontal edges and cells in a column. */
     int ylim() {
-        return (this.rows * 2) + 1;
+        return (this.row * 2) + 1;
     }
 
     /** Returns true iff (X, Y) is a valid cell. */
@@ -466,12 +473,14 @@ class Model {
     /** Returns the position of the cell that is opposite P using P0 as the
      *  center, or null if that is not a valid cell address. */ // FIXED
     Place opposing(Place p0, Place p) {
-        if (0 < p0.x && p0.x < xlim() && 0 < p0.y && p0.y < ylim()) {
+        int newX = p0.x - (p.x - p0.x);
+        int newY = p0.y - (p.y - p0.y);
+        if (0 < newX && newX < xlim() && 0 < newY && newY< ylim()) {
             Place opposed = p0.move(-(p.x - p0.x), -(p.y - p0.y));
             if (isCell(opposed)) {
                 return opposed;
             }
-            
+
         }
         return null;
     }
