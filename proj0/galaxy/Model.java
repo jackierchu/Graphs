@@ -466,9 +466,12 @@ class Model {
     /** Returns the position of the cell that is opposite P using P0 as the
      *  center, or null if that is not a valid cell address. */ // FIXED
     Place opposing(Place p0, Place p) {
-        Place opposed = p0.move(-(p.x-p0.x), -(p.y-p0.y));
-        if (isCell(opposed)) {
-            return opposed;
+        if (0 < p0.x && p0.x < xlim() && 0 < p0.y && p0.y < ylim()) {
+            Place opposed = p0.move(-(p.x - p0.x), -(p.y - p0.y));
+            if (isCell(opposed)) {
+                return opposed;
+            }
+            
         }
         return null;
     }
