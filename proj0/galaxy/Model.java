@@ -256,7 +256,7 @@ class Model {
     }
 
     /** Same Coordinates for Place X and Place Y.
-     * @return same coordinates*/
+     * @return same coordinates with place X and place Y*/
     private boolean sameCoordinate(Place X, Place Y) {
 
         return (X.x == Y.x) && (X.y == Y.y);
