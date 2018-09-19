@@ -3,7 +3,7 @@ package image;
 /** Provides a variety of utilities for operating on matrices.
  *  All methods assume that the double[][] arrays provided are rectangular.
  *
- *  @author Josh Hug and YOU
+ *  @author Josh Hug and Jacqueline Chu
  */
 
 public class MatrixUtils {
@@ -55,8 +55,19 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulateVertical(double[][] m) {
-        return null; //your code here
-    }
+        m = copy(m);
+        for (int r = 1; r < m.length; r++) {
+            for (int c = 0; c < m[0].length; c++) {
+                double optimal = Double.POSITIVE_INFINITY;
+                for (int diff_of_C = -1; diff_of_C <= 1; diff_of_C = diff_of_C +1) {
+                    if (get(m, r - 1, c + diff_of_C) < optimal) {
+                        optimal = get(m, r - 1, c + diff_of_C);
+                    }
+                }
+                m[r][c] += optimal;
+            }
+        }
+        return m;}
 
     /** Non-destructively accumulates a matrix M along the specified
      *  ORIENTATION.
@@ -71,7 +82,7 @@ public class MatrixUtils {
      *  accumulateVertical(mT) returns the correct result.
      *
      *  accumulate should be very short (only a few lines). Most of the
-     *  work should be done in creaing the helper function (and even
+     *  work should be done in creating the helper function (and even
      *  that function should be pretty short and straightforward).
      *
      *  The important lesson here is that you should never have big
@@ -82,8 +93,66 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if (orientation == Orientation.HORIZONTAL) {
+            m = transpose(m);
+        }
+
+        return transpose(accumulateVertical(m));
     }
+
+    private static double[][] transpose(double[][] m) {
+        int w = m[0].length;
+        int h = m.length;
+
+        double[][] mT = new double[w][h];
+        for (int r = 0; r < h; r++) {
+            for (int c = 0; c < w; c++) {
+                mT[c][r] = m[r][c];
+            }
+        }
+        return mT;
+    }
+
+    private static double get(double[][] m, int r, int c) {
+        int w = m[0].length;
+        int h = m.length;
+        if ((c < 0) || (c >= w) || (r < 0) || (r >= h)) {
+            return Double.POSITIVE_INFINITY;
+        }
+        return m[r][c];
+    }
+
+    private static int m_index(double[] x) {
+        int m_index = 0;
+        for (int i = 0; i < x.length; i++) {
+            if (x[i] < x[m_index]) {
+                m_index = i;
+            }
+        }
+
+        return m_index;
+    }
+
+    private static int m_index(double[] x, int low, int high) {
+        if (low < 0) {
+            low = 0;
+        }
+
+        if (high >= x.length) {
+            high = x.length - 1;
+        }
+
+        int m_index = low;
+        for (int i = low; i <= high; i++) {
+            if (x[i] < x[m_index]) {
+                m_index = i;
+            }
+        }
+
+        return m_index;
+    }
+
+
 
     /** Finds the vertical seam VERTSEAM of the given matrix M.
      *
@@ -115,7 +184,22 @@ public class MatrixUtils {
      */
 
     public static int[] findVerticalSeam(double[][] m) {
-        return null; //your code here
+        int width = m[0].length;
+        int height = m.length;
+
+        int[] verticalSeam = new int[height];
+        int r = height - 1;
+        verticalSeam[r] = m_index(m[r]);
+
+        for (r = height - 2; r >= 0; r--) {
+            int themin = verticalSeam[r + 1] - 1;
+            int themax = verticalSeam[r + 1] + 1;
+
+            int x = m_index(m[r], themin, themax);
+            verticalSeam[r] = x;
+
+        }
+        return verticalSeam;
     }
 
     /** Returns the SEAM of M with the given ORIENTATION.
@@ -124,7 +208,12 @@ public class MatrixUtils {
      */
 
     public static int[] findSeam(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if (orientation == Orientation.HORIZONTAL) {
+            m = transpose(m);
+        }
+
+        int[] seam = findVerticalSeam(m);
+        return seam;
     }
 
     /** does nothing. ARGS not used. use for whatever purposes you'd like */
