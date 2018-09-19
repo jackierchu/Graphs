@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /** FIXME
- *  @author FIXME
+ *  @author Jacqueline Chu
  */
 
 public class ArraysTest {
