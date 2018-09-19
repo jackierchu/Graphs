@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 /**
- *  @author You, mostly
+ *  @author Jacqueline Chu
  */
 
 public class EveryOtherWord {
@@ -22,7 +22,15 @@ public class EveryOtherWord {
       */
 
     public static Iterable<String> everyOtherWord(List<String> L) {
-        return null; // FIXME!
+        int count = 0;
+        Set<String> retset = new HashSet<String>();
+        for (String s : L) {
+            if (count % 2 == 0) {
+                retset.add(s);
+            }
+            count += 1;
+        }
+        return retset;
     }
 
     /** Tests whether or not your everyOtherWord method works correctly. */
