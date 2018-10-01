@@ -3,12 +3,15 @@ class WeirdListClient {
 
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
-        return null; // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        Adder adder = new Adder(n);
+        return L.map(adder);
     }
 
     /** Return the sum of the elements in L. */
     static int sum(WeirdList L) {
-        return 0; // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        Summer summer = new Summer();
+        L.map(summer);
+        return summer.getSummer();
     }
 
     /* As with WeirdList, you'll need to add an additional class or
