@@ -2,7 +2,7 @@
  * @author Jacqueline Chu
  */
 public class WeirdList {
-    /** The empty sequence of integers. */
+    /** The empty sequence of the integers. */
     int head;
     WeirdList tail;
 

@@ -10,4 +10,8 @@ public class WeirdListEmpty extends WeirdList {
     public WeirdListEmpty() {
         super(0, null);
     }
+
+    public String toString() {
+        return "";
+    }
 }
