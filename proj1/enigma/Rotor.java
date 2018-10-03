@@ -3,15 +3,16 @@ package enigma;
 import static enigma.EnigmaException.*;
 
 /** Superclass that represents a rotor in the enigma machine.
- *  @author
+ *  @author Jacqueline Chu
  */
 class Rotor {
+    private int _setting;
 
-    /** A rotor named NAME whose permutation is given by PERM. */
+    /** A rotor named NAME whose permutation is given by PERM. FIXED */
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
-        // FIXME
+        _setting = 0;
     }
 
     /** Return my name. */
@@ -44,31 +45,37 @@ class Rotor {
         return false;
     }
 
-    /** Return my current setting. */
+    /** Return my current setting. FIXED */
     int setting() {
-        return 0; // FIXME
+        return _setting;
     }
 
-    /** Set setting() to POSN.  */
+    /** Set setting() to POSN. FIXED  */
     void set(int posn) {
-        // FIXME
+        _setting = posn;
     }
 
-    /** Set setting() to character CPOSN. */
+    /** Set setting() to character CPOSN. FIXED */
     void set(char cposn) {
-        // FIXME
+        _setting = alphabet().toInt(cposn);
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
-     *  according to my permutation. */
+     *  according to my permutation. FIXED */
     int convertForward(int p) {
-        return 0;  // FIXME
+        int cIn = _permutation.wrap(p + _setting);
+        int cOut = _permutation.permute(cIn);
+        int result = _permutation.wrap(cOut - _setting);
+        return result;
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
-     *  according to the inverse of my permutation. */
+     *  according to the inverse of my permutation. FIXED */
     int convertBackward(int e) {
-        return 0;  // FIXME
+        int cIn = _permutation.wrap(e + _setting);
+        int cOut = _permutation.invert(cIn);
+        int result = _permutation.wrap(cOut - _setting);
+        return result;
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left

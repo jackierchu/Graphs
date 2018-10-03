@@ -4,7 +4,7 @@ import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
- *  @author
+ *  @author Jacqueline Chu
  */
 class Permutation {
 
@@ -13,17 +13,35 @@ class Permutation {
      *  is interpreted as a permutation in cycle notation.  Characters in the
      *  alphabet that are not included in any cycle map to themselves.
      *  Whitespace is ignored. */
+
+    private String _cycles;
+
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
-        // FIXME
+        _cycles = cycles;
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
-     *  c0c1...cm. */
+     *  c0c1...cm. FIXED */
     private void addCycle(String cycle) {
-        // FIXME
+        _cycles += cycle;
     }
 
+    static String[] splitCycles(String cycles) {
+        if (cycles.contains(" ")) {
+            cycles = cycles.replaceAll(" ", "");
+            String[] split2 = cycles.split("\\)\\(");
+            split2[0] = split2[0].substring(1);
+            int last = split2.length - 1;
+            split2[last] = split2[last].substring(0, split2[last].length() - 1);
+            return split2;
+        } else {
+            cycles = cycles.replaceAll("\\(", "");
+            cycles = cycles.replaceAll("\\)", "");
+            String[] split1 = {cycles};
+            return split1;
+        }
+    }
     /** Return the value of P modulo the size of this permutation. */
     final int wrap(int p) {
         int r = p % size();
@@ -33,32 +51,76 @@ class Permutation {
         return r;
     }
 
-    /** Returns the size of the alphabet I permute. */
+    /** Returns the size of the alphabet I permute. FIXED */
     int size() {
-        return 0; // FIXME
+        return _alphabet.size();
     }
 
     /** Return the result of applying this permutation to P modulo the
-     *  alphabet size. */
+     *  alphabet size. FIXED */
     int permute(int p) {
-        return 0;  // FIXME
+        int cIn = wrap(p);
+        char pIn = _alphabet.toChar(cIn);
+        char pOut = permute(pIn);
+        int cOut = _alphabet.toInt(pOut);
+        return cOut;
     }
 
     /** Return the result of applying the inverse of this permutation
-     *  to  C modulo the alphabet size. */
+     *  to  C modulo the alphabet size FIXED */
     int invert(int c) {
-        return 0;  // FIXME
+        int cIn = wrap(c);
+        char pIn = _alphabet.toChar(cIn);
+        char pOut = (char)invert(pIn);
+        int cOut = _alphabet.toInt(pOut);
+        return cOut;
     }
 
     /** Return the result of applying this permutation to the index of P
-     *  in ALPHABET, and converting the result to a character of ALPHABET. */
+     *  in ALPHABET, and converting the result to a character of ALPHABET. FIXED */
     char permute(char p) {
-        return 0;  // FIXME
+        char result;
+        result = p;
+        if (_cycles.equals("")) {
+            return result;
+        } else {
+            String[] newcycles = splitCycles(_cycles);
+            for (int i = 0; i < newcycles.length; i += 1) {
+                if (newcycles[i].contains(String.valueOf(p))) {
+                    String thecycle = newcycles[i];
+                    int index = thecycle.indexOf(String.valueOf(p));
+                    if (index != thecycle.length() - 1) {
+                        result = thecycle.charAt(index + 1);
+                    } else {
+                        result = thecycle.charAt(0);
+                    }
+                }
+            }
+            return result;
+        }
     }
 
-    /** Return the result of applying the inverse of this permutation to C. */
+    /** Return the result of applying the inverse of this permutation to C. FIXED */
     int invert(char c) {
-        return 0;  // FIXME
+        char result;
+        result = c;
+        if (_cycles.equals("")) {
+            return result;
+        } else {
+            String [] newcycles = splitCycles(_cycles);
+            for (int i = 0; i < newcycles.length; i += 1) {
+                if (newcycles[i].contains(String.valueOf(c))) {
+                    String thecycle = newcycles[i];
+                    int index = thecycle.indexOf(String.valueOf(c));
+                    if (index != 0) {
+                        result = thecycle.charAt(index - 1);
+                    } else {
+                        result = thecycle.charAt(thecycle.length() - 1);
+                    }
+                }
+            }
+            return result;
+        }
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -67,9 +129,15 @@ class Permutation {
     }
 
     /** Return true iff this permutation is a derangement (i.e., a
-     *  permutation for which no value maps to itself). */
+     *  permutation for which no value maps to itself). FIXED */
     boolean derangement() {
-        return true;  // FIXME
+        String [] newcycles = splitCycles(_cycles);
+        for (int i = 0; i < newcycles.length; i += 1) {
+            if (newcycles[i].length() == 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Alphabet of this permutation. */

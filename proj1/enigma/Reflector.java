@@ -8,13 +8,20 @@ import static enigma.EnigmaException.*;
 class Reflector extends FixedRotor {
 
     /** A non-moving rotor named NAME whose permutation at the 0 setting
-     * is PERM. */
+     * is PERM. FIXED */
     Reflector(String name, Permutation perm) {
         super(name, perm);
-        // FIXME
     }
 
-    // FIXME?
+    @Override
+    boolean reflecting() {
+        return true;
+    }
+
+    @Override
+    int convertBackward(int e) {
+        throw error("reflector do not convert backward");
+    }
 
     @Override
     void set(int posn) {
