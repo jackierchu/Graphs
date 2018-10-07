@@ -13,19 +13,12 @@ class MovingRotor extends Rotor {
      *  alphabet).
      */
 
-    private String _notches;
-    private Permutation _permutation;
-    private Alphabet _alphabet;
-
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
         _notches = notches;
         _permutation = perm;
     }
 
-    String getmynotche() {
-        return _notches;
-    }
 
     @Override
     boolean rotates() {
@@ -34,31 +27,8 @@ class MovingRotor extends Rotor {
 
     @Override
     boolean atNotch() {
-        String[] spnot = _notches.split("");
-        char [] temp = new char [spnot.length];
-        int [] temp2 = new int [spnot.length];
-        for (int i = 0; i < spnot.length; i += 1) {
-            temp[i] = spnot[i].charAt(0);
-            temp2[i] = _permutation.alphabet().toInt(temp[i]);
-        }
-        for (int k = 0; k < temp2.length; k += 1) {
-            if (super.setting() == _permutation.wrap(temp2[k] + 1)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    boolean trythis() {
-        String[] spnot = _notches.split("");
-        char [] temp = new char [spnot.length];
-        int [] temp2 = new int [spnot.length];
-        for (int i = 0; i < spnot.length; i += 1) {
-            temp[i] = spnot[i].charAt(0);
-            temp2[i] = _permutation.alphabet().toInt(temp[i]);
-        }
-        for (int k = 0; k < temp2.length; k += 1) {
-            if (super.setting() == _permutation.wrap(temp2[k])) {
+        for (int i = 0; i < _notches.length(); i++) {
+            if (alphabet().toInt(_notches.charAt(i)) == this.setting()) {
                 return true;
             }
         }
@@ -71,5 +41,6 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
-
+    private String _notches;
+    private Permutation _permutation;
 }

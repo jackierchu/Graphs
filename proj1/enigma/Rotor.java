@@ -6,7 +6,6 @@ import static enigma.EnigmaException.*;
  *  @author Jacqueline Chu
  */
 class Rotor {
-    private int _setting;
 
     /** A rotor named NAME whose permutation is given by PERM. FIXED */
     Rotor(String name, Permutation perm) {
@@ -52,7 +51,7 @@ class Rotor {
 
     /** Set setting() to POSN. FIXED  */
     void set(int posn) {
-        _setting = posn;
+        _setting = mod(posn, 26);;
     }
 
     /** Set setting() to character CPOSN. FIXED */
@@ -60,22 +59,27 @@ class Rotor {
         _setting = alphabet().toInt(cposn);
     }
 
+    /** Return the value of P modulo the input SIZE. */
+    int mod(int p, int size) {
+        int r = p % size;
+        if (r < 0) {
+            r += size;
+        }
+        return r;
+    }
+
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. FIXED */
     int convertForward(int p) {
-        int cIn = _permutation.wrap(p + _setting);
-        int cOut = _permutation.permute(cIn);
-        int result = _permutation.wrap(cOut - _setting);
-        return result;
+        int result = _permutation.permute(p+_setting % size());
+        return mod(result-_setting, size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. FIXED */
     int convertBackward(int e) {
-        int cIn = _permutation.wrap(e + _setting);
-        int cOut = _permutation.invert(cIn);
-        int result = _permutation.wrap(cOut - _setting);
-        return result;
+        int result = _permutation.invert(e+_setting % size());
+        return mod(result-_setting, size());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
@@ -100,5 +104,7 @@ class Rotor {
     private Permutation _permutation;
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+
+    private int _setting;
 
 }

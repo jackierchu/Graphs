@@ -9,6 +9,7 @@ abstract class Alphabet {
     /** Returns the size of the alphabet. */
     abstract int size();
 
+
     /** Returns true if preprocess(CH) is in this alphabet. */
     abstract boolean contains(char ch);
 
