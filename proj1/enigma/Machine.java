@@ -1,5 +1,6 @@
 package enigma;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -60,6 +61,8 @@ class Machine {
             if (!_alphabet.contains(setting.charAt(i - 1))) {
                 throw new EnigmaException("Initial positions string not in alphabet");
             }
+            System.out.println("I'm currently setting rotor "+i+" to the setting of"+
+                    setting.charAt(i-1));
             _rotors[i].set(setting.charAt(i - 1));
         }
     }
@@ -74,32 +77,52 @@ class Machine {
 
      *  the machine. FIXED */
     int convert(int c) {
-        boolean rotor_4 = false;
-        boolean rotor_3 = false;
-        if (_rotors[4].atNotch()) {
-            rotor_4 = true;
-        }
-        if (_rotors[3].atNotch()) {
-            rotor_3 = true;
-        }
-        if (rotor_4 == true) {
-            _rotors[3].advance();
-        }
-        if (rotor_3 == true) {
-            _rotors[2].advance();
-            _rotors[3].advance();
-        }
-        _rotors[_numRotors-1].advance();
+        int input = c % _alphabet.size();
+        IterateForward();
 
-        int result = _plugboard.permute(c);
-        for (int i = _numRotors-1; i >= 0; i--) {
-            result = _rotors[i].convertForward(result);
+        if (_plugboard != null) {
+            input = _plugboard.permute(input);
         }
-        for (int i = 1; i < _numRotors; i++) {
-            result = _rotors[i].convertBackward(result);
+        for (int pos = _rotors.length - 1; pos >= 0; pos --) {
+            Rotor forward = _rotors[pos];
+            input = forward.convertForward(input);
         }
-        result = _plugboard.permute(result);
-        return result;
+        for (int pos = 1; pos < _rotors.length; pos ++) {
+            Rotor backward = _rotors[pos];
+            input = backward.convertBackward(input);
+        }
+
+        if (_plugboard != null) {
+            input = _plugboard.permute(input);
+        }
+
+        return input;
+    }
+
+    /** Implemented helper function called IterateForward. */
+
+    void IterateForward() {
+        ArrayList<Rotor> moving = new ArrayList<>();
+        for (int i = numRotors() - numPawls(); i < numRotors(); i++) {
+            Rotor currentRotor = _rotors[i];
+            Rotor leftRotor = _rotors[i - 1];
+
+            if (i == (numRotors() - 1)) {
+                moving.add(currentRotor);
+            } else if (_rotors[i + 1].atNotch() || moving.contains(leftRotor)) {
+                if (!moving.contains(currentRotor)) {
+                    moving. add(currentRotor);
+                }
+                if (_rotors[i].atNotch()) {
+                    if (!moving.contains(leftRotor)) {
+                        moving.add(leftRotor);
+                    }
+                }
+            }
+        }
+        for (Rotor r: moving) {
+            r.advance();
+        }
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of

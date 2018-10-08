@@ -117,7 +117,11 @@ public final class Main {
             if (alpha.contains("(") || alpha.contains(")") || alpha.contains("*")) {
                 throw new EnigmaException("Wrong config format");
             }
-            _alphabet = new CharacterRange(alpha.charAt(0),alpha.charAt(2));
+            if (alpha.matches("[A-Z]-[A-Z]")) {
+                _alphabet = new CharacterRange(alpha.charAt(0), alpha.charAt(2));
+            } else {
+                _alphabet = new ExtendAlphabetEC(alpha);
+            }
 
             if (!_config.hasNextInt()) {
                 throw new EnigmaException("Wrong config format");
@@ -176,8 +180,8 @@ public final class Main {
         String[] rotors = new String[M.numRotors()];
         for (int i = 1; i < M.numRotors()+1; i++) {
             rotors[i-1] = set[i];
+            System.out.println("Current rotor: "+set[i]);
         }
-
         for (int i = 0; i < rotors.length - 1; i++) {
             for (int j = i + 1; j < rotors.length; j++) {
                 if (rotors[i].equals(rotors[j])) {
@@ -195,6 +199,7 @@ public final class Main {
             throw new EnigmaException("First Rotor should be a reflector");
         }
         M.setRotors(set[M.numRotors()+1]);
+        System.out.println("Plugboard Configuration is: "+steckered);
         M.setPlugboard(new Permutation(steckered, _alphabet));
     }
 
