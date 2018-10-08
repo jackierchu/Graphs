@@ -180,7 +180,6 @@ public final class Main {
         String[] rotors = new String[M.numRotors()];
         for (int i = 1; i < M.numRotors()+1; i++) {
             rotors[i-1] = set[i];
-            System.out.println("Current rotor: "+set[i]);
         }
         for (int i = 0; i < rotors.length - 1; i++) {
             for (int j = i + 1; j < rotors.length; j++) {
@@ -199,7 +198,6 @@ public final class Main {
             throw new EnigmaException("First Rotor should be a reflector");
         }
         M.setRotors(set[M.numRotors()+1]);
-        System.out.println("Plugboard Configuration is: "+steckered);
         M.setPlugboard(new Permutation(steckered, _alphabet));
     }
 

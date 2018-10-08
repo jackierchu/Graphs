@@ -61,8 +61,6 @@ class Machine {
             if (!_alphabet.contains(setting.charAt(i - 1))) {
                 throw new EnigmaException("Initial positions string not in alphabet");
             }
-            System.out.println("I'm currently setting rotor "+i+" to the setting of"+
-                    setting.charAt(i-1));
             _rotors[i].set(setting.charAt(i - 1));
         }
     }
