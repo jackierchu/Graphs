@@ -6,7 +6,7 @@ import ucb.junit.textui;
 import static junit.framework.TestCase.assertEquals;
 
 /** The suite of all JUnit tests for the enigma package.
- *  @author
+ *  @author Jacqueline Chu
  */
 public class UnitTest {
 

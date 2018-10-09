@@ -97,12 +97,13 @@ class Rotor {
         return "Rotor " + _name;
     }
 
-    /** My name. */
+    /** String name. */
     private final String _name;
 
-    /** The permutation implemented by this rotor in its 0 position. */
+    /** The permutation implemented by this rotor in 0 position. */
     private Permutation _permutation;
 
+   /** Integer variable */
     private int _setting;
 
 }

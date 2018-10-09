@@ -41,6 +41,9 @@ class MovingRotor extends Rotor {
     }
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    /** Additional string E*/
     private String _notches;
+
+    /** Additional permutation */
     private Permutation _permutation;
 }
