@@ -58,20 +58,20 @@ public final class Main {
     }
 
     /** Return a Scanner reading from the file named NAME. */
-    private Scanner getInput(String name) {
+    private Scanner getInput(String names) {
         try {
-            return new Scanner(new File(name));
+            return new Scanner(new File(names));
         } catch (IOException excp) {
-            throw error("could not open %s", name);
+            throw error("could not open %s", names);
         }
     }
 
     /** Return a PrintStream writing to the file named NAME. */
-    private PrintStream getOutput(String name) {
+    private PrintStream getOutput(String names) {
         try {
-            return new PrintStream(new File(name));
+            return new PrintStream(new File(names));
         } catch (IOException excp) {
-            throw error("could not open %s", name);
+            throw error("could not open %s", names);
         }
     }
 
@@ -157,7 +157,8 @@ public final class Main {
             }
 
             if (notches.charAt(0) == 'M') {
-                return new MovingRotor(name, new Permutation(perm, _alphabet), notches.substring(1));
+                return new MovingRotor(name, new Permutation(perm, _alphabet),
+                        notches.substring(1));
             } else if (notches.charAt(0) == 'N') {
                 return new FixedRotor(name, new Permutation(perm, _alphabet));
             } else {
@@ -178,8 +179,8 @@ public final class Main {
         }
 
         String[] rotors = new String[M.numRotors()];
-        for (int i = 1; i < M.numRotors()+1; i++) {
-            rotors[i-1] = set[i];
+        for (int i = 1; i < M.numRotors() + 1; i++) {
+            rotors[i - 1] = set[i];
         }
         for (int i = 0; i < rotors.length - 1; i++) {
             for (int j = i + 1; j < rotors.length; j++) {
@@ -194,10 +195,10 @@ public final class Main {
             steckered = steckered.concat(set[i] + " ");
         }
         M.insertRotors(rotors);
-        if (M._rotors[0].reflecting() != true) {
+        if (!M._rotors[0].reflecting()) {
             throw new EnigmaException("First Rotor should be a reflector");
         }
-        M.setRotors(set[M.numRotors()+1]);
+        M.setRotors(set[M.numRotors() + 1]);
         M.setPlugboard(new Permutation(steckered, _alphabet));
     }
 
@@ -207,9 +208,9 @@ public final class Main {
         for (int i = 0; i < msg.length(); i += 5) {
             int cap = msg.length() - i;
             if (cap <= 5) {
-                _output.println(msg.substring(i, i+cap));
+                _output.println(msg.substring(i, i + cap));
             } else {
-                _output.print(msg.substring(i, i+5) + " ");
+                _output.print(msg.substring(i, i + 5) + " ");
             }
         }
     }

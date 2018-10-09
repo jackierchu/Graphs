@@ -6,7 +6,7 @@ public class ExtendAlphabetEC extends Alphabet {
 
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
-    public ExtendAlphabetEC (String chars) {
+    public ExtendAlphabetEC(String chars) {
         _chars = chars;
     }
 

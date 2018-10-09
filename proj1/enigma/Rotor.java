@@ -51,7 +51,7 @@ class Rotor {
 
     /** Set setting() to POSN. FIXED  */
     void set(int posn) {
-        _setting = mod(posn, 26);;
+        _setting = mod(posn, 26);
     }
 
     /** Set setting() to character CPOSN. FIXED */
@@ -71,15 +71,15 @@ class Rotor {
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. FIXED */
     int convertForward(int p) {
-        int result = _permutation.permute(p+_setting % size());
-        return mod(result-_setting, size());
+        int result = _permutation.permute(p + _setting % size());
+        return mod(result - _setting, size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. FIXED */
     int convertBackward(int e) {
-        int result = _permutation.invert(e+_setting % size());
-        return mod(result-_setting, size());
+        int result = _permutation.invert(e + _setting % size());
+        return mod(result - _setting, size());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left

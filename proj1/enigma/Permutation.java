@@ -25,7 +25,7 @@ class Permutation {
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. FIXED */
     private void addCycle(String cycle) {
-        String[] newCycle = new String[_cycles.length+1];
+        String[] newCycle = new String[_cycles.length + 1];
         for (int i = 0; i < _cycles.length; i++) {
             newCycle[i] = _cycles[i];
         }
@@ -55,7 +55,7 @@ class Permutation {
         for (int i = 0; i < _cycles.length; i++) {
             for (int j = 0; j < _cycles[i].length(); j++) {
                 if (_cycles[i].charAt(j) == c) {
-                    newChar = _cycles[i].charAt((j+1) % _cycles[i].length());
+                    newChar = _cycles[i].charAt((j + 1) % _cycles[i].length());
                     /**if (j+1 == _cycles[i].length() - 1) {
                      newChar = _cycles[i].charAt(1);
                      }*/
@@ -82,7 +82,7 @@ class Permutation {
         for (int i = 0; i < _cycles.length; i++) {
             for (int j = 0; j < _cycles[i].length(); j++) {
                 if (_cycles[i].charAt(j) == n) {
-                    newChar = _cycles[i].charAt(mod(j-1, _cycles[i].length()));
+                    newChar = _cycles[i].charAt(mod(j - 1, _cycles[i].length()));
                     /**if (j-1 == 0) {
                      newChar = _cycles[i].charAt(_cycles[i].length() - 2);
                      }*/
@@ -119,11 +119,7 @@ class Permutation {
         for (int i = 0; i < _cycles.length; i++) {
             count += _cycles[i].length();
         }
-        if (count == _alphabet.size()) {
-            return true;
-        } else {
-            return false;
-        } // FIXME
+        return (count == _alphabet.size()); // FIXME
     }
 
     /** Alphabet of this permutation. */
@@ -131,6 +127,7 @@ class Permutation {
 
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
-    /** An array of strings, each string representing a cycle that a letter would be converted through. */
+    /** Within an array of strings, each string represents a cycle
+     * that letter would be converted through. */
     private String[] _cycles;
 }

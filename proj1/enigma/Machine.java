@@ -1,7 +1,6 @@
 package enigma;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collection;
 
 import static enigma.EnigmaException.*;
@@ -40,7 +39,7 @@ class Machine {
     void insertRotors(String[] rotors) {
         for (int i = 0; i < rotors.length; i++) {
             for (int j = 0; j < _allRotors.length; j++) {
-                if ((rotors[i].toString()).equals((((Rotor)_allRotors[j]).name()))) {
+                if ((rotors[i].toString()).equals((((Rotor) _allRotors[j]).name()))) {
                     _rotors[i] = (Rotor) _allRotors[j];
                 }
             }
@@ -76,16 +75,16 @@ class Machine {
      *  the machine. FIXED */
     int convert(int c) {
         int input = c % _alphabet.size();
-        IterateForward();
+        iterateForward();
 
         if (_plugboard != null) {
             input = _plugboard.permute(input);
         }
-        for (int pos = _rotors.length - 1; pos >= 0; pos --) {
+        for (int pos = _rotors.length - 1; pos >= 0; pos--) {
             Rotor forward = _rotors[pos];
             input = forward.convertForward(input);
         }
-        for (int pos = 1; pos < _rotors.length; pos ++) {
+        for (int pos = 1; pos < _rotors.length; pos++) {
             Rotor backward = _rotors[pos];
             input = backward.convertBackward(input);
         }
@@ -99,7 +98,7 @@ class Machine {
 
     /** Implemented helper function called IterateForward. */
 
-    void IterateForward() {
+    void iterateForward() {
         ArrayList<Rotor> moving = new ArrayList<>();
         for (int i = numRotors() - numPawls(); i < numRotors(); i++) {
             Rotor currentRotor = _rotors[i];
@@ -109,7 +108,7 @@ class Machine {
                 moving.add(currentRotor);
             } else if (_rotors[i + 1].atNotch() || moving.contains(leftRotor)) {
                 if (!moving.contains(currentRotor)) {
-                    moving. add(currentRotor);
+                    moving.add(currentRotor);
                 }
                 if (_rotors[i].atNotch()) {
                     if (!moving.contains(leftRotor)) {
@@ -141,7 +140,7 @@ class Machine {
     /** addtional. */
     private int _pawls;
     /** addtional. */
-    public Rotor[] _rotors;
+    Rotor[] _rotors;
     /** addtional. */
     private Permutation _plugboard;
     /** addtional. */
