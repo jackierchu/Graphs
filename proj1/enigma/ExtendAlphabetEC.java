@@ -1,21 +1,26 @@
 package enigma;
 
+/** Alphabet consisting of encodable characters that provides a mapping from characters
+ *  to and from indices into the alphabet.
+ *  @author Jacqueline Chu
+ */
+
 public class ExtendAlphabetEC extends Alphabet {
 
     String _chars;
 
-    /** A new alphabet containing CHARS.  Character number #k has index
-     *  K (numbering from 0). No character may be duplicated. */
+    /** A new alphabet that contains chars.  Character number #j has index
+     *  J that is numbered from 0. Characters cannot be duplicated. */
     public ExtendAlphabetEC(String chars) {
         _chars = chars;
     }
 
-    /** Returns the size of the alphabet. */
+    /** Returns size of the alphabet. */
     int size() {
         return _chars.length();
     }
 
-    /** Returns true if C is in this alphabet. */
+    /** Returns true if character C is in this alphabet. */
     boolean contains(char c) {
         for (int i = 0; i < size(); i++) {
             if (_chars.charAt(i) == c) {
@@ -25,23 +30,22 @@ public class ExtendAlphabetEC extends Alphabet {
         return false;
     }
 
-    /** Returns character number INDEX in the alphabet, where
-     *  0 <= INDEX < size(). */
+    /** Returns the character number INDEX within the alphabet */
     char toChar(int index) {
         if (index < 0 || index >= size()) {
-            throw new EnigmaException("character index out of range");
+            throw new EnigmaException("character index is out of range");
         }
         return _chars.charAt(index);
     }
 
-    /** Returns the index of character C, which must be in the alphabet. */
+    /** Returns the index of character C that must be within the alphabet. */
     int toInt(char c) {
         for (int i = 0; i < size(); i++) {
             if (_chars.charAt(i) == c) {
                 return i;
             }
         }
-        throw new EnigmaException("character not in alphabet");
+        throw new EnigmaException("character is not in the alphabet");
     }
 
 }

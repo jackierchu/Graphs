@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
-import java.util.HashMap;
-
 import static enigma.TestUtils.*;
 
 public class MachineTest {
@@ -19,11 +17,11 @@ public class MachineTest {
     /* ***** TESTING UTILITIES ***** */
 
      private Reflector reflect = new Reflector("B", new Permutation("(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) (MP) (RX) (SZ) (TV)", UPPER));
-     private FixedRotor fixed = new FixedRotor("BETA", new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
-     private MovingRotor moving1 = new MovingRotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
-     private MovingRotor moving2 = new MovingRotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
-     private MovingRotor moving3 = new MovingRotor("III", new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V");
-     private MovingRotor moving4 = new MovingRotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J");
+     private FixedRotor fixedrotor = new FixedRotor("BETA", new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
+     private MovingRotor movingrotor1 = new MovingRotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
+     private MovingRotor movingrotor2 = new MovingRotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
+     private MovingRotor movingrotor3 = new MovingRotor("III", new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V");
+     private MovingRotor movingrotor4 = new MovingRotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J");
 
      ArrayList<Rotor> rotors = new ArrayList<>();
      private Machine machine;
@@ -39,42 +37,42 @@ public class MachineTest {
     @Test
     public void testInsertRotors() {
         rotors.add(reflect);
-        rotors.add(fixed);
-        rotors.add(moving1);
-        rotors.add(moving2);
-        rotors.add(moving3);
-        rotors.add(moving4);
+        rotors.add(fixedrotor);
+        rotors.add(movingrotor1);
+        rotors.add(movingrotor2);
+        rotors.add(movingrotor3);
+        rotors.add(movingrotor4);
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
-        assertEquals("Wrong rotor at 0", rotors.get(0), machine._rotors[0]);
-        assertEquals("Wrong rotor at 4", rotors.get(2), machine._rotors[4]);
+        assertEquals("Incorrect rotor at 0", rotors.get(0), machine._rotors[0]);
+        assertEquals("Incorrect rotor at 4", rotors.get(2), machine._rotors[4]);
     }
 
     @Test
     public void testSetRotors() {
         rotors.add(reflect);
-        rotors.add(fixed);
-        rotors.add(moving1);
-        rotors.add(moving2);
-        rotors.add(moving3);
-        rotors.add(moving4);
+        rotors.add(fixedrotor);
+        rotors.add(movingrotor1);
+        rotors.add(movingrotor2);
+        rotors.add(movingrotor3);
+        rotors.add(movingrotor4);
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
         machine.setRotors("AXLE");
-        assertEquals("Wrong setting at 1", 0, machine._rotors[1].setting());
-        assertEquals("Wrong setting at 2", 23, machine._rotors[2].setting());
-        assertEquals("Wrong setting at 3", 11, machine._rotors[3].setting());
-        assertEquals("Wrong setting at 4", 4, machine._rotors[4].setting());
+        assertEquals("Incorrect setting at Rotor 1", 0, machine._rotors[1].setting());
+        assertEquals("Incorrect setting at Rotor 2", 23, machine._rotors[2].setting());
+        assertEquals("Incorrect setting at Rotor 3", 11, machine._rotors[3].setting());
+        assertEquals("Incorrect setting at Rotor 4", 4, machine._rotors[4].setting());
     }
 
     @Test
     public void testConvert() {
         rotors.add(reflect);
-        rotors.add(fixed);
-        rotors.add(moving1);
-        rotors.add(moving2);
-        rotors.add(moving3);
-        rotors.add(moving4);
+        rotors.add(fixedrotor);
+        rotors.add(movingrotor1);
+        rotors.add(movingrotor2);
+        rotors.add(movingrotor3);
+        rotors.add(movingrotor4);
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
         machine.setRotors("AXLE");

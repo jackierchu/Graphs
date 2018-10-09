@@ -39,7 +39,7 @@ public final class Main {
     /** Check ARGS and open the necessary files (see comment on main). */
     Main(String[] args) {
         if (args.length < 1 || args.length > 3) {
-            throw error("Only 1, 2, or 3 command-line arguments allowed");
+            throw error("Only 1, 2, 3 command-line arguments allowed");
         }
 
         _config = getInput(args[0]);
@@ -77,14 +77,14 @@ public final class Main {
 
     /** Configure an Enigma machine from the contents of configuration
      *  file _config and apply it to the messages in _input, sending the
-     *  results to _output. FIXED */
+     *  results to _output. */
     private void process() {
         Machine enigma = readConfig();
         String next = _input.nextLine();
         while (_input.hasNext()) {
             String setting = next;
             if (!setting.contains("*")) {
-                throw new EnigmaException("Wrong setting format");
+                throw new EnigmaException("The incorrect setting format");
             }
             setUp(enigma, setting);
             next = (_input.nextLine()).toUpperCase();
@@ -115,7 +115,7 @@ public final class Main {
 
             String alpha = _config.next();
             if (alpha.contains("(") || alpha.contains(")") || alpha.contains("*")) {
-                throw new EnigmaException("Wrong config format");
+                throw new EnigmaException("Incorrect config format");
             }
             if (alpha.matches("[A-Z]-[A-Z]")) {
                 _alphabet = new CharacterRange(alpha.charAt(0), alpha.charAt(2));
@@ -124,11 +124,11 @@ public final class Main {
             }
 
             if (!_config.hasNextInt()) {
-                throw new EnigmaException("Wrong config format");
+                throw new EnigmaException("Incorrect config format");
             }
             int numRotors = _config.nextInt();
             if (!_config.hasNextInt()) {
-                throw new EnigmaException("Wrong config format");
+                throw new EnigmaException("Incorrect config format");
             }
             int pawls = _config.nextInt();
             temp = (_config.next()).toUpperCase();
@@ -139,7 +139,7 @@ public final class Main {
             }
             return new Machine(_alphabet, numRotors, pawls, _allTheRotors);
         } catch (NoSuchElementException excp) {
-            throw error("configuration file truncated");
+            throw error("config file is truncated");
         }
     }
 
@@ -165,7 +165,7 @@ public final class Main {
                 return new Reflector(name, new Permutation(perm, _alphabet));
             }
         } catch (NoSuchElementException excp) {
-            throw error("bad rotor description");
+            throw error("inadequate rotor description");
         }
     }
 
@@ -175,7 +175,7 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         String[] set = settings.split(" ");
         if (set.length - 1 < M.numRotors()) {
-            throw new EnigmaException("Not enough arguments in setting");
+            throw new EnigmaException("Not enough arguments in the setting");
         }
 
         String[] rotors = new String[M.numRotors()];
@@ -185,21 +185,21 @@ public final class Main {
         for (int i = 0; i < rotors.length - 1; i++) {
             for (int j = i + 1; j < rotors.length; j++) {
                 if (rotors[i].equals(rotors[j])) {
-                    throw new EnigmaException("Repeated Rotor");
+                    throw new EnigmaException("Rotor is repeated");
                 }
             }
         }
 
-        String steckered = "";
+        String steck = "";
         for (int i = 7; i < set.length; i++) {
-            steckered = steckered.concat(set[i] + " ");
+            steck = steck.concat(set[i] + " ");
         }
         M.insertRotors(rotors);
         if (!M._rotors[0].reflecting()) {
-            throw new EnigmaException("First Rotor should be a reflector");
+            throw new EnigmaException("First Rotor should be reflector");
         }
         M.setRotors(set[M.numRotors() + 1]);
-        M.setPlugboard(new Permutation(steckered, _alphabet));
+        M.setPlugboard(new Permutation(steck, _alphabet));
     }
 
     /** Print MSG in groups of five (except that the last group may
@@ -218,27 +218,28 @@ public final class Main {
     /** Alphabet used in this machine. */
     private Alphabet _alphabet;
 
-    /** Source of input messages. */
+    /** Source of the input messages. */
     private Scanner _input;
 
-    /** Source of machine configuration. */
+    /** Source of the machine config. */
     private Scanner _config;
 
-    /** File for encoded/decoded messages. */
+    /** File for encoded and decoded msgs. */
     private PrintStream _output;
 
-    /** Temporary string that is set to NEXT token of _config. */
+    /** Temp string which is set to next value of _config. */
     private String temp;
 
-    /** Name of current rotor. */
+    /** Name of the current rotor. */
     private String name;
 
-    /** Type and notches of current rotor. */
+    /** Notches of current rotor. */
     private String notches;
 
-    /** An ArrayList containing all rotors that can be used. */
+    /** ArrayList containing all the available rotors. */
     private ArrayList<Rotor> _allTheRotors = new ArrayList<>();
 
+    /** Instance variable */
     private String perm;
 
 

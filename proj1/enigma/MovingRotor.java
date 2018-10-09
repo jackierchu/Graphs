@@ -9,7 +9,7 @@ class MovingRotor extends Rotor {
 
     /** A rotor named NAME whose permutation in its default setting is
      *  PERM, and whose notches are at the positions indicated in NOTCHES.
-     *  The Rotor is initally in its 0 setting (first character of its
+     *  The Rotor is initially in its 0 setting (first character of its
      *  alphabet).
      */
 

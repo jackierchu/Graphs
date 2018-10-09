@@ -7,7 +7,7 @@ import static enigma.EnigmaException.*;
  */
 class Rotor {
 
-    /** A rotor named NAME whose permutation is given by PERM. FIXED */
+    /** A rotor named NAME whose permutation is given by PERM. */
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
@@ -44,17 +44,17 @@ class Rotor {
         return false;
     }
 
-    /** Return my current setting. FIXED */
+    /** Return my current setting. */
     int setting() {
         return _setting;
     }
 
-    /** Set setting() to POSN. FIXED  */
+    /** Set setting() to POSN. */
     void set(int posn) {
         _setting = mod(posn, 26);
     }
 
-    /** Set setting() to character CPOSN. FIXED */
+    /** Set setting() to character CPOSN. */
     void set(char cposn) {
         _setting = alphabet().toInt(cposn);
     }
@@ -69,14 +69,14 @@ class Rotor {
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
-     *  according to my permutation. FIXED */
+     *  according to my permutation. */
     int convertForward(int p) {
         int result = _permutation.permute(p + _setting % size());
         return mod(result - _setting, size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
-     *  according to the inverse of my permutation. FIXED */
+     *  according to the inverse of my permutation. */
     int convertBackward(int e) {
         int result = _permutation.invert(e + _setting % size());
         return mod(result - _setting, size());
@@ -102,8 +102,6 @@ class Rotor {
 
     /** The permutation implemented by this rotor in its 0 position. */
     private Permutation _permutation;
-
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
     private int _setting;
 
