@@ -51,4 +51,11 @@ public class PermutationTest {
         checkPerm("identity", UPPER_STRING, UPPER_STRING);
     }
 
+    @Test
+    public void testInvertChar() {
+        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
+        assertEquals(p.invert('B'), 'A');
+        assertEquals(p.invert('G'), 'G');
+    }
+
 }

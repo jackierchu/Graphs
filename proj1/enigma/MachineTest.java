@@ -15,12 +15,19 @@ public class MachineTest {
 
     /* ***** TESTING UTILITIES ***** */
 
-    private Reflector reflect = new Reflector("B", new Permutation("(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) (MP) (RX) (SZ) (TV)", UPPER));
-    private FixedRotor fixedrotor = new FixedRotor("BETA", new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
-    private MovingRotor movingrotor1 = new MovingRotor("I", new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
-    private MovingRotor movingrotor2 = new MovingRotor("II", new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
-    private MovingRotor movingrotor3 = new MovingRotor("III", new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V");
-    private MovingRotor movingrotor4 = new MovingRotor("IV", new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J");
+    private Reflector reflect = new Reflector("B",
+            new Permutation("(AE) (BN) (CK) (DQ) "
+                    + "(FU) (GY) (HW) (IJ) (LO) (MP) (RX) (SZ) (TV)", UPPER));
+    private FixedRotor fixedrotor = new FixedRotor("BETA",
+            new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
+    private MovingRotor movingrotor1 = new MovingRotor("I",
+            new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
+    private MovingRotor movingrotor2 = new MovingRotor("II",
+            new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
+    private MovingRotor movingrotor3 = new MovingRotor("III",
+            new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V");
+    private MovingRotor movingrotor4 = new MovingRotor("IV",
+            new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J");
 
     ArrayList<Rotor> rotors = new ArrayList<>();
     private Machine machine;
@@ -84,5 +91,4 @@ public class MachineTest {
         machine.setPlugboard(new Permutation("(HQ) (EX) (IP) (TR) (BY)", UPPER));
         assertEquals("Wrong convert", "FROM", machine.convert("QVPQ"));
     }
-
 }
