@@ -39,7 +39,7 @@ public final class Main {
     /** Check ARGS and open the necessary files (see comment on main). */
     Main(String[] args) {
         if (args.length < 1 || args.length > 3) {
-            throw error("Only 1, 2, 3 command-line arguments allowed");
+            throw error("Only 1, 2, or 3 command-line arguments allowed");
         }
 
         _config = getInput(args[0]);

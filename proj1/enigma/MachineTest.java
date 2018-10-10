@@ -9,6 +9,10 @@ import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
 import static enigma.TestUtils.*;
 
+/** The suite of all JUnit tests for the Machine class.
+ *  @author Jacqueline Chu
+ */
+
 public class MachineTest {
     /** Testing time limit.*/
     @Rule
