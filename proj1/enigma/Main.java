@@ -80,28 +80,31 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine enigma = readConfig();
-        String next = _input.nextLine();
+        String next_line = _input.nextLine();
+        if (_input.hasNext() == false) {
+            throw new EnigmaException("Empty file");
+        }
         while (_input.hasNext()) {
-            String setting = next;
+            String setting = next_line;
             if (!setting.contains("*")) {
                 throw new EnigmaException("The incorrect setting format");
             }
             setUp(enigma, setting);
-            next = (_input.nextLine()).toUpperCase();
-            while (next.isEmpty()) {
-                next = (_input.nextLine()).toUpperCase();
+            next_line = (_input.nextLine()).toUpperCase();
+            while (next_line.isEmpty()) {
+                next_line = (_input.nextLine()).toUpperCase();
             }
-            while (!(next.contains("*"))) {
-                String result = enigma.convert(next.replaceAll(" ", ""));
-                if (next.isEmpty()) {
+            while (!(next_line.contains("*"))) {
+                String result = enigma.convert(next_line.replaceAll(" ", ""));
+                if (next_line.isEmpty()) {
                     _output.println();
                 } else {
                     printMessageLine(result);
                 }
                 if (!_input.hasNext()) {
-                    next = "*";
+                    next_line = "*";
                 } else {
-                    next = (_input.nextLine()).toUpperCase();
+                    next_line = (_input.nextLine()).toUpperCase();
                 }
             }
         }
