@@ -114,6 +114,27 @@ public class MachineTest {
         assertEquals("AAAA", getSetting(ac, machineRotors));
         mach.convert('a');
         assertEquals("AAAB", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AAAC", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AABD", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AABA", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AABB", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AABC", getSetting(ac, machineRotors));
+
+        mach.convert('a');
+        assertEquals("AACD", getSetting(ac, machineRotors));
+
+
+
     }
 
     /** Helper method to get the String representation of the current Rotor settings */
