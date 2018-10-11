@@ -1,9 +1,7 @@
 package enigma;
 
-import org.junit.Test;
 import ucb.junit.textui;
 
-import static junit.framework.TestCase.assertEquals;
 
 /** The suite of all JUnit tests for the enigma package.
  *  @author Jacqueline Chu

@@ -53,7 +53,7 @@ class Machine {
      *  numRotors()-1 upper-case letters. The first letter refers to the
      *  leftmost rotor setting (not counting the reflector). */
     void setRotors(String setting) {
-        if (setting.length() != _numRotors-1) {
+        if (setting.length() != _numRotors - 1) {
             throw new EnigmaException("Initial position string is wrong length");
         }
         for (int i = 1; i < _numRotors; i++) {

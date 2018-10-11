@@ -52,6 +52,20 @@ public class PermutationTest {
     }
 
     @Test
+    public void checkPermute() {
+        perm = new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S))", UPPER);
+        checkPerm("normalPerm", "AELTPHQXRUBKNWCMOYDFGIVJZS", "ELTPHQXRUAKNWBMOYCFGDVIZJS");
+    }
+
+    @Test
+    public void testDerangement() {
+        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
+        Permutation perm2 = new Permutation("(AELTPHQXRUBKNWCMOYDFGIVJZS)", UPPER);
+        assertFalse(p.derangement());
+        assertTrue(perm2.derangement());
+    }
+
+    @Test
     public void testInvertChar() {
         Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
         assertEquals(p.invert('B'), 'A');

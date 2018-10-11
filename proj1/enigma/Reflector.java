@@ -1,6 +1,6 @@
 package enigma;
 
-import static enigma.EnigmaException.*;
+import static enigma.EnigmaException.error;
 
 /** Class that represents a reflector in the enigma.
  *  @author Jacqueline CHu
