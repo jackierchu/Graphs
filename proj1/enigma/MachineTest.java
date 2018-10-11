@@ -106,9 +106,9 @@ public class MachineTest {
         Rotor four = new MovingRotor("R4", new Permutation("(ABCD)", ac), "C");
         String setting = "AAA";
         Rotor[] machineRotors = {one, two, three, four};
-        String[] rotors = {"R1", "R2", "R3", "R4"};
+        String[] rotors2 = {"R1", "R2", "R3", "R4"};
         Machine mach = new Machine(ac, 4, 3, new ArrayList<>(Arrays.asList(machineRotors)));
-        mach.insertRotors(rotors);
+        mach.insertRotors(rotors2);
         mach.setRotors(setting);
 
         assertEquals("AAAA", getSetting(ac, machineRotors));

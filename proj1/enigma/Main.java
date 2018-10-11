@@ -81,9 +81,9 @@ public final class Main {
     private void process() {
         Machine enigma = readConfig();
         String next = _input.nextLine();
-        if (!_input.hasNext()) {
+        /**if (!_input.hasNext()) {
             throw new EnigmaException("Empty file");
-        }
+        } */
         while (_input.hasNext()) {
             String setting = next;
             if (!setting.contains("*")) {
@@ -177,6 +177,7 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         String[] set = settings.split(" ");
+
         if (set.length - 1 < M.numRotors()) {
             throw new EnigmaException("Not enough arguments in the setting");
         }
@@ -194,9 +195,13 @@ public final class Main {
         }
 
         String steck = "";
-        for (int i = 7; i < set.length; i++) {
-            steck = steck.concat(set[i] + " ");
+        int cycleTobeScanned = rotors.length + 2;
+        if (!(cycleTobeScanned >= set.length)) {
+            for (int i = rotors.length; i < set.length; i++) {
+                steck = steck.concat(set[i] + " ");
+            }
         }
+
         M.insertRotors(rotors);
         if (!M._rotors[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
