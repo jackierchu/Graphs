@@ -66,7 +66,7 @@ class Machine {
         }
     }
 
-    /** Set the plugboard to PLUGBOARD. FIXED */
+    /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
         _plugboard = plugboard;
     }
