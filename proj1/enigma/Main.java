@@ -197,11 +197,10 @@ public final class Main {
         String steck = "";
         int cycleTobeScanned = rotors.length + 2;
         if (!(cycleTobeScanned >= set.length)) {
-            for (int i = rotors.length; i < set.length; i++) {
-                steck = steck.concat(set[i] + " ");
+            for (int i = rotors.length; i < set.length - 2; i++) {
+                steck = steck.concat(set[i + 2] + " ");
             }
         }
-
         M.insertRotors(rotors);
         if (!M._rotors[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
