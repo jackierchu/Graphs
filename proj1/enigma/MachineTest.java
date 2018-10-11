@@ -26,13 +26,17 @@ public class MachineTest {
     private FixedRotor fixedrotor = new FixedRotor("BETA",
             new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
     private MovingRotor movingrotor1 = new MovingRotor("I",
-            new Permutation("(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
+            new Permutation("(AELTPHQXRU) (BKNW) "
+                    + "(CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
     private MovingRotor movingrotor2 = new MovingRotor("II",
-            new Permutation("(FIXVYOMW) (CDKLHUP) (ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
+            new Permutation("(FIXVYOMW) (CDKLHUP) "
+                    + "(ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
     private MovingRotor movingrotor3 = new MovingRotor("III",
-            new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) (N)", UPPER), "V");
+            new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) "
+                    + "(N)", UPPER), "V");
     private MovingRotor movingrotor4 = new MovingRotor("IV",
-            new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) (KU)", UPPER), "J");
+            new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) "
+                    + "(KU)", UPPER), "J");
 
     ArrayList<Rotor> rotors = new ArrayList<>();
     private Machine machine;
@@ -71,10 +75,14 @@ public class MachineTest {
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
         machine.setRotors("AXLE");
-        assertEquals("Incorrect setting at Rotor 1", 0, machine._rotors[1].setting());
-        assertEquals("Incorrect setting at Rotor 2", 23, machine._rotors[2].setting());
-        assertEquals("Incorrect setting at Rotor 3", 11, machine._rotors[3].setting());
-        assertEquals("Incorrect setting at Rotor 4", 4, machine._rotors[4].setting());
+        assertEquals("Incorrect setting at Rotor 1",
+                0, machine._rotors[1].setting());
+        assertEquals("Incorrect setting at Rotor 2",
+                23, machine._rotors[2].setting());
+        assertEquals("Incorrect setting at Rotor 3",
+                11, machine._rotors[3].setting());
+        assertEquals("Incorrect setting at Rotor 4",
+                4, machine._rotors[4].setting());
     }
 
     @Test
@@ -100,14 +108,19 @@ public class MachineTest {
     @Test
     public void testDoubleStep() {
         Alphabet ac = new CharacterRange('A', 'D');
-        Rotor one = new Reflector("R1", new Permutation("(AC) (BD)", ac));
-        Rotor two = new MovingRotor("R2", new Permutation("(ABCD)", ac), "C");
-        Rotor three = new MovingRotor("R3", new Permutation("(ABCD)", ac), "C");
-        Rotor four = new MovingRotor("R4", new Permutation("(ABCD)", ac), "C");
+        Rotor one = new Reflector("R1",
+                new Permutation("(AC) (BD)", ac));
+        Rotor two = new MovingRotor("R2",
+                new Permutation("(ABCD)", ac), "C");
+        Rotor three = new MovingRotor("R3",
+                new Permutation("(ABCD)", ac), "C");
+        Rotor four = new MovingRotor("R4",
+                new Permutation("(ABCD)", ac), "C");
         String setting = "AAA";
         Rotor[] machineRotors = {one, two, three, four};
         String[] rotors2 = {"R1", "R2", "R3", "R4"};
-        Machine mach = new Machine(ac, 4, 3, new ArrayList<>(Arrays.asList(machineRotors)));
+        Machine mach = new Machine(ac, 4, 3,
+                new ArrayList<>(Arrays.asList(machineRotors)));
         mach.insertRotors(rotors2);
         mach.setRotors(setting);
 

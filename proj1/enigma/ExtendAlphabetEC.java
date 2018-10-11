@@ -7,7 +7,7 @@ package enigma;
 
 public class ExtendAlphabetEC extends Alphabet {
 
-    /** Additional string variable */
+    /** Additional string variable. */
     String _chars;
 
     /** A new alphabet that contains chars.  Character number #j has index

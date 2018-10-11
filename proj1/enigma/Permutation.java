@@ -63,6 +63,7 @@ class Permutation {
         return p;
     }
 
+    /** Helper method for mod. */
     int mod(int p, int size) {
         int r = p % size;
         if (r < 0) {
@@ -79,7 +80,8 @@ class Permutation {
         for (int i = 0; i < _cycles.length; i++) {
             for (int j = 0; j < _cycles[i].length(); j++) {
                 if (_cycles[i].charAt(j) == n) {
-                    newChar = _cycles[i].charAt(mod(j - 1, _cycles[i].length()));
+                    newChar = _cycles[i].charAt(mod(j - 1,
+                            _cycles[i].length()));
                     return _alphabet.toInt(newChar);
                 }
             }

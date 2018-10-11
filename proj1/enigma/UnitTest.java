@@ -14,6 +14,7 @@ public class UnitTest {
      */
 
     public static void main(String[] ignored) {
-        textui.runClasses(PermutationTest.class, MovingRotorTest.class, MachineTest.class);
+        textui.runClasses(PermutationTest.class,
+                MovingRotorTest.class, MachineTest.class);
     }
 }

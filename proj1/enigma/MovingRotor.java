@@ -40,10 +40,9 @@ class MovingRotor extends Rotor {
         super.set(_permutation.wrap(super.setting() + 1));
     }
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
-    /** Additional string E*/
+    /** Additional string E. */
     private String _notches;
 
-    /** Additional permutation */
+    /** Additional permutation. */
     private Permutation _permutation;
 }

@@ -54,11 +54,13 @@ class Machine {
      *  leftmost rotor setting (not counting the reflector). */
     void setRotors(String setting) {
         if (setting.length() != _numRotors - 1) {
-            throw new EnigmaException("Initial position string is wrong length");
+            throw new EnigmaException("Initial position string "
+                    + "is wrong length");
         }
         for (int i = 1; i < _numRotors; i++) {
             if (!_alphabet.contains(setting.charAt(i - 1))) {
-                throw new EnigmaException("Initial position string is not in the alphabet");
+                throw new EnigmaException("Initial position "
+                        + "string is not in the alphabet");
             }
             _rotors[i].set(setting.charAt(i - 1));
         }
@@ -136,7 +138,7 @@ class Machine {
 
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
-    /** Added instance variable */
+    /** Added instance variable. */
     private int _numRotors;
     /** Added instance variable. */
     private int _pawls;
