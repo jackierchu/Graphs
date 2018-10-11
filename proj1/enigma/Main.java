@@ -214,10 +214,8 @@ public final class Main {
     private void printMessageLine(String msg) {
         for (int i = 0; i < msg.length(); i += 5) {
             int cap = msg.length() - i;
-            if (cap < 5) {
+            if (cap <= 5) {
                 _output.println(msg.substring(i, i + cap));
-            } else if (cap == 5) {
-                _output.println(msg.substring(i, i + 5) + " ");
             } else {
                 _output.print(msg.substring(i, i + 5) + " ");
             }
