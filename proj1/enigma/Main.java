@@ -81,9 +81,7 @@ public final class Main {
     private void process() {
         Machine enigma = readConfig();
         String next = _input.nextLine();
-        /**if (!_input.hasNext()) {
-            throw new EnigmaException("Empty file");
-        } */
+
         while (_input.hasNext()) {
             String setting = next;
             if (!setting.contains("*")) {
@@ -91,12 +89,9 @@ public final class Main {
             }
             setUp(enigma, setting);
             next = (_input.nextLine()).toUpperCase();
-            while (next.isEmpty()) {
-                next = (_input.nextLine()).toUpperCase();
-            }
             while (!(next.contains("*"))) {
                 String result = enigma.convert(next.replaceAll(" ", ""));
-                if (next.isEmpty()) {
+                if (result.length() == 0) {
                     _output.println();
                 } else {
                     printMessageLine(result);
@@ -177,6 +172,15 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         String[] set = settings.split(" ");
+        int startCount = 0;
+        for (int i = 0; i < set.length; i++) {
+            if (set[i].equals("*")) {
+                startCount ++ ;
+            }
+        }
+        if (startCount > 1) {
+            throw new EnigmaException("More than one start error");
+        }
 
         if (set.length - 1 < M.numRotors()) {
             throw new EnigmaException("Not enough arguments in the setting");
