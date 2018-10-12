@@ -11,7 +11,8 @@ public class ExtendAlphabetEC extends Alphabet {
     String _chars;
 
     /** A new alphabet that contains chars.  Character number #j has index
-     *  J that is numbered from 0. Characters cannot be duplicated. */
+     *  J that is numbered from 0. Characters cannot be duplicated.
+     *  @param chars returns the characters */
     public ExtendAlphabetEC(String chars) {
         _chars = chars;
     }
