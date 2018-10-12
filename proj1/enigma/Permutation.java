@@ -26,10 +26,10 @@ class Permutation {
      *  c0c1...cm. */
     private void addCycle(String cycle) {
         String[] newCycles = new String[_cycles.length + 1];
-        for (int x = 0; x < _cycles.length; x = x + 1) {
+        newCycles[_cycles.length + 1] = cycle;
+        for (int x = _cycles.length - 1; x >= 0; x--) {
             newCycles[x] = _cycles[x];
         }
-        newCycles[_cycles.length + 1] = cycle;
         _cycles = newCycles;
     }
 
@@ -51,11 +51,13 @@ class Permutation {
      *  alphabet size. */
     int permute(int p) {
         char a = _alphabet.toChar(wrap(p));
-        for (int x = 0; x < _cycles.length; x = x + 1) {
-            for (int y = 0; y < _cycles[x].length(); y = y + 1) {
-                if (_cycles[x].charAt(y) == a) {
-                    char newCharacter = _cycles[x].charAt((y + 1)
-                            % _cycles[x].length());
+
+        for (int x = 0; x < _cycles.length; x++) {
+            String cycle = _cycles[x];
+            for (int y = 0; y < cycle.length(); y++) {
+                if (cycle.charAt(y) == a) {
+                    char newCharacter = cycle.charAt((y + 1)
+                            % cycle.length());
                     return _alphabet.toInt(newCharacter);
                 }
             }
@@ -79,12 +81,11 @@ class Permutation {
      *  to  C modulo the alphabet size. */
     int invert(int c) {
         char a = _alphabet.toChar(wrap(c));
-        char newCharacters;
-        for (int x = 0; x < _cycles.length; x = x + 1) {
-            for (int j = 0; j < _cycles[x].length(); j = j + 1) {
-                if (_cycles[x].charAt(j) == a) {
-                    newCharacters = _cycles[x].charAt(mod(j - 1,
-                            _cycles[x].length()));
+        for (String cycle : _cycles) {
+            for (int j = 0; j < cycle.length(); j++) {
+                if (cycle.charAt(j) == a) {
+                    char newCharacters = cycle.charAt(mod(j - 1,
+                            cycle.length()));
                     return _alphabet.toInt(newCharacters);
                 }
             }
