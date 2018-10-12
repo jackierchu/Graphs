@@ -20,91 +20,88 @@ public class MachineTest {
 
     /* ***** TESTING UTILITIES ***** */
 
-    private Reflector reflect = new Reflector("B",
-            new Permutation("(AE) (BN) (CK) (DQ) "
-                    + "(FU) (GY) (HW) (IJ) (LO) (MP) (RX) (SZ) (TV)", UPPER));
-    private FixedRotor fixedrotor = new FixedRotor("BETA",
-            new Permutation("(ALBEVFCYODJWUGNMQTZSKPR) (HIX)", UPPER));
+    private Reflector reflector = new Reflector("B",
+            new Permutation("(AZ) (BY) (CK) (DQ) "
+                    + "(UF) (GY) (WH) (IJ) (OL) (PM) (RX) (SZ) (TV)", UPPER));
+    private FixedRotor fixedrotors = new FixedRotor("BETA",
+            new Permutation("(BLIVFCOJWUNMQTZSKPA) (XH)", UPPER));
     private MovingRotor movingrotor1 = new MovingRotor("I",
-            new Permutation("(AELTPHQXRU) (BKNW) "
-                    + "(CMOY) (DFG) (IV) (JZ) (S)", UPPER), "Q");
+            new Permutation("(ALPHXTEU) (BKN) "
+                    + "(CMOD) (FG) (IV) (JZ) (W)", UPPER), "Q");
     private MovingRotor movingrotor2 = new MovingRotor("II",
-            new Permutation("(FIXVYOMW) (CDKLHUP) "
-                    + "(ESZ) (BJ) (GR) (NT) (A) (Q)", UPPER), "E");
+            new Permutation("(AIYVMW) (COLKUPH) "
+                    + "(EXZ) (SQJ) (GT) (NR) (B) (F)", UPPER), "E");
     private MovingRotor movingrotor3 = new MovingRotor("III",
-            new Permutation("(ABDHPEJT) (CFLVMZOYQIRWUKXSG) "
+            new Permutation("(DHPBZJT) (CLVOYFAIRWUKXSG) "
                     + "(N)", UPPER), "V");
     private MovingRotor movingrotor4 = new MovingRotor("IV",
-            new Permutation("(AEPLIYWCOXMRFZBSTGJQNH) (DV) "
-                    + "(KU)", UPPER), "J");
+            new Permutation("(EPLIHYAOXMRCFBSWTGJNQ) (VD) "
+                    + "(UK)", UPPER), "J");
 
-    ArrayList<Rotor> rotors = new ArrayList<>();
-    private Machine machine;
-    private String[] insert = {"B", "BETA", "III", "IV", "I"};
+    ArrayList<Rotor> rotorsArray = new ArrayList<>();
+    private Machine newMachine;
+    private String[] insertion = {"B", "BETA", "III", "IV", "I"};
 
     /** Set the rotor to the one with given NAME and permutation as
      * *  specified by the NAME entry in ROTORS, with given NOTCHES. */
     private void setMachine(Alphabet alpha, int numrotors,
                             int pawls, Collection<Rotor> allrotors) {
-        machine = new Machine(alpha, numrotors, pawls, allrotors);
+        newMachine = new Machine(alpha, numrotors, pawls, allrotors);
     }
 
     /* ***** TESTS ***** */
     @Test
-    public void testInsertRotors() {
-        rotors.add(reflect);
-        rotors.add(fixedrotor);
-        rotors.add(movingrotor1);
-        rotors.add(movingrotor2);
-        rotors.add(movingrotor3);
-        rotors.add(movingrotor4);
-        setMachine(UPPER, 5, 3, rotors);
-        machine.insertRotors(insert);
-        assertEquals("Incorrect rotor at 0", rotors.get(0), machine.getRotors()[0]);
-        assertEquals("Incorrect rotor at 4", rotors.get(2), machine.getRotors()[4]);
+    public void testSetRotors() {
+        rotorsArray.add(reflector);
+        rotorsArray.add(fixedrotors);
+        rotorsArray.add(movingrotor1);
+        rotorsArray.add(movingrotor2);
+        rotorsArray.add(movingrotor3);
+        rotorsArray.add(movingrotor4);
+        setMachine(UPPER, 5, 3, rotorsArray);
+        newMachine.insertRotors(insertion);
+        newMachine.setRotors("AXLE");
+        assertEquals("Incorrect setting at the Rotor 4",
+                4, newMachine.getRotors()[4].setting());
+        assertEquals("Incorrect setting at the Rotor 3",
+                11, newMachine.getRotors()[3].setting());
+        assertEquals("Incorrect setting at the Rotor 1",
+                0, newMachine.getRotors()[1].setting());
+        assertEquals("Incorrect setting at the Rotor 2",
+                23, newMachine.getRotors()[2].setting());
     }
 
     @Test
-    public void testSetRotors() {
-        rotors.add(reflect);
-        rotors.add(fixedrotor);
-        rotors.add(movingrotor1);
-        rotors.add(movingrotor2);
-        rotors.add(movingrotor3);
-        rotors.add(movingrotor4);
-        setMachine(UPPER, 5, 3, rotors);
-        machine.insertRotors(insert);
-        machine.setRotors("AXLE");
-        assertEquals("Incorrect setting at Rotor 1",
-                0, machine.getRotors()[1].setting());
-        assertEquals("Incorrect setting at Rotor 2",
-                23, machine.getRotors()[2].setting());
-        assertEquals("Incorrect setting at Rotor 3",
-                11, machine.getRotors()[3].setting());
-        assertEquals("Incorrect setting at Rotor 4",
-                4, machine.getRotors()[4].setting());
-    }
+    public void testInsertRotors() {
+        rotorsArray.add(reflector);
+        rotorsArray.add(fixedrotors);
+        rotorsArray.add(movingrotor1);
+        rotorsArray.add(movingrotor2);
+        rotorsArray.add(movingrotor3);
+        rotorsArray.add(movingrotor4);
+        setMachine(UPPER, 5, 3, rotorsArray);
+        newMachine.insertRotors(insertion);
+        assertEquals("Incorrect rotor at 4", rotorsArray.get(2),
+                newMachine.getRotors()[4]);
+        assertEquals("Incorrect rotor at 0", rotorsArray.get(0),
+                newMachine.getRotors()[0]);
+}
 
     @Test
     public void testConvert() {
-        rotors.add(reflect);
-        rotors.add(fixedrotor);
-        rotors.add(movingrotor1);
-        rotors.add(movingrotor2);
-        rotors.add(movingrotor3);
-        rotors.add(movingrotor4);
-        setMachine(UPPER, 5, 3, rotors);
-        machine.insertRotors(insert);
-        machine.setRotors("AXLE");
-        machine.setPlugboard(new Permutation("(HQ) "
-                + "(EX) (IP) (TR) (BY)", UPPER));
-        assertEquals("Wrong convert", "QVPQ", machine.convert("FROM"));
-        setMachine(UPPER, 5, 3, rotors);
-        machine.insertRotors(insert);
-        machine.setRotors("AXLE");
-        machine.setPlugboard(new Permutation("(HQ) "
-                + "(EX) (IP) (TR) (BY)", UPPER));
-        assertEquals("Wrong convert", "FROM", machine.convert("QVPQ"));
+        rotorsArray.add(reflector);
+        rotorsArray.add(fixedrotors);
+        rotorsArray.add(movingrotor1);
+        rotorsArray.add(movingrotor2);
+        rotorsArray.add(movingrotor3);
+        rotorsArray.add(movingrotor4);
+        setMachine(UPPER, 5, 3, rotorsArray);
+        newMachine.insertRotors(insertion);
+        newMachine.setRotors("AXLE");
+        newMachine.setPlugboard(new Permutation("(HQ) "
+                + "(XE) (IP) (RT) (YB)", UPPER));
+        assertEquals("Wrong conversion", "QVPQ",
+                newMachine.convert("FROM"));
     }
 
     @Test
@@ -160,3 +157,4 @@ public class MachineTest {
         return currSetting;
     }
 }
+

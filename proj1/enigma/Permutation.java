@@ -25,12 +25,12 @@ class Permutation {
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
     private void addCycle(String cycle) {
-        String[] newCycle = new String[_cycles.length + 1];
-        for (int i = 0; i < _cycles.length; i++) {
-            newCycle[i] = _cycles[i];
+        String[] newCycles = new String[_cycles.length + 1];
+        for (int x = 0; x < _cycles.length; x = x + 1) {
+            newCycles[x] = _cycles[x];
         }
-        newCycle[_cycles.length + 1] = cycle;
-        _cycles = newCycle;
+        newCycles[_cycles.length + 1] = cycle;
+        _cycles = newCycles;
     }
 
     /** Return the value of P modulo the size of this permutation. */
@@ -50,13 +50,13 @@ class Permutation {
     /** Return the result of applying this permutation to P modulo the
      *  alphabet size. */
     int permute(int p) {
-        char c = _alphabet.toChar(wrap(p));
-        char newChar = '0';
-        for (int i = 0; i < _cycles.length; i++) {
-            for (int j = 0; j < _cycles[i].length(); j++) {
-                if (_cycles[i].charAt(j) == c) {
-                    newChar = _cycles[i].charAt((j + 1) % _cycles[i].length());
-                    return _alphabet.toInt(newChar);
+        char a = _alphabet.toChar(wrap(p));
+        char newCharacter = '0';
+        for (int x = 0; x < _cycles.length; x = x + 1) {
+            for (int y = 0; y < _cycles[x].length(); y = y + 1) {
+                if (_cycles[x].charAt(y) == a) {
+                    newCharacter = _cycles[x].charAt((y + 1) % _cycles[x].length());
+                    return _alphabet.toInt(newCharacter);
                 }
             }
         }
@@ -64,28 +64,28 @@ class Permutation {
     }
 
     /** Helper method for mod.
-     * @param p is the p.
+     * @param x is the p.
      * @param size is the size.
      * @return returns the r. */
-    int mod(int p, int size) {
-        int r = p % size;
-        if (r < 0) {
-            r += size;
+    int mod(int x, int size) {
+        int i = x % size;
+        if (i < 0) {
+            i += size;
         }
-        return r;
+        return i;
     }
 
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-        char n = _alphabet.toChar(wrap(c));
-        char newChar = '0';
-        for (int i = 0; i < _cycles.length; i++) {
-            for (int j = 0; j < _cycles[i].length(); j++) {
-                if (_cycles[i].charAt(j) == n) {
-                    newChar = _cycles[i].charAt(mod(j - 1,
-                            _cycles[i].length()));
-                    return _alphabet.toInt(newChar);
+        char a = _alphabet.toChar(wrap(c));
+        char newCharacters = '0';
+        for (int x = 0; x < _cycles.length; x = x + 1) {
+            for (int j = 0; j < _cycles[x].length(); j = j + 1) {
+                if (_cycles[x].charAt(j) == a) {
+                    newCharacters = _cycles[x].charAt(mod(j - 1,
+                            _cycles[x].length()));
+                    return _alphabet.toInt(newCharacters);
                 }
             }
         }
@@ -96,14 +96,14 @@ class Permutation {
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        int index = _alphabet.toInt(p);
-        return _alphabet.toChar(permute(index));
+        int indexing = _alphabet.toInt(p);
+        return _alphabet.toChar(permute(indexing));
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     int invert(char c) {
-        int index = _alphabet.toInt(c);
-        return _alphabet.toChar(invert(index));
+        int indexing = _alphabet.toInt(c);
+        return _alphabet.toChar(invert(indexing));
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -114,11 +114,11 @@ class Permutation {
     /** Return true iff this permutation is a derangement (i.e., a
      *  permutation for which no value maps to itself). */
     boolean derangement() {
-        int count = 0;
-        for (int i = 0; i < _cycles.length; i++) {
-            count += _cycles[i].length();
+        int counter = 0;
+        for (int x = 0; x < _cycles.length; x = x + 1) {
+            counter = counter + _cycles[x].length();
         }
-        return (count == _alphabet.size());
+        return (counter == _alphabet.size());
     }
 
     /** Alphabet of permutation. */

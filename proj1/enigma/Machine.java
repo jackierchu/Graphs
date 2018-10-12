@@ -37,15 +37,15 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        for (int i = 0; i < rotors.length; i++) {
-            for (int j = 0; j < _allRotors.length; j++) {
-                if ((rotors[i]).equals((((Rotor) _allRotors[j]).name()))) {
-                    _rotors[i] = (Rotor) _allRotors[j];
+        for (int x = 0; x < rotors.length; x++) {
+            for (int y = 0; y < _allRotors.length; y++) {
+                if ((rotors[x]).equals((((Rotor) _allRotors[y]).name()))) {
+                    _rotors[x] = (Rotor) _allRotors[y];
                 }
             }
         }
         if (_rotors.length != rotors.length) {
-            throw new EnigmaException("Rotor has the incorrect name");
+            throw new EnigmaException("Rotor incorrect length and name");
         }
     }
 
@@ -55,14 +55,14 @@ class Machine {
     void setRotors(String setting) {
         if (setting.length() != _numRotors - 1) {
             throw new EnigmaException("Initial position string "
-                    + "is wrong length");
+                    + "is the wrong length, change");
         }
-        for (int i = 1; i < _numRotors; i++) {
-            if (!_alphabet.contains(setting.charAt(i - 1))) {
+        for (int x = 1; x < _numRotors; x++) {
+            if (!_alphabet.contains(setting.charAt(x - 1))) {
                 throw new EnigmaException("Initial position "
-                        + "string is not in the alphabet");
+                        + "string is not in the alphabet, change");
             }
-            _rotors[i].set(setting.charAt(i - 1));
+            _rotors[x].set(setting.charAt(x - 1));
         }
     }
 
@@ -76,65 +76,62 @@ class Machine {
 
      *  the machine. */
     int convert(int c) {
-        int input = c % _alphabet.size();
+        int insertion = c % _alphabet.size();
         iterateForward();
 
         if (_plugboard != null) {
-            input = _plugboard.permute(input);
+            insertion = _plugboard.permute(insertion);
         }
-        for (int pos = _rotors.length - 1; pos >= 0; pos--) {
-            Rotor forward = _rotors[pos];
-            input = forward.convertForward(input);
+        for (int i = _rotors.length - 1; i >= 0; i = i - 1) {
+            Rotor increment = _rotors[i];
+            insertion = increment.convertForward(insertion);
         }
-        for (int pos = 1; pos < _rotors.length; pos++) {
-            Rotor backward = _rotors[pos];
-            input = backward.convertBackward(input);
+        for (int i = 1; i < _rotors.length; i += 1) {
+            Rotor decrement = _rotors[i];
+            insertion = decrement.convertBackward(insertion);
         }
-
         if (_plugboard != null) {
-            input = _plugboard.permute(input);
+            insertion = _plugboard.permute(insertion);
         }
-
-        return input;
+        return insertion;
     }
 
     /** Implemented helper function called IterateForward to help
      * with convert. */
 
     void iterateForward() {
-        ArrayList<Rotor> moving = new ArrayList<>();
-        for (int i = numRotors() - numPawls(); i < numRotors(); i++) {
-            Rotor currentRotor = _rotors[i];
-            Rotor leftRotor = _rotors[i - 1];
-
-            if (i == (numRotors() - 1)) {
-                moving.add(currentRotor);
-            } else if (_rotors[i + 1].atNotch() || moving.contains(leftRotor)) {
-                if (!moving.contains(currentRotor)) {
-                    moving.add(currentRotor);
+        ArrayList<Rotor> newRotors = new ArrayList<>();
+        for (int x = numRotors() - numPawls(); x < numRotors(); x = x + 1) {
+            Rotor currentOne = _rotors[x];
+            Rotor left = _rotors[x - 1];
+            if (x == (numRotors() - 1)) {
+                newRotors.add(currentOne);
+            } else if (newRotors.contains(left) || _rotors[x + 1].atNotch()) {
+                if (!newRotors.contains(currentOne)) {
+                    newRotors.add(currentOne);
                 }
-                if (_rotors[i].atNotch()) {
-                    if (!moving.contains(leftRotor)) {
-                        moving.add(leftRotor);
+                if (_rotors[x].atNotch()) {
+                    if (!newRotors.contains(left)) {
+                        newRotors.add(left);
                     }
                 }
             }
         }
-        for (Rotor r: moving) {
-            r.advance();
+        for (Rotor x: newRotors) {
+            x.advance();
         }
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly. */
     String convert(String msg) {
-        String result = "";
-        for (int i = 0; i < msg.length(); i++) {
-            char converted = _alphabet.
-                    toChar(convert(_alphabet.toInt(msg.charAt(i))));
-            result += converted;
+        String results = "";
+        for (int x = 0; x < msg.length(); x++) {
+            char conv = _alphabet.
+                    toChar(convert(_alphabet.toInt(msg.charAt(x))));
+            results += conv;
         }
-        return result;
+        return results;
     }
 
     /** Common alphabet of my rotors. */

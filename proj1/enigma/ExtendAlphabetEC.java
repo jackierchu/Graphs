@@ -9,46 +9,45 @@ package enigma;
 public class ExtendAlphabetEC extends Alphabet {
 
     /** Additional string variable. */
-    private String _chars;
+    private String _characters;
 
-    /** A new alphabet that contains chars.  Character number #j has index
-     *  J that is numbered from 0. Characters cannot be duplicated.
+    /** A new alphabet that contains chars. Characters cannot be duplicated.
      *  @param chars returns the characters */
     public ExtendAlphabetEC(String chars) {
-        _chars = chars;
+        _characters = chars;
     }
 
-    /** Returns size of the alphabet. */
+    /** Returns the size of the alphabet. */
     int size() {
-        return _chars.length();
+        return _characters.length();
     }
 
-    /** Returns true if character C is in this alphabet. */
+    /** Returns true if C is within alphabet given. */
     boolean contains(char c) {
-        for (int i = 0; i < size(); i++) {
-            if (_chars.charAt(i) == c) {
+        for (int i = 0; i < size(); i = i + 1) {
+            if (_characters.charAt(i) == c) {
                 return true;
             }
         }
         return false;
     }
 
-    /** Returns the character number INDEX within the alphabet. */
-    char toChar(int index) {
-        if (index < 0 || index >= size()) {
-            throw new EnigmaException("character index is out of range");
+    /** Returns the character number within the alphabet given. */
+    char toChar(int indexec) {
+        if (indexec < 0 || indexec >= size()) {
+            throw new EnigmaException("character index is out of the range");
         }
-        return _chars.charAt(index);
+        return _characters.charAt(indexec);
     }
 
-    /** Returns the index of character C that must be within the alphabet. */
+    /** Returns the index of C that must be within the alphabet given. */
     int toInt(char c) {
-        for (int i = 0; i < size(); i++) {
-            if (_chars.charAt(i) == c) {
-                return i;
+        for (int x = 0; x < size(); x = x + 1) {
+            if (_characters.charAt(x) == c) {
+                return x;
             }
         }
-        throw new EnigmaException("character is not in the alphabet");
+        throw new EnigmaException("character is not in the alphabet given");
     }
 
 }

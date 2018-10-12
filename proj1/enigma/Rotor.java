@@ -61,27 +61,27 @@ class Rotor {
         _setting = alphabet().toInt(cposn);
     }
 
-    /** Return the value of P modulo the input SIZE. */
-    int mod(int p, int size) {
-        int r = p % size;
-        if (r < 0) {
-            r += size;
+    /** Return the value of P mod the input SIZE. */
+    int mod(int a, int size) {
+        int x = a % size;
+        if (x < 0) {
+            x += size;
         }
-        return r;
+        return x;
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        int result = _permutation.permute(p + _setting % size());
-        return mod(result - _setting, size());
+        int resultingOne = _permutation.permute(p + _setting % size());
+        return mod(resultingOne - _setting, size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        int result = _permutation.invert(e + _setting % size());
-        return mod(result - _setting, size());
+        int resultingTwo = _permutation.invert(e + _setting % size());
+        return mod(resultingTwo - _setting, size());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left

@@ -82,26 +82,26 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine enigma = readConfig();
-        String next = _input.nextLine();
+        String next_line = _input.nextLine();
 
         while (_input.hasNext()) {
-            String setting = next;
-            if (!setting.contains("*")) {
+            String setstring= next_line;
+            if (!setstring.contains("*")) {
                 throw new EnigmaException("The incorrect setting format");
             }
-            setUp(enigma, setting);
-            next = (_input.nextLine()).toUpperCase();
-            while (!(next.contains("*"))) {
-                String result = enigma.convert(next.replaceAll(" ", ""));
-                if (result.length() == 0) {
+            setUp(enigma, setstring);
+            next_line = (_input.nextLine()).toUpperCase();
+            while (!(next_line.contains("*"))) {
+                String end_result = enigma.convert(next_line.replaceAll(" ", ""));
+                if (end_result.length() == 0) {
                     _output.println();
                 } else {
-                    printMessageLine(result);
+                    printMessageLine(end_result);
                 }
-                if (!_input.hasNext()) {
-                    next = "*";
+                if (_input.hasNext() == false) {
+                    next_line = "*";
                 } else {
-                    next = (_input.nextLine()).toUpperCase();
+                    next_line = (_input.nextLine()).toUpperCase();
                 }
             }
         }
@@ -113,62 +113,61 @@ public final class Main {
     private Machine readConfig() {
         try {
 
-            String alpha = _config.next();
-            Character charzero = alpha.charAt(0);
-            Character chartwo = alpha.charAt(2);
-            if (alpha.contains("(") || alpha.contains(")")
-                    || alpha.contains("*")) {
+            String alphastring = _config.next();
+            Character charzero = alphastring.charAt(0);
+            Character chartwo = alphastring.charAt(2);
+            if (alphastring.contains("(") || alphastring.contains(")")
+                    || alphastring.contains("*")) {
                 throw new EnigmaException("Incorrect config format");
             }
-            if (alpha.matches("[A-Z]-[A-Z]")) {
+            if (alphastring.matches("[A-Z]-[A-Z]")) {
                 _alphabet = new CharacterRange(charzero, chartwo);
             } else {
-                _alphabet = new ExtendAlphabetEC(alpha);
+                _alphabet = new ExtendAlphabetEC(alphastring);
             }
 
-            if (!_config.hasNextInt()) {
-                throw new EnigmaException("Incorrect config format");
-            }
             int numRotors = _config.nextInt();
             if (!_config.hasNextInt()) {
-                throw new EnigmaException("Incorrect config format");
+                throw new EnigmaException("Incorrect configuration format");
+            }
+            if (!_config.hasNextInt()) {
+                throw new EnigmaException("Incorrect configuration format");
             }
             int pawls = _config.nextInt();
-            temp = (_config.next()).toUpperCase();
+            temporary = (_config.next()).toUpperCase();
             while (_config.hasNext()) {
-                name = temp;
+                name = temporary;
                 notches = (_config.next()).toUpperCase();
                 _allTheRotors.add(readRotor());
             }
             return new Machine(_alphabet, numRotors, pawls, _allTheRotors);
         } catch (NoSuchElementException excp) {
-            throw error("config file is truncated");
+            throw error("config file's truncated");
         }
     }
 
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            perm = "";
-            temp = (_config.next()).toUpperCase();
-            while (temp.contains("(") && _config.hasNext()) {
-                perm = perm.concat(temp + " ");
-                temp = (_config.next()).toUpperCase();
+            pm = "";
+            temporary = (_config.next()).toUpperCase();
+            while (_config.hasNext() && temporary.contains("(")) {
+                pm = pm.concat(temporary + " ");
+                temporary = (_config.next()).toUpperCase();
             }
             if (!_config.hasNext()) {
-                perm = perm.concat(temp + " ");
+                pm = pm.concat(temporary + " ");
             }
-
             if (notches.charAt(0) == 'M') {
-                return new MovingRotor(name, new Permutation(perm, _alphabet),
+                return new MovingRotor(name, new Permutation(pm, _alphabet),
                         notches.substring(1));
             } else if (notches.charAt(0) == 'N') {
-                return new FixedRotor(name, new Permutation(perm, _alphabet));
+                return new FixedRotor(name, new Permutation(pm, _alphabet));
             } else {
-                return new Reflector(name, new Permutation(perm, _alphabet));
+                return new Reflector(name, new Permutation(pm, _alphabet));
             }
         } catch (NoSuchElementException excp) {
-            throw error("inadequate rotor description");
+            throw error("inadequate rotor description, change");
         }
     }
 
@@ -176,35 +175,35 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        String[] set = settings.split(" ");
-        if (set.length - 1 < M.numRotors()) {
+        String[] sets = settings.split(" ");
+        if (sets.length - 1 < M.numRotors()) {
             throw new EnigmaException("Not enough arguments in the setting");
         }
-        String[] rotors = new String[M.numRotors()];
+        String[] new_rotors = new String[M.numRotors()];
         for (int i = 1; i < M.numRotors() + 1; i++) {
-            rotors[i - 1] = set[i];
+            new_rotors[i - 1] = sets[i];
         }
-        for (int i = 0; i < rotors.length - 1; i++) {
-            for (int j = i + 1; j < rotors.length; j++) {
-                if (rotors[i].equals(rotors[j])) {
+        for (int i = 0; i < new_rotors.length - 1; i++) {
+            for (int j = i + 1; j < new_rotors.length; j++) {
+                if (new_rotors[i].equals(new_rotors[j])) {
                     throw new EnigmaException("Rotor is repeated");
                 }
             }
         }
 
-        String steck = "";
-        int cycleTobeScanned = rotors.length + 2;
-        if (!(cycleTobeScanned >= set.length)) {
-            for (int i = rotors.length; i < set.length - 2; i++) {
-                steck = steck.concat(set[i + 2] + " ");
+        String emptystring = "";
+        int cycleTobeScanned = new_rotors.length + 2;
+        if (!(cycleTobeScanned >= sets.length)) {
+            for (int i = new_rotors.length; i < sets.length - 2; i++) {
+                emptystring = emptystring.concat(sets[i + 2] + " ");
             }
         }
-        M.insertRotors(rotors);
+        M.insertRotors(new_rotors);
         if (!M.getRotors()[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
         }
-        M.setRotors(set[M.numRotors() + 1]);
-        M.setPlugboard(new Permutation(steck, _alphabet));
+        M.setRotors(sets[M.numRotors() + 1]);
+        M.setPlugboard(new Permutation(emptystring, _alphabet));
     }
 
 
@@ -244,7 +243,7 @@ public final class Main {
     private PrintStream _output;
 
     /** Temp string which is set to next value of _config. */
-    private String temp;
+    private String temporary;
 
     /** Name of the current rotor. */
     private String name;
@@ -256,7 +255,7 @@ public final class Main {
     private ArrayList<Rotor> _allTheRotors = new ArrayList<>();
 
     /** Instance variable. */
-    private String perm;
+    private String pm;
 
 
 }
