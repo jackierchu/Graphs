@@ -223,14 +223,26 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        for (int i = 0; i < msg.length(); i += 5) {
-            int cap = msg.length() - i;
-            if (cap <= 5) {
-                _output.println(msg.substring(i, i + cap));
-            } else {
-                _output.print(msg.substring(i, i + 5) + " ");
+        String output = "";
+        if (msg.length() < 5) {
+            _output.println(msg);
+        } else if (msg.length() == 5) {
+            _output.println(msg + " ");
+        } else {
+            int start = 0;
+            while (start + 5 < msg.length()){
+                output += msg.substring(start, start + 5) + " ";
+                start += 5;
             }
+            output += msg.substring(start);
+            output += " ";
+            if (output.length() % 6 != 0){
+                output = output.trim();
+            }
+            _output.println(output);
         }
+
+
     }
 
     /** Alphabet used in this machine. */
