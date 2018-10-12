@@ -96,12 +96,14 @@ public class MachineTest {
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
         machine.setRotors("AXLE");
-        machine.setPlugboard(new Permutation("(HQ) (EX) (IP) (TR) (BY)", UPPER));
+        machine.setPlugboard(new Permutation("(HQ) "
+                + "(EX) (IP) (TR) (BY)", UPPER));
         assertEquals("Wrong convert", "QVPQ", machine.convert("FROM"));
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
         machine.setRotors("AXLE");
-        machine.setPlugboard(new Permutation("(HQ) (EX) (IP) (TR) (BY)", UPPER));
+        machine.setPlugboard(new Permutation("(HQ) "
+                + "(EX) (IP) (TR) (BY)", UPPER));
         assertEquals("Wrong convert", "FROM", machine.convert("QVPQ"));
     }
 
@@ -150,7 +152,8 @@ public class MachineTest {
 
     }
 
-    /** Helper method to get the String representation of the current Rotor settings */
+    /** Helper method to get the String 
+     * representation of the current Rotor settings */
     private String getSetting(Alphabet alph, Rotor[] machineRotors) {
         String currSetting = "";
         for (Rotor r : machineRotors) {

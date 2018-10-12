@@ -51,8 +51,10 @@ class Rotor {
 
     /** Set setting() to POSN. */
     void set(int posn) {
-        _setting = mod(posn, 26);
+        _setting = mod(posn, alphasize);
     }
+    /** Alphabet number */
+    int alphasize = 26;
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {

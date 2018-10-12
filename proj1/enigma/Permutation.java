@@ -63,7 +63,10 @@ class Permutation {
         return p;
     }
 
-    /** Helper method for mod. */
+    /** Helper method for mod.
+     * @param p is the p.
+     * @param size is the size.
+     * @return returns the r. */
     int mod(int p, int size) {
         int r = p % size;
         if (r < 0) {

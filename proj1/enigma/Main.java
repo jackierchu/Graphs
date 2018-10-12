@@ -57,7 +57,8 @@ public final class Main {
         }
     }
 
-    /** Return a Scanner reading from the file named NAME. */
+    /** Return a Scanner reading from the file named NAME.
+     * @param names is the name */
     private Scanner getInput(String names) {
         try {
             return new Scanner(new File(names));
@@ -66,7 +67,8 @@ public final class Main {
         }
     }
 
-    /** Return a PrintStream writing to the file named NAME. */
+    /** Return a PrintStream writing to the file named NAME.
+     * @param names is the name */
     private PrintStream getOutput(String names) {
         try {
             return new PrintStream(new File(names));
@@ -112,11 +114,13 @@ public final class Main {
         try {
 
             String alpha = _config.next();
-            if (alpha.contains("(") || alpha.contains(")") || alpha.contains("*")) {
+            if (alpha.contains("(") || alpha.contains(")")
+                    || alpha.contains("*")) {
                 throw new EnigmaException("Incorrect config format");
             }
             if (alpha.matches("[A-Z]-[A-Z]")) {
-                _alphabet = new CharacterRange(alpha.charAt(0), alpha.charAt(2));
+                _alphabet = new CharacterRange
+                        (alpha.charAt(0), alpha.charAt(2));
             } else {
                 _alphabet = new ExtendAlphabetEC(alpha);
             }
@@ -172,9 +176,9 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         String[] set = settings.split(" ");
-            if (set.length - 1 < M.numRotors()) {
-                throw new EnigmaException("Not enough arguments in the setting");
-            }
+        if (set.length - 1 < M.numRotors()) {
+            throw new EnigmaException("Not enough arguments in the setting");
+        }
 
             String[] rotors = new String[M.numRotors()];
             for (int i = 1; i < M.numRotors() + 1; i++) {

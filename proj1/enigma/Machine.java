@@ -130,7 +130,8 @@ class Machine {
     String convert(String msg) {
         String result = "";
         for (int i = 0; i < msg.length(); i++) {
-            char converted = _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
+            char converted = _alphabet.
+                    toChar(convert(_alphabet.toInt(msg.charAt(i))));
             result += converted;
         }
         return result;

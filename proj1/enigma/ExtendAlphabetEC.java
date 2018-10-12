@@ -8,7 +8,7 @@ package enigma;
 public class ExtendAlphabetEC extends Alphabet {
 
     /** Additional string variable. */
-    String _chars;
+    private String _chars;
 
     /** A new alphabet that contains chars.  Character number #j has index
      *  J that is numbered from 0. Characters cannot be duplicated.
@@ -32,7 +32,7 @@ public class ExtendAlphabetEC extends Alphabet {
         return false;
     }
 
-    /** Returns the character number INDEX within the alphabet */
+    /** Returns the character number INDEX within the alphabet. */
     char toChar(int index) {
         if (index < 0 || index >= size()) {
             throw new EnigmaException("character index is out of range");
