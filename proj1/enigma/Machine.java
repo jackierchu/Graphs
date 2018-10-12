@@ -92,7 +92,7 @@ class Machine {
         }
 
         int i = _rotors.length - 1;
-        while ( i >= 0) {
+        while (i >= 0) {
             Rotor increment = _rotors[i];
             insertion = increment.convertForward(insertion);
             i--;

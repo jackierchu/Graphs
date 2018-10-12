@@ -187,7 +187,7 @@ public final class Main {
             i++;
         }
         i = 0;
-        while( i < newStringRotors.length - 1) {
+        while (i < newStringRotors.length - 1) {
             int j = i + 1;
             while (j < newStringRotors.length) {
                 if (newStringRotors[i].equals(newStringRotors[j])) {
