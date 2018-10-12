@@ -76,24 +76,25 @@ class Rotor {
         }
     }
 
-    /**
-     * Set setting() to character CPOSN.
+    /** Create mod function.
+     * @param a integer
+     * @param size size
+     * @return x function
      */
-    void set(char cposn) {
-        _setting = alphabet().toInt(cposn);
-    }
 
-    /**
-     * Return the value of P mod the input SIZE.
-     *
-     * @param a integer size
-     */
-    int mod(int a, int size) {
+    private int mod(int a, int size) {
         int x = a % size;
         if (x < 0) {
             x += size;
         }
         return x;
+    }
+
+    /**
+     * Set setting() to character CPOSN.
+     */
+    void set(char cposn) {
+        _setting = alphabet().toInt(cposn);
     }
 
     /**
