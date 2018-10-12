@@ -200,7 +200,7 @@ public final class Main {
             }
         }
         M.insertRotors(rotors);
-        if (!M._rotors[0].reflecting()) {
+        if (!M.getRotors()[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
         }
         M.setRotors(set[M.numRotors() + 1]);

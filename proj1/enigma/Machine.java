@@ -144,9 +144,13 @@ class Machine {
     /** Added instance variable. */
     private int _pawls;
     /** Added instance variable. */
-    Rotor[] _rotors;
+    private Rotor[] _rotors;
     /** Added instance variable. */
     private Permutation _plugboard;
     /** Added instance variable. */
     private Object[] _allRotors;
+
+    public Rotor[] getRotors() {
+        return _rotors;
+    }
 }

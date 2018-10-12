@@ -60,8 +60,8 @@ public class MachineTest {
         rotors.add(movingrotor4);
         setMachine(UPPER, 5, 3, rotors);
         machine.insertRotors(insert);
-        assertEquals("Incorrect rotor at 0", rotors.get(0), machine._rotors[0]);
-        assertEquals("Incorrect rotor at 4", rotors.get(2), machine._rotors[4]);
+        assertEquals("Incorrect rotor at 0", rotors.get(0), machine.getRotors()[0]);
+        assertEquals("Incorrect rotor at 4", rotors.get(2), machine.getRotors()[4]);
     }
 
     @Test
@@ -76,13 +76,13 @@ public class MachineTest {
         machine.insertRotors(insert);
         machine.setRotors("AXLE");
         assertEquals("Incorrect setting at Rotor 1",
-                0, machine._rotors[1].setting());
+                0, machine.getRotors()[1].setting());
         assertEquals("Incorrect setting at Rotor 2",
-                23, machine._rotors[2].setting());
+                23, machine.getRotors()[2].setting());
         assertEquals("Incorrect setting at Rotor 3",
-                11, machine._rotors[3].setting());
+                11, machine.getRotors()[3].setting());
         assertEquals("Incorrect setting at Rotor 4",
-                4, machine._rotors[4].setting());
+                4, machine.getRotors()[4].setting());
     }
 
     @Test
