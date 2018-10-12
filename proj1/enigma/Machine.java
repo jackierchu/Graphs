@@ -45,10 +45,14 @@ class Machine {
         }
     }
 
-    void insertRotor(String rotor, int rotor_idx){
-        for(int i = 0; i < _allRotors.length; i++){
+    /** Helper method created.
+     * @param rotor rotor
+     * @param rotorIdx rotorIdx
+     */
+    void insertRotor(String rotor, int rotorIdx) {
+        for (int i = 0; i < _allRotors.length; i++) {
             if ((rotor).equals((((Rotor) _allRotors[i]).name()))) {
-                _rotors[rotor_idx] = (Rotor) _allRotors[i];
+                _rotors[rotorIdx] = (Rotor) _allRotors[i];
             }
         }
     }
@@ -114,7 +118,7 @@ class Machine {
         ArrayList<Rotor> newRotors = new ArrayList<>();
         int idx = numRotors() - numPawls();
 
-        while(idx < numRotors()){
+        while (idx < numRotors()) {
             Rotor currentOne = _rotors[idx];
             Rotor left = _rotors[idx - 1];
             if (idx == (numRotors() - 1)) {
@@ -133,7 +137,7 @@ class Machine {
         }
 
         idx = 0;
-        while(idx < newRotors.size()) {
+        while (idx < newRotors.size()) {
             Rotor newer = newRotors.get(idx);
             newer.advance();
             idx++;

@@ -85,25 +85,25 @@ public final class Main {
         String nextLiner = _input.nextLine();
 
         while (_input.hasNext()) {
-            String setstring = nextLiner;
-            if (!setstring.contains("*")) {
+            if (!nextLiner.contains("*")) {
                 throw new EnigmaException("The incorrect setting format");
             }
-            setUp(enigma, setstring);
+            setUp(enigma, nextLiner);
             nextLiner = (_input.nextLine()).toUpperCase();
             while (!(nextLiner.contains("*"))) {
-                String endResult = enigma.convert
-                        (nextLiner.replaceAll(" ", ""));
-                if (endResult.length() == 0) {
-                    _output.println();
-                } else {
+                String temp = nextLiner.replaceAll(" ", "");
+                String endResult = enigma.convert(temp);
+                if (endResult.length() != 0) {
                     printMessageLine(endResult);
                     _output.println();
-                }
-                if (!_input.hasNextLine()) {
-                    nextLiner = "*";
                 } else {
+                    _output.println();
+                }
+
+                if (_input.hasNextLine()) {
                     nextLiner = (_input.nextLine()).toUpperCase();
+                } else {
+                    nextLiner = "*";
                 }
             }
         }
@@ -114,27 +114,26 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
-
             String alphastring = _config.next();
             Character charzero = alphastring.charAt(0);
             Character chartwo = alphastring.charAt(2);
+
             if (alphastring.contains("(") || alphastring.contains(")")
                     || alphastring.contains("*")) {
                 throw new EnigmaException("Incorrect config format");
             }
-            if (alphastring.matches("[A-Z]-[A-Z]")) {
-                _alphabet = new CharacterRange(charzero, chartwo);
-            } else {
+            if (!alphastring.matches("[A-Z]-[A-Z]")) {
                 _alphabet = new ExtendAlphabetEC(alphastring);
+            } else {
+                _alphabet = new CharacterRange(charzero, chartwo);
             }
 
             int numRotors = _config.nextInt();
+
             if (!_config.hasNextInt()) {
                 throw new EnigmaException("Incorrect configuration format");
             }
-            if (!_config.hasNextInt()) {
-                throw new EnigmaException("Incorrect configuration format");
-            }
+
             int pawls = _config.nextInt();
             temporary = (_config.next()).toUpperCase();
             while (_config.hasNext()) {
@@ -160,13 +159,13 @@ public final class Main {
             if (!_config.hasNext()) {
                 pm = pm.concat(temporary + " ");
             }
+            Permutation permutation = new Permutation(pm, _alphabet);
             if (notches.charAt(0) == 'M') {
-                return new MovingRotor(name, new Permutation(pm, _alphabet),
-                        notches.substring(1));
+                return new MovingRotor(name, permutation, notches.substring(1));
             } else if (notches.charAt(0) == 'N') {
-                return new FixedRotor(name, new Permutation(pm, _alphabet));
+                return new FixedRotor(name, permutation);
             } else {
-                return new Reflector(name, new Permutation(pm, _alphabet));
+                return new Reflector(name, permutation);
             }
         } catch (NoSuchElementException excp) {
             throw error("inadequate rotor description, change");
@@ -182,22 +181,28 @@ public final class Main {
             throw new EnigmaException("Not enough arguments in the setting");
         }
         String[] newStringRotors = new String[M.numRotors()];
-        for (int i = 1; i < M.numRotors() + 1; i++) {
+        int i = 1;
+        while (i < M.numRotors() + 1) {
             newStringRotors[i - 1] = sets[i];
+            i++;
         }
-        for (int i = 0; i < newStringRotors.length - 1; i++) {
-            for (int j = i + 1; j < newStringRotors.length; j++) {
+        i = 0;
+        while( i < newStringRotors.length - 1) {
+            int j = i + 1;
+            while (j < newStringRotors.length) {
                 if (newStringRotors[i].equals(newStringRotors[j])) {
                     throw new EnigmaException("Rotor is repeated");
                 }
+                j++;
             }
+            i++;
         }
 
         String emptystring = "";
         int cycleTobeScanned = newStringRotors.length + 2;
-        if (!(cycleTobeScanned >= sets.length)) {
-            for (int i = newStringRotors.length; i < sets.length - 2; i++) {
-                emptystring = emptystring.concat(sets[i + 2] + " ");
+        if (cycleTobeScanned < sets.length) {
+            for (int x = newStringRotors.length; x < sets.length - 2; x++) {
+                emptystring = emptystring.concat(sets[x + 2] + " ");
             }
         }
         M.insertRotors(newStringRotors);
@@ -205,9 +210,9 @@ public final class Main {
             throw new EnigmaException("First Rotor should be reflector");
         }
         M.setRotors(sets[M.numRotors() + 1]);
-        M.setPlugboard(new Permutation(emptystring, _alphabet));
+        Permutation permutation = new Permutation(emptystring, _alphabet);
+        M.setPlugboard(permutation);
     }
-
 
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
