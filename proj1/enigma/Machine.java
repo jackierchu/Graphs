@@ -148,7 +148,8 @@ class Machine {
     /** Added instance variable. */
     private Object[] _allRotors;
 
-    /** Getter method for Rotors. */
+    /** Getter method for Rotors.
+     * @return returns the rotors*/
     public Rotor[] getRotors() {
         return _rotors;
     }
