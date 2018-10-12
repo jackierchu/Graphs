@@ -148,12 +148,10 @@ public class MachineTest {
         mach.convert('a');
         assertEquals("AACD", getSetting(ac, machineRotors));
 
-
-
     }
 
-    /** Helper method to get the String 
-     * representation of the current Rotor settings */
+    /** Helper method to get the String representation of the current
+     * Rotor settings */
     private String getSetting(Alphabet alph, Rotor[] machineRotors) {
         String currSetting = "";
         for (Rotor r : machineRotors) {

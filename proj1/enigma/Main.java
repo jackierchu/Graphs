@@ -119,8 +119,7 @@ public final class Main {
                 throw new EnigmaException("Incorrect config format");
             }
             if (alpha.matches("[A-Z]-[A-Z]")) {
-                _alphabet = new CharacterRange
-                        (alpha.charAt(0), alpha.charAt(2));
+                _alphabet = new CharacterRange(alpha.charAt(0), alpha.charAt(2));
             } else {
                 _alphabet = new ExtendAlphabetEC(alpha);
             }
@@ -179,33 +178,32 @@ public final class Main {
         if (set.length - 1 < M.numRotors()) {
             throw new EnigmaException("Not enough arguments in the setting");
         }
-
-            String[] rotors = new String[M.numRotors()];
-            for (int i = 1; i < M.numRotors() + 1; i++) {
-                rotors[i - 1] = set[i];
-            }
-            for (int i = 0; i < rotors.length - 1; i++) {
-                for (int j = i + 1; j < rotors.length; j++) {
-                    if (rotors[i].equals(rotors[j])) {
-                        throw new EnigmaException("Rotor is repeated");
-                    }
-                }
-            }
-
-            String steck = "";
-            int cycleTobeScanned = rotors.length + 2;
-            if (!(cycleTobeScanned >= set.length)) {
-                for (int i = rotors.length; i < set.length - 2; i++) {
-                    steck = steck.concat(set[i + 2] + " ");
-                }
-            }
-            M.insertRotors(rotors);
-            if (!M._rotors[0].reflecting()) {
-                throw new EnigmaException("First Rotor should be reflector");
-            }
-            M.setRotors(set[M.numRotors() + 1]);
-            M.setPlugboard(new Permutation(steck, _alphabet));
+        String[] rotors = new String[M.numRotors()];
+        for (int i = 1; i < M.numRotors() + 1; i++) {
+            rotors[i - 1] = set[i];
         }
+        for (int i = 0; i < rotors.length - 1; i++) {
+            for (int j = i + 1; j < rotors.length; j++) {
+                if (rotors[i].equals(rotors[j])) {
+                    throw new EnigmaException("Rotor is repeated");
+                }
+            }
+        }
+
+        String steck = "";
+        int cycleTobeScanned = rotors.length + 2;
+        if (!(cycleTobeScanned >= set.length)) {
+            for (int i = rotors.length; i < set.length - 2; i++) {
+                steck = steck.concat(set[i + 2] + " ");
+            }
+        }
+        M.insertRotors(rotors);
+        if (!M._rotors[0].reflecting()) {
+            throw new EnigmaException("First Rotor should be reflector");
+        }
+        M.setRotors(set[M.numRotors() + 1]);
+        M.setPlugboard(new Permutation(steck, _alphabet));
+    }
 
 
     /** Print MSG in groups of five (except that the last group may
@@ -218,19 +216,17 @@ public final class Main {
             _output.println(msg + " ");
         } else {
             int start = 0;
-            while (start + 5 < msg.length()){
+            while (start + 5 < msg.length()) {
                 output += msg.substring(start, start + 5) + " ";
                 start += 5;
             }
             output += msg.substring(start);
             output += " ";
-            if (output.length() % 6 != 0){
+            if (output.length() % 6 != 0) {
                 output = output.trim();
             }
             _output.println(output);
         }
-
-
     }
 
     /** Alphabet used in this machine. */
@@ -257,7 +253,7 @@ public final class Main {
     /** ArrayList containing all the available rotors. */
     private ArrayList<Rotor> _allTheRotors = new ArrayList<>();
 
-    /** Instance variable */
+    /** Instance variable. */
     private String perm;
 
 

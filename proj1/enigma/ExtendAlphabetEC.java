@@ -1,6 +1,7 @@
 package enigma;
 
-/** Alphabet consisting of encodable characters that provides a mapping from characters
+/** Alphabet consisting of encodable characters that
+ * provides a mapping from characters
  *  to and from indices into the alphabet.
  *  @author Jacqueline Chu
  */
