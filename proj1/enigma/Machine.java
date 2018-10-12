@@ -38,14 +38,18 @@ class Machine {
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
         for (int x = 0; x < rotors.length; x = x + 1) {
-            for (int y = 0; y < _allRotors.length; y = y + 1) {
-                if ((rotors[x]).equals((((Rotor) _allRotors[y]).name()))) {
-                    _rotors[x] = (Rotor) _allRotors[y];
-                }
-            }
+            insertRotor(rotors[x], x);
         }
         if (_rotors.length != rotors.length) {
             throw new EnigmaException("Rotor incorrect length and name");
+        }
+    }
+
+    void insertRotor(String rotor, int rotor_idx){
+        for(int i = 0; i < _allRotors.length; i++){
+            if ((rotor).equals((((Rotor) _allRotors[i]).name()))) {
+                _rotors[rotor_idx] = (Rotor) _allRotors[i];
+            }
         }
     }
 
@@ -82,14 +86,21 @@ class Machine {
         if (_plugboard != null) {
             insertion = _plugboard.permute(insertion);
         }
-        for (int i = _rotors.length - 1; i >= 0; i = i - 1) {
+
+        int i = _rotors.length - 1;
+        while ( i >= 0) {
             Rotor increment = _rotors[i];
             insertion = increment.convertForward(insertion);
+            i--;
         }
-        for (int i = 1; i < _rotors.length; i += 1) {
+
+        i = 1;
+        while (i < _rotors.length) {
             Rotor decrement = _rotors[i];
             insertion = decrement.convertBackward(insertion);
+            i++;
         }
+
         if (_plugboard != null) {
             insertion = _plugboard.permute(insertion);
         }
@@ -101,25 +112,31 @@ class Machine {
 
     void iterateForward() {
         ArrayList<Rotor> newRotors = new ArrayList<>();
-        for (int x = numRotors() - numPawls(); x < numRotors(); x = x + 1) {
-            Rotor currentOne = _rotors[x];
-            Rotor left = _rotors[x - 1];
-            if (x == (numRotors() - 1)) {
+        int idx = numRotors() - numPawls();
+
+        while(idx < numRotors()){
+            Rotor currentOne = _rotors[idx];
+            Rotor left = _rotors[idx - 1];
+            if (idx == (numRotors() - 1)) {
                 newRotors.add(currentOne);
-            } else if (newRotors.contains(left) || _rotors[x + 1].atNotch()) {
+            } else if (newRotors.contains(left) || _rotors[idx + 1].atNotch()) {
                 if (!newRotors.contains(currentOne)) {
                     newRotors.add(currentOne);
                 }
-                if (_rotors[x].atNotch()) {
+                if (_rotors[idx].atNotch()) {
                     if (!newRotors.contains(left)) {
                         newRotors.add(left);
                     }
                 }
             }
+            idx++;
         }
-        for (int x = 0; x < newRotors.size(); x++) {
-            Rotor newer = newRotors.get(x);
+
+        idx = 0;
+        while(idx < newRotors.size()) {
+            Rotor newer = newRotors.get(idx);
             newer.advance();
+            idx++;
         }
     }
 
