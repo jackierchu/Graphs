@@ -119,7 +119,8 @@ public final class Main {
                 throw new EnigmaException("Incorrect config format");
             }
             if (alpha.matches("[A-Z]-[A-Z]")) {
-                _alphabet = new CharacterRange(alpha.charAt(0), alpha.charAt(2));
+                _alphabet = new CharacterRange
+                        (alpha.charAt(0), alpha.charAt(2));
             } else {
                 _alphabet = new ExtendAlphabetEC(alpha);
             }
