@@ -51,7 +51,7 @@ class Rotor {
 
     /** Set setting() to POSN. */
     void set(int posn) {
-        if(alphabet().contains(alphabet().toChar(posn))) {
+        if (alphabet().contains(alphabet().toChar(posn))) {
             _setting = posn;
         }
     }
@@ -61,7 +61,8 @@ class Rotor {
         _setting = alphabet().toInt(cposn);
     }
 
-    /** Return the value of P mod the input SIZE. */
+    /** Return the value of P mod the input SIZE.
+     * @param a integer size */
     int mod(int a, int size) {
         int x = a % size;
         if (x < 0) {

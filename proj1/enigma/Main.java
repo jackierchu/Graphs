@@ -82,26 +82,28 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine enigma = readConfig();
-        String next_line = _input.nextLine();
+        String nextLiner = _input.nextLine();
 
         while (_input.hasNext()) {
-            String setstring= next_line;
+            String setstring = nextLiner;
             if (!setstring.contains("*")) {
                 throw new EnigmaException("The incorrect setting format");
             }
             setUp(enigma, setstring);
-            next_line = (_input.nextLine()).toUpperCase();
-            while (!(next_line.contains("*"))) {
-                String end_result = enigma.convert(next_line.replaceAll(" ", ""));
-                if (end_result.length() == 0) {
+            nextLiner = (_input.nextLine()).toUpperCase();
+            while (!(nextLiner.contains("*"))) {
+                String endResult = enigma.convert
+                        (nextLiner.replaceAll(" ", ""));
+                if (endResult.length() == 0) {
                     _output.println();
                 } else {
-                    printMessageLine(end_result);
+                    printMessageLine(endResult);
+                    _output.println();
                 }
-                if (_input.hasNext() == false) {
-                    next_line = "*";
+                if (!_input.hasNextLine()) {
+                    nextLiner = "*";
                 } else {
-                    next_line = (_input.nextLine()).toUpperCase();
+                    nextLiner = (_input.nextLine()).toUpperCase();
                 }
             }
         }
@@ -179,26 +181,26 @@ public final class Main {
         if (sets.length - 1 < M.numRotors()) {
             throw new EnigmaException("Not enough arguments in the setting");
         }
-        String[] new_rotors = new String[M.numRotors()];
+        String[] newStringRotors = new String[M.numRotors()];
         for (int i = 1; i < M.numRotors() + 1; i++) {
-            new_rotors[i - 1] = sets[i];
+            newStringRotors[i - 1] = sets[i];
         }
-        for (int i = 0; i < new_rotors.length - 1; i++) {
-            for (int j = i + 1; j < new_rotors.length; j++) {
-                if (new_rotors[i].equals(new_rotors[j])) {
+        for (int i = 0; i < newStringRotors.length - 1; i++) {
+            for (int j = i + 1; j < newStringRotors.length; j++) {
+                if (newStringRotors[i].equals(newStringRotors[j])) {
                     throw new EnigmaException("Rotor is repeated");
                 }
             }
         }
 
         String emptystring = "";
-        int cycleTobeScanned = new_rotors.length + 2;
+        int cycleTobeScanned = newStringRotors.length + 2;
         if (!(cycleTobeScanned >= sets.length)) {
-            for (int i = new_rotors.length; i < sets.length - 2; i++) {
+            for (int i = newStringRotors.length; i < sets.length - 2; i++) {
                 emptystring = emptystring.concat(sets[i + 2] + " ");
             }
         }
-        M.insertRotors(new_rotors);
+        M.insertRotors(newStringRotors);
         if (!M.getRotors()[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
         }
@@ -210,23 +212,23 @@ public final class Main {
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        String output = "";
+        String outputString = "";
         if (msg.length() < 5) {
-            _output.println(msg);
+            _output.print(msg);
         } else if (msg.length() == 5) {
-            _output.println(msg + " ");
+            _output.print(msg + " ");
         } else {
-            int start = 0;
-            while (start + 5 < msg.length()) {
-                output += msg.substring(start, start + 5) + " ";
-                start += 5;
+            int starter = 0;
+            while (starter + 5 < msg.length()) {
+                outputString += msg.substring(starter, starter + 5) + " ";
+                starter += 5;
             }
-            output += msg.substring(start);
-            output += " ";
-            if (output.length() % 6 != 0) {
-                output = output.trim();
+            outputString += msg.substring(starter);
+            outputString += " ";
+            if (outputString.length() % 6 != 0) {
+                outputString = outputString.trim();
             }
-            _output.println(output);
+            _output.print(outputString);
         }
     }
 

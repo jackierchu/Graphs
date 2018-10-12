@@ -85,7 +85,7 @@ public class MachineTest {
                 newMachine.getRotors()[4]);
         assertEquals("Incorrect rotor at 0", rotorsArray.get(0),
                 newMachine.getRotors()[0]);
-}
+    }
 
     @Test
     public void testConvert() {

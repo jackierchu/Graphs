@@ -17,11 +17,6 @@ public class ExtendAlphabetEC extends Alphabet {
         _characters = chars;
     }
 
-    /** Returns the size of the alphabet. */
-    int size() {
-        return _characters.length();
-    }
-
     /** Returns true if C is within alphabet given. */
     boolean contains(char c) {
         for (int i = 0; i < size(); i = i + 1) {
@@ -32,7 +27,14 @@ public class ExtendAlphabetEC extends Alphabet {
         return false;
     }
 
-    /** Returns the character number within the alphabet given. */
+
+    /** Returns the size of the alphabet. */
+    int size() {
+        return _characters.length();
+    }
+
+    /** Returns the character number within the alphabet given.
+     * @param indexec inedxing through */
     char toChar(int indexec) {
         if (indexec < 0 || indexec >= size()) {
             throw new EnigmaException("character index is out of the range");

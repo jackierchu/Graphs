@@ -37,8 +37,8 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        for (int x = 0; x < rotors.length; x++) {
-            for (int y = 0; y < _allRotors.length; y++) {
+        for (int x = 0; x < rotors.length; x = x + 1) {
+            for (int y = 0; y < _allRotors.length; y = y + 1) {
                 if ((rotors[x]).equals((((Rotor) _allRotors[y]).name()))) {
                     _rotors[x] = (Rotor) _allRotors[y];
                 }
@@ -117,8 +117,9 @@ class Machine {
                 }
             }
         }
-        for (Rotor x: newRotors) {
-            x.advance();
+        for (int x = 0; x < newRotors.size(); x++) {
+            Rotor newer = newRotors.get(x);
+            newer.advance();
         }
     }
 
@@ -147,6 +148,7 @@ class Machine {
     /** Added instance variable. */
     private Object[] _allRotors;
 
+    /** Getter method for Rotors. */
     public Rotor[] getRotors() {
         return _rotors;
     }

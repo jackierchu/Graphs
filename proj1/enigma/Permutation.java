@@ -35,11 +35,11 @@ class Permutation {
 
     /** Return the value of P modulo the size of this permutation. */
     final int wrap(int p) {
-        int r = p % size();
-        if (r < 0) {
-            r += size();
+        int a = p % size();
+        if (a < 0) {
+            a = a + size();
         }
-        return r;
+        return a;
     }
 
     /** Returns the size of the alphabet I permute. FIXED */
@@ -51,11 +51,11 @@ class Permutation {
      *  alphabet size. */
     int permute(int p) {
         char a = _alphabet.toChar(wrap(p));
-        char newCharacter = '0';
         for (int x = 0; x < _cycles.length; x = x + 1) {
             for (int y = 0; y < _cycles[x].length(); y = y + 1) {
                 if (_cycles[x].charAt(y) == a) {
-                    newCharacter = _cycles[x].charAt((y + 1) % _cycles[x].length());
+                    char newCharacter = _cycles[x].charAt((y + 1)
+                            % _cycles[x].length());
                     return _alphabet.toInt(newCharacter);
                 }
             }
@@ -79,7 +79,7 @@ class Permutation {
      *  to  C modulo the alphabet size. */
     int invert(int c) {
         char a = _alphabet.toChar(wrap(c));
-        char newCharacters = '0';
+        char newCharacters;
         for (int x = 0; x < _cycles.length; x = x + 1) {
             for (int j = 0; j < _cycles[x].length(); j = j + 1) {
                 if (_cycles[x].charAt(j) == a) {
