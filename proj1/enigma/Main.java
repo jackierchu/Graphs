@@ -172,22 +172,6 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
         String[] set = settings.split(" ");
-        int startCount = 0;
-        for (int i = 0; i < set.length; i++) {
-            if (set[i].equals("*")) {
-                startCount++;
-            }
-        }
-        if (startCount > 1) {
-            throw new EnigmaException("More than one start error");
-        }
-
-        for (int i = 1; i < set.length; i++) {
-            if (!set[i].matches("[A-Z]+") && !set[i].matches("[(][A-Z]+[)]")) {
-                throw new EnigmaException("Not correct format");
-            }
-        }
-
             if (set.length - 1 < M.numRotors()) {
                 throw new EnigmaException("Not enough arguments in the setting");
             }
