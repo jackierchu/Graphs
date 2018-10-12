@@ -102,7 +102,8 @@ class Rotor {
      * according to my permutation.
      */
     int convertForward(int p) {
-        int resultingOne = _permutation.permute(p + _setting % size());
+        int permuteNum = p + _setting % size();
+        int resultingOne = _permutation.permute(permuteNum);
         return mod(resultingOne - _setting, size());
     }
 
@@ -111,7 +112,8 @@ class Rotor {
      * according to the inverse of my permutation.
      */
     int convertBackward(int e) {
-        int resultingTwo = _permutation.invert(e + _setting % size());
+        int invertNum = e + _setting % size();
+        int resultingTwo = _permutation.invert(invertNum);
         return mod(resultingTwo - _setting, size());
     }
 
