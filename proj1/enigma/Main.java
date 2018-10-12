@@ -114,13 +114,14 @@ public final class Main {
         try {
 
             String alpha = _config.next();
+            Character charzero = alpha.charAt(0);
+            Character chartwo = alpha.charAt(2);
             if (alpha.contains("(") || alpha.contains(")")
                     || alpha.contains("*")) {
                 throw new EnigmaException("Incorrect config format");
             }
             if (alpha.matches("[A-Z]-[A-Z]")) {
-                _alphabet = new CharacterRange
-                        (alpha.charAt(0), alpha.charAt(2));
+                _alphabet = new CharacterRange(charzero, chartwo);
             } else {
                 _alphabet = new ExtendAlphabetEC(alpha);
             }

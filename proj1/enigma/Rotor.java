@@ -51,10 +51,10 @@ class Rotor {
 
     /** Set setting() to POSN. */
     void set(int posn) {
-        _setting = mod(posn, alphasize);
+        if(alphabet().contains(alphabet().toChar(posn))) {
+            _setting = posn;
+        }
     }
-    /** Alphabet number. */
-    private int alphasize = 26;
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
