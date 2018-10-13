@@ -115,6 +115,9 @@ public final class Main {
     private Machine readConfig() {
         try {
             String alphastring = _config.next();
+            if(alphastring.length() < 2) {
+                throw new EnigmaException("Incorrect config format");
+            }
             Character charzero = alphastring.charAt(0);
             Character chartwo = alphastring.charAt(2);
 
