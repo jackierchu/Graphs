@@ -215,7 +215,12 @@ public final class Main {
         if (!M.getRotors()[0].reflecting()) {
             throw new EnigmaException("First Rotor should be reflector");
         }
-        M.setRotors(sets[M.numRotors() + 1]);
+        try {
+            M.setRotors(sets[M.numRotors() + 1]);
+        }
+        catch(ArrayIndexOutOfBoundsException ex){
+            throw new EnigmaException("Bad Rotor name");
+        }
         Permutation permutation = new Permutation(emptystring, _alphabet);
         M.setPlugboard(permutation);
     }
