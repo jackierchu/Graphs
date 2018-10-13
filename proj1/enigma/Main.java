@@ -115,7 +115,7 @@ public final class Main {
     private Machine readConfig() {
         try {
             String alphastring = _config.next();
-            if(alphastring.length() < 2) {
+            if (alphastring.length() < 2) {
                 throw new EnigmaException("Incorrect config format");
             }
             Character charzero = alphastring.charAt(0);
@@ -156,7 +156,7 @@ public final class Main {
             pm = "";
             temporary = (_config.next()).toUpperCase();
             while (_config.hasNext() && temporary.contains("(")) {
-                if(!temporary.contains(")")) {
+                if (!temporary.contains(")")) {
                     throw new EnigmaException("Incorrect config format");
                 }
                 pm = pm.concat(temporary + " ");
@@ -217,8 +217,7 @@ public final class Main {
         }
         try {
             M.setRotors(sets[M.numRotors() + 1]);
-        }
-        catch(ArrayIndexOutOfBoundsException ex){
+        } catch (ArrayIndexOutOfBoundsException ex) {
             throw new EnigmaException("Bad Rotor name");
         }
         Permutation permutation = new Permutation(emptystring, _alphabet);
