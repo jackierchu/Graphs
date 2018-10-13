@@ -156,6 +156,9 @@ public final class Main {
             pm = "";
             temporary = (_config.next()).toUpperCase();
             while (_config.hasNext() && temporary.contains("(")) {
+                if(!temporary.contains(")")) {
+                    throw new EnigmaException("Incorrect config format");
+                }
                 pm = pm.concat(temporary + " ");
                 temporary = (_config.next()).toUpperCase();
             }
