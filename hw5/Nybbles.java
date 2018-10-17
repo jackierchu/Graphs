@@ -22,23 +22,50 @@ public class Nybbles {
     /** Return the Kth integer in THIS array, numbering from 0.
      *  Assumes 0 <= K < N. */
     public int get(int k) {
-        if (k < 0 || k >= _n) {
+        if (k >= _n || k < 0) {
             throw new IndexOutOfBoundsException();
         } else {
-            return 0; // REPLACE WITH SOLUTION
+            int sub = k % 8;
+            int first = k / 8;
+
+            int subElement = _data[first] >>> sub * 4;
+            subElement = subElement & 0b1111;
+
+            if(subElement >= 8) {
+                return subElement - 16;
+            }
+            else {
+                return subElement;
+            }
         }
     }
 
     /** Set the Kth integer in THIS array to VAL.  Assumes
      *  0 <= K < N and -8 <= VAL < 8. */
     public void set(int k, int val) {
-        if (k < 0 || k >= _n) {
+        if (k >= _n || k < 0) {
             throw new IndexOutOfBoundsException();
-        } else if (val < (-MAX_VALUE - 1) || val > MAX_VALUE) {
+        } else if (val > MAX_VALUE || val < -MAX_VALUE - 1) {
             throw new IllegalArgumentException();
         } else {
-            _data[0] = 0; // REPLACE WITH SOLUTION
+            int sub = k % 8;
+            int first = k / 8;
+            _data[first] = reset(sub, _data[first]);
+            int newValue = val;
+            if(newValue < 0)
+                newValue = newValue + 16;
+            _data[first] = set(sub, _data[first], newValue);
         }
+    }
+    public int set(int position, int want, int value){
+        int newValue = value & 0b1111;
+        newValue <<= position * 4;
+        return want = newValue | want;
+    }
+
+    public int reset(int position, int want){
+        int unstore = ~(0b1111 << position * 4);
+        return want = unstore & want;
     }
 
     // DON'T CHANGE OR ADD TO THESE.

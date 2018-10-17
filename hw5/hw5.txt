@@ -3,25 +3,38 @@ HW #5.
 
 Question D.
 
-1.
+1. This function belongs to the category of Theta(n^2).
 
 
-2.
+2. Since Omega(log(x)) and O(log(x)) both consist of log(x), the category is then Theta(log(x)).
 
 
-3.
+3. f(N) is in Theta(N^2).
 
 
-4.
+4. The worst case runtime is Theta(N + M).
 
 
-5.
+5. The worst case runtime is Theta(nlogn).
 
 
-6.
+6. If we assume that p(x) is a polynomial in x with positive coefficients, we can prove that log p(x) is
+in O(logx) by using the change of base rule. Let the notation log_b(x) represent log base b of x. So, if
+log_b(x) is equal to log_10(x) / log_10(b), we know that log_b(x) can grow as fast as log_10(x) because in
+the change of base equation above, 1/log_10(b) is a constant. If we let 1/log_10(b) represent a constant K,
+then the change of base equation becomes log_b(x) = k(log_10(x)). Therefore, log_b(x) can grow as fast as
+log_10(x). And thus, it is proven that log_b(f(x)) is within Theta(log_10(f(x)).
+
+7. If p(x) is any polynomial in x with positive coefficients, we can prove that log p(x) is in O(logx) through the log
+of power rule where log(x^y) = ylog(x). Let the notation a1 represent a sub 1. If we let p(x) = a1(x^1) + a2(x^2) +
+...+ an(x^n), then log p(x) = 1(a1)logx + 2(a2)logx + ... n(an)logx. Thus, it is the summation from i=1 to i=n of i(ai) log(x).
+Then you can take out log(x) and put it as a constant outside of the summation which becomes log(x) times the
+summation from i=1 to i=n of i(ai). Thus, since p(x) is any polynomial with positive coefficients, the summation from i=1
+to i=n of i(ai) will essentially be greater than log(x). So, log p(x) is in O(logx).
 
 
-7.
+8. When f(n) is a positive, non-decreasing function, if f(n) that is rounded to the nearest integer will always be
+less than f(n). Let k represent a value. Then, for an example, if we multiply f(n) by a k whose value is equal to
+2, the upper bounded f(n) (upper bounded f(n) means the f(n) where x is rounded up to the nearest
+integer) must be bounded by f(n) and kf(n). Therefore, the upper bounded f(n) is in Of(n).
 
-
-8.
