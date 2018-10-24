@@ -3,6 +3,7 @@ package amazons;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import static java.lang.Math.abs;
 
 import static amazons.Utils.*;
 
@@ -41,10 +42,15 @@ final class Square {
         return _index;
     }
 
-    /** Return true iff THIS - TO is a valid queen move. */
+    /** Return true iff THIS - TO is a valid queen move. FIXED */
     boolean isQueenMove(Square to) {
-        return this != to
-            && true; // FIXME
+        if(this == to) {
+            return false;
+        }
+        if(this.row() != to.row() && this.col() != to.col() && abs(this.row() - to.row()) != abs(this.col() - to.col())) {
+            return false;
+        }
+        return true;
     }
 
     /** Definitions of direction for queenMove.  DIR[k] = (dcol, drow)
@@ -59,18 +65,53 @@ final class Square {
      *  DIR, or null if there is no such square.
      *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for west.
      *  If DIR has another value, return null. Thus, unless the result
-     *  is null the resulting square is a queen move away rom me. */
+     *  is null the resulting square is a queen move away rom me. FIXED */
     Square queenMove(int dir, int steps) {
-        return this;  // FIXME
+        if(dir < 0 || dir > 7) {
+            throw error("Wrong direction");
+        }
+        if(steps <= 0) {
+            throw error("Wrong steps");
+        }
+        int col = this.col() + steps * DIR[dir][0];
+        int row = this.row() + steps * DIR[dir][1];
+        return sq(col, row);
     }
 
     /** Return the direction (an int as defined in the documentation
-     *  for queenMove) of the queen move THIS-TO. */
+     *  for queenMove) of the queen move THIS-TO. FIXED */
     int direction(Square to) {
         assert isQueenMove(to);
-        return -1;  // FIXME
+        if (this.col() == to.col()) {
+            if (this.row() < to.row()) {
+                return 0;
+            } else {
+                return 4;
+            }
+        }
+        if (this.row() == to.row()) {
+            if (this.col() < to.col()) {
+                return 2;
+            } else {
+                return 6;
+            }
+        }
+        if (this.col() > to.col()) {
+            if (this.row() < to.row()) {
+                return 7;
+            } else {
+                return 5;
+            }
+        }
+        if (this.col() < to.col()) {
+            if (this.row() < to.row()) {
+                return 1;
+            } else {
+                return 3;
+            }
+        }
+        return -1;
     }
-
     @Override
     public String toString() {
         return _str;
@@ -86,7 +127,8 @@ final class Square {
         if (!exists(row, col)) {
             throw error("row or column out of bounds");
         }
-        return sq(0);  // FIXME
+        int index = col * 10 + row;
+        return sq(index);
     }
 
     /** Return the (unique) Square denoting the position with index INDEX. */
@@ -95,17 +137,28 @@ final class Square {
     }
 
     /** Return the (unique) Square denoting the position COL ROW, where
-     *  COL ROW is the standard text format for a square (e.g., a4). */
+     *  COL ROW is the standard text format for a square (e.g., a4). FIXED */
     static Square sq(String col, String row) {
-        return null; // FIXME
+        if(col.length() != 1 || row.length() != 1) {
+            throw error("row or column out of bounds");
+        }
+        char char_col = col.charAt(0);
+        char char_row = row.charAt(0);
+        int num_col = char_col - 'a';
+        int num_row = Character.getNumericValue(char_row) - 1;
+        return sq(num_col, num_row);
     }
 
     /** Return the (unique) Square denoting the position in POSN, in the
      *  standard text format for a square (e.g. a4). POSN must be a
-     *  valid square designation. */
+     *  valid square designation. FIXED */
     static Square sq(String posn) {
         assert posn.matches(SQ);
-        return sq(0);  // FIXME
+        char char_col = posn.charAt(0);
+        char char_row = posn.charAt(1);
+        int num_col = char_col - 'a';
+        int num_row = Character.getNumericValue(char_row) - 1;
+        return sq(num_col, num_row);
     }
 
     /** Return an iterator over all Squares. */
@@ -113,12 +166,15 @@ final class Square {
         return SQUARE_LIST.iterator();
     }
 
-    /** Return the Square with index INDEX. */
+    /** Return the Square with index INDEX. FIXED */
     private Square(int index) {
+        if(index < 0 && index > 99) {
+            throw error("index out of bounds");
+        }
         _index = index;
-        _row = 0;  // FIXME
-        _col = 0;  // FIXME
-        _str = String.format("a1");  // FIXME
+        _row = index % 10;
+        _col = index / 10;
+        _str = String.format("%c%d", (char)('a' + _col) , _row + 1);
     }
 
     /** The cache of all created squares, by index. */

@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.Formatter;
 import java.util.Stack;
 import java.util.NoSuchElementException;
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 import static amazons.Piece.*;
 import static amazons.Move.mv;
@@ -53,24 +55,31 @@ class Board {
     /** Return the number of moves (that have not been undone) for this
      *  board. */
     int numMoves() {
-        return 0;  // FIXME
+        return _numMoves;
     }
 
     /** Return the winner in the current position, or null if the game is
      *  not yet finished. */
     Piece winner() {
-        return null;  // FIXME
+        if(_winner == EMPTY){
+            return null;
+        }
+        else {
+            return _winner;
+        }
     }
 
     /** Return the contents the square at S. */
     final Piece get(Square s) {
-        return null;  // FIXME
+        int row = s.row();
+        int col = s.col();
+        return get(col, row);
     }
 
     /** Return the contents of the square at (COL, ROW), where
      *  0 <= COL, ROW < 9. */
     final Piece get(int col, int row) {
-        return null; // FIXME
+        return board[col][row];
     }
 
     /** Return the contents of the square at COL ROW. */
@@ -80,12 +89,13 @@ class Board {
 
     /** Set square S to P. */
     final void put(Piece p, Square s) {
-        // FIXME
+        put(p, s.col(),s.row());
     }
 
-    /** Set square (COL, ROW) to P. */
+    /** Set square (COL, ROW) to P. FIXED. */
     final void put(Piece p, int col, int row) {
-        // FIXME
+        board[col][row] = p;
+        /** TO DO: Check whether p win this game after this put. */
         _winner = EMPTY;
     }
 
@@ -100,46 +110,84 @@ class Board {
      *  squares along it, other than FROM and ASEMPTY, must be
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
-        return false; // FIXME
+        if(asEmpty == null) {
+            if(!isLegal(from)) {
+                return false;
+            }
+            if(!isLegal(from,to)) {
+                return false;
+            }
+
+            int dir = from.direction(to);
+            int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
+            for(int i = 1; i <= steps; i++) {
+                Square temp = from.queenMove(dir, i);
+                if(board[temp.col()][temp.row()] != EMPTY) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if(isUnblockedMove(asEmpty, from, null)) {
+                if(asEmpty == to) {
+                    return true;
+                }
+                else{
+                    return isUnblockedMove(from, to,null);
+                }
+            }
+            return false;
+        }
     }
 
     /** Return true iff FROM is a valid starting square for a move. */
     boolean isLegal(Square from) {
-        return true;  // FIXME
+        int col = from.col();
+        int row = from.row();
+        Piece current = turn();
+        return board[col][row] == current;
     }
 
     /** Return true iff FROM-TO is a valid first part of move, ignoring
      *  spear throwing. */
     boolean isLegal(Square from, Square to) {
-        return true;  // FIXME
+        return isUnblockedMove(from, to, null);
     }
 
     /** Return true iff FROM-TO(SPEAR) is a legal move in the current
      *  position. */
     boolean isLegal(Square from, Square to, Square spear) {
-        return true;  // FIXME
-
+        return isUnblockedMove(from, to, spear);
     }
 
     /** Return true iff MOVE is a legal move in the current
      *  position. */
     boolean isLegal(Move move) {
-        return false;  // FIXME
+        return isLegal(move.from(), move.to(), move.spear());
     }
 
     /** Move FROM-TO(SPEAR), assuming this is a legal move. */
     void makeMove(Square from, Square to, Square spear) {
-        // FIXME
+        board[from.col()][from.row()] = EMPTY;
+        board[to.col()][to.row()] = this.turn();
+        board[spear.col()][spear.row()] = SPEAR;
     }
 
     /** Move according to MOVE, assuming it is a legal move. */
     void makeMove(Move move) {
-        // FIXME
+        _moveHistory.push(move);
+        makeMove(move.from(),move.to(),move.spear());
     }
 
     /** Undo one move.  Has no effect on the initial board. */
     void undo() {
-        // FIXME
+        if(_moveHistory.empty()) return;
+        Move move = _moveHistory.peek();
+        board[move.from().col()][move.from().row()] = this.turn();
+        board[move.to().col()][move.to().row()] = EMPTY;
+        board[move.spear().col()][move.spear().row()] = EMPTY;
+        _moveHistory.pop();
     }
 
     /** Return an Iterator over the Squares that are reachable by an
@@ -184,13 +232,26 @@ class Board {
 
         @Override
         public Square next() {
-            return null;   // FIXME
+            if(hasNext()){
+                Square nextVisited = _from.queenMove(_dir, _steps);
+                if(nextVisited == null) {
+                    toNext();
+                    return  next();
+                }
+                if(!(nextVisited == _asEmpty || board[nextVisited.col()][nextVisited.row()] != EMPTY)) {
+                    toNext();
+                    return next();
+                }
+                return nextVisited;
+            }
+            return null;
         }
 
         /** Advance _dir and _steps, so that the next valid Square is
-         *  _steps steps in direction _dir from _from. */
+         *  _steps steps in direction _dir from _from. FIXED */
         private void toNext() {
-            // FIXME
+            _steps = 1;
+            _dir ++;
         }
 
         /** Starting square. */
@@ -217,7 +278,7 @@ class Board {
 
         @Override
         public boolean hasNext() {
-            return false;  // FIXME
+            return _startingSquares.hasNext();
         }
 
         @Override
@@ -260,4 +321,11 @@ class Board {
     /** Cached value of winner on this board, or EMPTY if it has not been
      *  computed. */
     private Piece _winner;
+    /** Number of moves that have happened during the game */
+    private int _numMoves;
+    /** 2D array that have the pieces for every location that is on board */
+    private Piece [][] board;
+    /** Stack that holds the history of moves */
+    private Stack<Move> _moveHistory;
+
 }
