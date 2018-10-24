@@ -37,14 +37,41 @@ class Board {
 
     /** Copies MODEL into me. */
     void copy(Board model) {
-        // FIXME
+        _moveHistory = model.moveHistory();
+        _turn = model.turn();
+        _winner = model.winner();
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                board[i][j] = model.board[i][j];
+            }
+        }
     }
 
     /** Clears the board to the initial position. */
     void init() {
-        // FIXME
+        board = new Piece[SIZE][SIZE];
+        _moveHistory = new Stack<>();
         _turn = WHITE;
         _winner = EMPTY;
+
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                board[i][j] = EMPTY;
+            }
+        }
+        board[0][3] = WHITE;
+        board[3][0] = WHITE;
+        board[6][0] = WHITE;
+        board[9][3] = WHITE;
+        board[0][6] = BLACK;
+        board[3][9] = BLACK;
+        board[6][9] = BLACK;
+        board[9][6] = BLACK;
+    }
+
+    /** Return the moveHistory. */
+    Stack<Move> moveHistory() {
+        return _moveHistory;
     }
 
     /** Return the Piece whose move it is (WHITE or BLACK). */
@@ -55,7 +82,7 @@ class Board {
     /** Return the number of moves (that have not been undone) for this
      *  board. */
     int numMoves() {
-        return _numMoves;
+        return _moveHistory.size();
     }
 
     /** Return the winner in the current position, or null if the game is
@@ -236,7 +263,7 @@ class Board {
                 Square nextVisited = _from.queenMove(_dir, _steps);
                 if(nextVisited == null) {
                     toNext();
-                    return  next();
+                    return next();
                 }
                 if(!(nextVisited == _asEmpty || board[nextVisited.col()][nextVisited.row()] != EMPTY)) {
                     toNext();
@@ -283,14 +310,36 @@ class Board {
 
         @Override
         public Move next() {
-            return null;  // FIXME
+            if(!_spearThrows.hasNext()){
+                toNext();
+            }
+            Square spear = _spearThrows.next();
+            return mv(_start, _nextSquare, spear);
         }
 
         /** Advance so that the next valid Move is
          *  _start-_nextSquare(sp), where sp is the next value of
          *  _spearThrows. */
         private void toNext() {
-            // FIXME
+            if(!_pieceMoves.hasNext()){
+                while(_startingSquares.hasNext()){
+                    Square startSquare = _startingSquares.next();
+                    if(board[startSquare.col()][startSquare.row()] == _fromPiece){
+                        _start = startSquare;
+                        _hasNext = true;
+                        break;
+                    }
+                }
+
+                if(!_startingSquares.hasNext()){
+                    _hasNext = false;
+                }
+
+                _pieceMoves = new ReachableFromIterator(_start, null);
+            }
+
+            _nextSquare = _pieceMoves.next();
+            _spearThrows = new ReachableFromIterator(_nextSquare, _start);
         }
 
         /** Color of side whose moves we are iterating. */
@@ -305,6 +354,8 @@ class Board {
         private Iterator<Square> _pieceMoves;
         /** Remaining spear throws from _piece to consider. */
         private Iterator<Square> _spearThrows;
+        /** Has next variable. */
+        private boolean _hasNext;
     }
 
     @Override
