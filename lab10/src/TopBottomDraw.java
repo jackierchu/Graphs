@@ -14,8 +14,10 @@ class TopBottomDraw {
     /** Finds the best score, assuming our maximizer is going first.
      */
     public int findBestScore(int i, int j) {
-        if (i == j) {
-            return deck[i];
+        if (i == j && deck.length % 2 != 0) {
+            return deck[i]; }
+        if (i == j && deck.length % 2 == 0) {
+            return 0;
         } else if ((j - i) % 2 == (deck.length - 1) % 2) {
             return Math.max(findBestScore(i + 1, j) + deck[i], findBestScore(i, j - 1) + deck[j]);
         } else {
