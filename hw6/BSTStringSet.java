@@ -6,7 +6,7 @@ import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Jacqueline Chu
  */
 public class BSTStringSet implements SortedStringSet, Iterable<String> {
     /** Creates a new empty set. */
@@ -51,7 +51,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME
+        return new ImplementedIteration(low, high);
     }
 
     /** Return either the node in this BST that contains S, or, if
@@ -140,9 +140,42 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             }
         }
     }
+    /** Implemented Class */
+    private class ImplementedIteration implements Iterator<String> {
 
-    // ADD A CLASS, PERHAPS?
+        public ImplementedIteration(String Low, String High){
+            this.high = high;
+            this.low = low;
+            this.position = new Stack<Node>();
+            currentNode = root;
+        }
 
+        @Override
+        public boolean hasNext() {
+            return (currentNode != null && currentNode.s.compareTo(high) <= 0) || !position.isEmpty();
+        }
+
+        @Override
+        public String next() {
+            while(currentNode.s.compareTo(high) >= 0 && currentNode != null){
+                position.push(currentNode);
+                currentNode = currentNode.left;
+            }
+            Node result = position.pop();
+            currentNode = result.right;
+            return result.s;
+        }
+
+        /** String for the higher bound */
+        private String high;
+        /** String for low bound */
+        private String low;
+        /** Node to keep track of the current node */
+        private Node currentNode;
+        /** Stack to keep track of the position */
+        private Stack<Node> position;
+    }
     /** Root node of the tree. */
     private Node root;
+
 }
