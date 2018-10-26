@@ -16,27 +16,28 @@ class ECHashStringSet implements StringSet {
 
     @Override
     public void put(String string) {
-        if (string != null) {
-            if(LOAD_FACTOR_MAX < load()) {
-                change_size();
-            }
-            int index = storingHash(string.hashCode());
-            if(_cache[index] == null) {
-                _cache[index] = new LinkedList<String>();
-            }
-            _cache[index].add(string);
-            _size = _size + 1;
+        if(string == null){
+            return;
         }
+
+        if(load() > LOAD_FACTOR_MAX) {
+            change_size();
+        }
+
+        int index = storingHash(string.hashCode());
+
+        if(_cache[index] == null) {
+            _cache[index] = new LinkedList<String>();
+        }
+        _cache[index].add(string);
+        _size += 1;
     }
 
     @Override
     public boolean contains(String string) {
         if(string != null) {
             int value = storingHash(string.hashCode());
-            if(_cache[value] == null) {
-                return false;
-            }
-            else {
+            if(_cache[value] != null) {
                 return _cache[value].contains(string);
             }
         }
@@ -45,7 +46,20 @@ class ECHashStringSet implements StringSet {
 
     @Override
     public List<String> asList() {
-        return null;
+        if(_cache.length == 0){
+            return null;
+        }
+
+        List<String> result = new LinkedList<String>();
+        for(int i = 0; i < _cache.length; i++) {
+            if (_cache[i] != null) {
+                for (String item : _cache[i]) {
+                    result.add(item);
+                }
+            }
+        }
+
+        return result;
     }
 
     public int size() {
@@ -53,13 +67,16 @@ class ECHashStringSet implements StringSet {
     }
 
     private void change_size() {
-        LinkedList<String>[] before = _cache;
-        _cache = new LinkedList[2 * before.length];
+        LinkedList<String>[] old = _cache;
+        _cache = new LinkedList[2 * old.length];
         _size = 0;
-        for(LinkedList<String> list : before)
-            if(list != null)
-                for(String e : list)
-                    this.put(e);
+        for(int i = 0; i < old.length; i++) {
+            if (old[i] != null) {
+                for (String item : old[i]) {
+                    this.put(item);
+                }
+            }
+        }
     }
 
     private double load(){
@@ -68,8 +85,8 @@ class ECHashStringSet implements StringSet {
 
     private int storingHash(int hash) {
         int last = hash & 1;
-        int  newhash = (hash >>> 1) | last;
-        return newhash % _cache.length;
+        int  temphash = (hash >>> 1) | last;
+        return temphash % _cache.length;
     }
 
     /** Linked list to cache the strings*/
