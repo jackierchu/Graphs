@@ -361,6 +361,7 @@ class Board {
         Formatter boardFormatter = new Formatter();
         for(int row = SIZE - 1; row >= 0; row--){
             boardFormatter.format(" ");
+            boardFormatter.format(" ");
             for(int col = 0; col < SIZE; col++){
                 boardFormatter.format(" " + get(col, row).toString());
             }
