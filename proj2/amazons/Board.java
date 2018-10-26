@@ -160,7 +160,7 @@ class Board {
                 if(asEmpty == to) {
                     return true;
                 }
-                else{
+                else {
                     return isUnblockedMove(from, to,null);
                 }
             }
@@ -259,19 +259,17 @@ class Board {
 
         @Override
         public Square next() {
-            if(hasNext()){
-                Square nextVisited = _from.queenMove(_dir, _steps);
-                if(nextVisited == null) {
-                    toNext();
-                    return next();
-                }
-                if(!(nextVisited == _asEmpty || board[nextVisited.col()][nextVisited.row()] != EMPTY)) {
-                    toNext();
-                    return next();
-                }
-                return nextVisited;
+            Square nextVisited = _from.queenMove(_dir, _steps);
+            if(nextVisited == null) {
+                toNext();
+                return next();
             }
-            return null;
+
+            if(!(nextVisited == _asEmpty || board[nextVisited.col()][nextVisited.row()] != EMPTY) ){
+                toNext();
+                return next();
+            }
+            return nextVisited;
         }
 
         /** Advance _dir and _steps, so that the next valid Square is
@@ -360,7 +358,15 @@ class Board {
 
     @Override
     public String toString() {
-        return ""; // FIXME
+        Formatter boardFormatter = new Formatter();
+        for(int row = SIZE - 1; row >= 0; row--){
+            boardFormatter.format(" ");
+            for(int col = 0; col < SIZE; col++){
+                boardFormatter.format(" " + get(col, row).toString());
+            }
+            boardFormatter.format("\n");
+        }
+        return boardFormatter.toString();
     }
 
     /** An empty iterator for initialization. */

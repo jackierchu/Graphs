@@ -143,7 +143,7 @@ final class Controller {
         new Command("quit$", this::doQuit),
         new Command("seed\\s+(\\d+)$", this::doSeed),
         new Command("dump$", this::doDump),
-        // FIXME
+        new Command("new$", this::doNew)
     };
 
     /** A Matcher whose Pattern matches comments. */

@@ -29,11 +29,13 @@ class TextPlayer extends Player {
             String line = _controller.readLine();
             if (line == null) {
                 return "quit";
-            } else if (false) {  // FIXME
+            } else if (!Move.isGrammaticalMove(line) || mv(line) == null) {
                 _controller.reportError("Invalid move. "
-                                        + "Please try again.");
+                        + "Please try again.");
                 continue;
-            } else { // F(XME
+            } else {
+                Move move = mv(line);
+                board().makeMove(move);
                 return line;
             }
         }
