@@ -4,8 +4,13 @@ package amazons;
 // This file is a SUGGESTED skeleton.  NOTHING here or in any other source
 // file is sacred.  If any of it confuses you, throw it out and do it your way.
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import antlr.collections.Stack;
+
 import static java.lang.Math.*;
 
+import static amazons.Board.*;
 import static amazons.Piece.*;
 import static amazons.Utils.iterable;
 
@@ -70,29 +75,49 @@ class AI extends Player {
         if (depth == 0 || board.winner() != null) {
             return staticScore(board);
         }
+        else {
+            ArrayList<Move> moves = new ArrayList<>();
+            Iterator<Move> newMoves = board.legalMoves();
+            while(newMoves.hasNext()){
+                moves.add(newMoves.next());
+            }
 
-        // FIXME
-        return 0;
+            int alphascore = alpha;
+            int betascore = beta;
+            for (int i = 0; i < moves.size(); i += 1) {
+                if (sense == 1) {
+                    board.makeMove(moves.get(i));
+                    int best = findMove(board, depth - 1,
+                            false, -1, alphascore, betascore);
+                    if (best > alphascore) {
+                        alphascore = best;
+                        if (saveMove) {
+                            _lastFoundMove = moves.get(i);
+                        }
+                    }
+                    board.undo();
+                } else {
+                    board.makeMove(moves.get(i));
+                    int best = findMove(board, depth - 1,
+                            false, 1, alphascore, betascore);
+                    if (best < betascore) {
+                        betascore = best;
+                        if (saveMove) {
+                            _lastFoundMove = moves.get(i);
+                        }
+                    }
+                    board.undo();
+                }
+            }
+        }
+        return staticScore(board);
     }
 
     /** Return a heuristically determined maximum search depth
      *  based on characteristics of BOARD. */
     private int maxDepth(Board board) {
         int N = board.numMoves();
-        if (_myPiece == WHITE) {
-            if(N % 2 == 0) {
-                return 10 - (N/2);
-            } else {
-                return 10 - (N + 1)/2;
-            }
-        } else {
-            if(N % 2 == 0) {
-                return 10 - (N/2);
-            }
-            else {
-                return 10 - (N - 1)/2;
-            }
-        }
+        return 20 - N;
     }
 
 
@@ -105,9 +130,27 @@ class AI extends Player {
             return WINNING_VALUE;
         }
 
-        // FIXME
-        return 0;
+        int whiteNumMoves = numSideMoves(board, WHITE);
+        int blackNumMoves = numSideMoves(board, BLACK);
+
+        return whiteNumMoves - blackNumMoves;
     }
 
+    /** Implemented Helper method for number of side moves */
+    private int numSideMoves(Board board, Piece side){
+        ArrayList<Move> moves = new ArrayList<>();
+        for(int col = 0; col < board.SIZE; col++) {
+            for (int row = 0; row < board.SIZE; row++) {
+                if (board.get(col, row) == side) {
+                    Piece newPiece = board.get(col, row);
+                    Iterator<Move> newMoves = board.legalMoves(newPiece);
+                    while(newMoves.hasNext()){
+                        moves.add(newMoves.next());
+                    }
+                }
+            }
+        }
+        return moves.size();
+    }
 
 }
