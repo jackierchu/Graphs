@@ -5,6 +5,8 @@ import static amazons.Piece.*;
 import static amazons.Piece.WHITE;
 import static org.junit.Assert.*;
 import ucb.junit.textui;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 public class BoardTest {
     static final String INIT_BOARD_STATE =
@@ -76,10 +78,37 @@ public class BoardTest {
         Board newBoard = new Board();
         Square beginning = Square.sq(0, 3);
         Square end = Square.sq(5, 3);
-        Square newWhite = Square.sq(3, 0);
+        Square newWhite = Square.sq(5, 0);
         assertTrue(newBoard.isUnblockedMove(beginning, end, null));
         assertEquals(WHITE, newBoard.get(3, 0));
         assertFalse(newBoard.isUnblockedMove(beginning, newWhite, null));
+    }
+
+    @Test
+    public void isUnblockedMoveTestSecond() {
+        Board newBoard = new Board();
+        Square beginning = Square.sq(0, 5);
+        Square end = Square.sq(5, 5);
+        Square newWhite = Square.sq(5, 0);
+        assertTrue(newBoard.isUnblockedMove(beginning, end, null));
+        assertEquals(EMPTY, newBoard.get(5, 0));
+        assertTrue(newBoard.isUnblockedMove(beginning, newWhite, null));
+    }
+
+    @Test
+    public void reachableFromMoveTest() {
+        Board newBoard = new Board();
+        for (int i = 1; i < 9; i++) {
+            newBoard.put(SPEAR, 3, i);
+        }
+        Iterator<Square> newIterator = newBoard.reachableFrom(Square.sq(0, 3), null);
+        ArrayList<Square> newSquare = new ArrayList<>();
+        while(newIterator.hasNext()) {
+            Square newest = newIterator.next();
+            if (newest != null) {
+                System.out.println(newest);
+            }
+        }
     }
 
 }

@@ -138,10 +138,7 @@ class Board {
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
         if(asEmpty == null) {
-            if(!isLegal(from)) {
-                return false;
-            }
-            if(!isLegal(from,to)) {
+            if(!from.isQueenMove(to)) {
                 return false;
             }
 
@@ -259,17 +256,22 @@ class Board {
 
         @Override
         public Square next() {
-            Square nextVisited = _from.queenMove(_dir, _steps);
-            if(nextVisited == null) {
-                toNext();
-                return next();
-            }
+            if(hasNext()) {
+                Square nextVisited = _from.queenMove(_dir, _steps);
+                if (nextVisited == null) {
+                    toNext();
+                    return next();
+                }
 
-            if(!(nextVisited == _asEmpty || board[nextVisited.col()][nextVisited.row()] != EMPTY) ){
-                toNext();
-                return next();
+                if (nextVisited != _asEmpty && board[nextVisited.col()][nextVisited.row()] != EMPTY) {
+                    toNext();
+                    return next();
+                }
+
+                _steps++;
+                return nextVisited;
             }
-            return nextVisited;
+            return null;
         }
 
         /** Advance _dir and _steps, so that the next valid Square is
@@ -359,7 +361,7 @@ class Board {
     @Override
     public String toString() {
         Formatter boardFormatter = new Formatter();
-        for(int row = SIZE - 1; row >= 0; row--){
+        for(int row = SIZE - 1; row >= 0; row--) {
             boardFormatter.format(" ");
             boardFormatter.format(" ");
             for(int col = 0; col < SIZE; col++){

@@ -79,7 +79,20 @@ class AI extends Player {
      *  based on characteristics of BOARD. */
     private int maxDepth(Board board) {
         int N = board.numMoves();
-        return 2; // FIXME
+        if (_myPiece == WHITE) {
+            if(N % 2 == 0) {
+                return 10 - (N/2);
+            } else {
+                return 10 - (N + 1)/2;
+            }
+        } else {
+            if(N % 2 == 0) {
+                return 10 - (N/2);
+            }
+            else {
+                return 10 - (N - 1)/2;
+            }
+        }
     }
 
 

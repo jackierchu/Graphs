@@ -67,15 +67,21 @@ final class Square {
      *  If DIR has another value, return null. Thus, unless the result
      *  is null the resulting square is a queen move away rom me. FIXED */
     Square queenMove(int dir, int steps) {
-        if(dir < 0 || dir > 7) {
+        if(dir < 0 || dir > 7){
             throw error("Wrong direction");
         }
-        if(steps <= 0) {
+
+        if(steps <= 0){
             throw error("Wrong steps");
         }
+
         int col = this.col() + steps * DIR[dir][0];
         int row = this.row() + steps * DIR[dir][1];
-        return sq(col, row);
+        if(exists(col, row)){
+            return sq(col, row);
+        }
+
+        return null;
     }
 
     /** Return the direction (an int as defined in the documentation
