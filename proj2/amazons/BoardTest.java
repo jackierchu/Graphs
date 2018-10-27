@@ -111,7 +111,7 @@ public class BoardTest {
         }
     }
 
-    @Test
+//    @Test
     public void legalMoveTest() {
         Board newBoard = new Board();
 
