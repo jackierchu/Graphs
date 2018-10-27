@@ -95,7 +95,7 @@ public class BoardTest {
         assertTrue(newBoard.isUnblockedMove(beginning, newWhite, null));
     }
 
-    @Test
+
     public void reachableFromMoveTest() {
         Board newBoard = new Board();
         for (int i = 1; i < 9; i++) {
@@ -108,6 +108,25 @@ public class BoardTest {
             if (newest != null) {
                 System.out.println(newest);
             }
+        }
+    }
+
+    @Test
+    public void legalMoveTest() {
+        Board newBoard = new Board();
+
+        for (int i = 0; i < 10; i++) {
+            newBoard.put(SPEAR, 2, i);
+            newBoard.put(SPEAR, 7, i);
+        }
+        for (int j = 0; j < 10; j++) {
+            newBoard.put(SPEAR, j, 4);
+        }
+        System.out.println(newBoard.toString());
+        Iterator<Move> newMove = newBoard.legalMoves(WHITE);
+        while (newMove.hasNext()) {
+            Move current = newMove.next();
+            System.out.println(current.toString());
         }
     }
 
