@@ -1,8 +1,11 @@
 package amazons;
 
 import org.junit.Test;
+
+import static amazons.Move.mv;
 import static amazons.Piece.*;
 import static amazons.Piece.WHITE;
+import static amazons.Square.sq;
 import static org.junit.Assert.*;
 import ucb.junit.textui;
 import java.util.Iterator;
@@ -111,7 +114,7 @@ public class BoardTest {
         }
     }
 
-//    @Test
+    @Test
     public void legalMoveTest() {
         Board newBoard = new Board();
 
@@ -119,15 +122,34 @@ public class BoardTest {
             newBoard.put(SPEAR, 2, i);
             newBoard.put(SPEAR, 7, i);
         }
+
         for (int j = 0; j < 10; j++) {
             newBoard.put(SPEAR, j, 4);
         }
+
         System.out.println(newBoard.toString());
         Iterator<Move> newMove = newBoard.legalMoves(WHITE);
         while (newMove.hasNext()) {
             Move current = newMove.next();
-            System.out.println(current.toString());
+            if(current != null) {
+                System.out.println(current.toString());
+            }
         }
+    }
+
+    @Test
+    public void testUndo() {
+        Board b0 = new Board();
+        Board b1 = new Board(b0);
+        Move firstMove = mv(sq("a4"), sq("b3"), sq("d5"));
+        b0.makeMove(firstMove);
+        Board b2 = new Board(b0);
+        b2.undo();
+
+        assertEquals(b2.toString(), b1.toString());
+        assertEquals((long)b1.numMoves(), (long)b2.numMoves());
+        b2.makeMove(firstMove);
+        assertEquals(b2.toString(), b0.toString());
     }
 
 }

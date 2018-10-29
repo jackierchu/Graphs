@@ -40,6 +40,7 @@ class Board {
         _moveHistory = model.moveHistory();
         _turn = model.turn();
         _winner = model.winner();
+        board = new Piece[SIZE][SIZE];
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
                 board[i][j] = model.board[i][j];
@@ -314,7 +315,12 @@ class Board {
                 toNext();
             }
             Square spear = _spearThrows.next();
-            return mv(_start, _nextSquare, spear);
+            if(spear != null) {
+                return mv(_start, _nextSquare, spear);
+            }
+            else {
+                return null;
+            }
         }
 
         /** Advance so that the next valid Move is
@@ -339,7 +345,9 @@ class Board {
             }
 
             _nextSquare = _pieceMoves.next();
-            _spearThrows = new ReachableFromIterator(_nextSquare, _start);
+            if(_nextSquare != null) {
+                _spearThrows = new ReachableFromIterator(_nextSquare, _start);
+            }
         }
 
         /** Color of side whose moves we are iterating. */

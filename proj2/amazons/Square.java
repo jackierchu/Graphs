@@ -68,11 +68,11 @@ final class Square {
      *  is null the resulting square is a queen move away rom me. FIXED */
     Square queenMove(int dir, int steps) {
         if(dir < 0 || dir > 7){
-            throw error("Wrong direction");
+            return null;
         }
 
         if(steps <= 0){
-            throw error("Wrong steps");
+            return null;
         }
 
         int col = this.col() + steps * DIR[dir][0];
@@ -145,13 +145,12 @@ final class Square {
     /** Return the (unique) Square denoting the position COL ROW, where
      *  COL ROW is the standard text format for a square (e.g., a4). FIXED */
     static Square sq(String col, String row) {
-        if(col.length() != 1 || row.length() != 1) {
+        if(col.length() > 1 || row.length() > 1){
             throw error("row or column out of bounds");
         }
-        char char_col = col.charAt(0);
-        char char_row = row.charAt(0);
-        int num_col = char_col - 'a';
-        int num_row = Character.getNumericValue(char_row) - 1;
+
+        int num_col = col.charAt(0) - 'a';
+        int num_row = Integer.valueOf(row) - 1;
         return sq(num_col, num_row);
     }
 
@@ -162,9 +161,8 @@ final class Square {
         assert posn.matches(SQ);
         char char_col = posn.charAt(0);
         char char_row = posn.charAt(1);
-        int num_col = char_col - 'a';
-        int num_row = Character.getNumericValue(char_row) - 1;
-        return sq(num_col, num_row);
+        int index = Character.getNumericValue(char_row) - 1 + (char_col - 'a') * 10;
+        return sq(index);
     }
 
     /** Return an iterator over all Squares. */

@@ -79,7 +79,10 @@ class AI extends Player {
             ArrayList<Move> moves = new ArrayList<>();
             Iterator<Move> newMoves = board.legalMoves();
             while(newMoves.hasNext()){
-                moves.add(newMoves.next());
+                Move current = newMoves.next();
+                if(current != null) {
+                    moves.add(current);
+                }
             }
 
             int alphascore = alpha;
@@ -145,7 +148,10 @@ class AI extends Player {
                     Piece newPiece = board.get(col, row);
                     Iterator<Move> newMoves = board.legalMoves(newPiece);
                     while(newMoves.hasNext()){
-                        moves.add(newMoves.next());
+                        Move current = newMoves.next();
+                        if(current != null) {
+                            moves.add(newMoves.next());
+                        }
                     }
                 }
             }
