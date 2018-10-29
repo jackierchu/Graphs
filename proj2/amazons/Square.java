@@ -15,7 +15,7 @@ import static amazons.Utils.*;
  *  position, you can freely use the cheap == operator (rather than the
  *  .equals method) to compare Squares, and the program does not waste time
  *  creating the same square over and over again.
- *  @author
+ *  @author Jacqueline Chu
  */
 final class Square {
 
