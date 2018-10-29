@@ -152,14 +152,12 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         @Override
         public boolean hasNext() {
-            if(currentNode != null && currentNode.s.compareTo(high) <= 0) {
+            if(currentNode != null && high != null && currentNode.s != null && currentNode.s.compareTo(high) <= 0) {
                 return true;
             }
-
             if(!position.isEmpty()){
                 return true;
             }
-
             return false;
         }
 
