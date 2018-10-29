@@ -105,7 +105,7 @@ class Board {
     }
 
     /** Return the contents of the square at (COL, ROW), where
-     *  0 <= COL, ROW < 9. */
+     *  0 <= COL, ROW <= 9. */
     final Piece get(int col, int row) {
         return board[col][row];
     }
