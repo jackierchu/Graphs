@@ -165,7 +165,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         @Override
         public String next() {
-            while(currentNode != null && currentNode.s.compareTo(high) >= 0){
+            while(currentNode != null && currentNode.s.compareTo(low) >= 0){
                 position.push(currentNode);
                 currentNode = currentNode.left;
             }
