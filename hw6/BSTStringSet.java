@@ -51,7 +51,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new ImplementedIteration(low, high);
+        return new BSTIteration(root, low, high);
     }
 
     /** Return either the node in this BST that contains S, or, if
@@ -141,38 +141,55 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
         }
     }
     /** Implemented Class */
-    private class ImplementedIteration implements Iterator<String> {
 
-        public ImplementedIteration(String Low, String High){
+    private static class BSTIteration extends BSTIterator {
+
+        private String high;
+        private String low;
+        private Stack<Node> position;
+
+        BSTIteration(Node node, String low, String high) {
+            super(node);
             this.high = high;
             this.low = low;
-            this.position = new Stack<Node>();
-            currentNode = root;
+            this.position = new Stack<>();
+            addTree(node);
         }
 
         @Override
         public boolean hasNext() {
-            if(currentNode != null && high != null && currentNode.s != null && currentNode.s.compareTo(high) <= 0) {
-                return true;
-            }
-            if(!position.isEmpty()){
-                return true;
-            }
-            return false;
+            return !position.empty() && position.peek().s.compareTo(high) < 0;
         }
 
         @Override
         public String next() {
-            while(currentNode != null && currentNode.s.compareTo(low) >= 0){
-                position.push(currentNode);
-                currentNode = currentNode.left;
+            while (!position.empty() && position.peek().s.compareTo(low) < 0) {
+                Node newNode = position.pop();
+                addTree(newNode.right);
             }
 
-            Node result = position.peek();
-            currentNode = result.right;
-            position.pop();
+            Node result = position.pop();
+            addTree(result.right);
             return result.s;
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Add the relevant subtrees of the tree rooted at NODE.
+         */
+        private void addTree(Node node) {
+            while (node != null) {
+                position.push(node);
+                node = node.left;
+            }
+
+        }
+    }
+
 
         /** String for the higher bound */
         private String high;
@@ -182,7 +199,6 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
         private Node currentNode;
         /** Stack to keep track of the position */
         private Stack<Node> position;
-    }
     /** Root node of the tree. */
     private Node root;
 
