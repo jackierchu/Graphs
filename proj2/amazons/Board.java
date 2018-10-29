@@ -17,7 +17,7 @@ import static amazons.Move.mv;
 
 
 /** The state of an Amazons Game.
- *  @author
+ *  @author Jacqueline Chu
  */
 class Board {
 

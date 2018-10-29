@@ -13,7 +13,7 @@ import static amazons.Square.sq;
 import static amazons.Square.SQ;
 
 /** The input/output and GUI controller for play of Amazons.
- *  @author */
+ *  @author Jacqueline Chu */
 final class Controller {
 
     /** Controller for one or more games of Amazons, using

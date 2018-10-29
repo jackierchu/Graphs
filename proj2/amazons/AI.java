@@ -15,7 +15,7 @@ import static amazons.Piece.*;
 import static amazons.Utils.iterable;
 
 /** A Player that automatically generates moves.
- *  @author
+ *  @author Jacqueline Chu
  */
 class AI extends Player {
 
