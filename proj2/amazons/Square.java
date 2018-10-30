@@ -63,7 +63,6 @@ final class Square {
 
     /** Return the Square that is STEPS>0 squares away from me in direction
      *  DIR, or null if there is no such square.
-<<<<<<< HEAD
      *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for west.
      *  If DIR has another value, return null. Thus, unless the result
      *  is null the resulting square is a queen move away rom me. FIXED */
