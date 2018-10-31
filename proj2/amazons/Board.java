@@ -248,25 +248,32 @@ class Board {
             _steps = 0;
             _asEmpty = asEmpty;
             toNext();
+            _next = getNext();
         }
 
         @Override
         public boolean hasNext() {
-            return _dir < 8;
+            return _dir < 8 && _next != null;
         }
 
         @Override
         public Square next() {
-            if(hasNext()) {
+            Square temp = _next;
+            _next = getNext();
+            return temp;
+        }
+
+        private Square getNext() {
+            if(_dir < 8) {
                 Square nextVisited = _from.queenMove(_dir, _steps);
                 if (nextVisited == null) {
                     toNext();
-                    return next();
+                    return getNext();
                 }
 
                 if (nextVisited != _asEmpty && board[nextVisited.col()][nextVisited.row()] != EMPTY) {
                     toNext();
-                    return next();
+                    return getNext();
                 }
 
                 _steps++;
@@ -290,6 +297,8 @@ class Board {
         private int _steps;
         /** Square treated as empty. */
         private Square _asEmpty;
+        /** next square. */
+        private Square _next;
     }
 
     /** An iterator used by legalMoves. */
