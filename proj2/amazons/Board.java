@@ -311,6 +311,7 @@ class Board {
             _pieceMoves = NO_SQUARES;
             _fromPiece = side;
             toNext();
+            _nextMove = getNextMove();
         }
 
         @Override
@@ -320,6 +321,12 @@ class Board {
 
         @Override
         public Move next() {
+            Move temp = _nextMove;
+            _nextMove = getNextMove();
+            return temp;
+        }
+
+        private Move getNextMove() {
             if(!_spearThrows.hasNext()){
                 toNext();
             }
@@ -373,6 +380,8 @@ class Board {
         private Iterator<Square> _spearThrows;
         /** Has next variable. */
         private boolean _hasNext;
+        /** Next Move */
+        private Move _nextMove;
     }
 
     @Override
