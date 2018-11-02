@@ -1,9 +1,13 @@
 package amazons;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+
 import static amazons.Move.mv;
 
 /** A Player that takes input as text commands from the standard input.
- *  @author
+ *  @author Jacqueline Chu
  */
 class TextPlayer extends Player {
 
@@ -23,20 +27,32 @@ class TextPlayer extends Player {
         return new TextPlayer(piece, controller);
     }
 
+    private final HashSet<String> commands = new HashSet<>(Arrays.asList(
+            "new","dump","seed","manual","auto"
+    ));
+
+    private final String regex1 = "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+    private final String regex2 = "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
+
     @Override
     String myMove() {
         while (true) {
             String line = _controller.readLine();
+            System.out.println("Currently reading Command " + line);
             if (line == null) {
                 return "quit";
-            } else if (!Move.isGrammaticalMove(line) || mv(line) == null) {
-                _controller.reportError("Invalid move. "
-                        + "Please try again.");
-                continue;
-            } else {
-                Move move = mv(line);
-                board().makeMove(move);
-                return line;
+            }
+            else {
+                Scanner scanner = new Scanner(line);
+                String cmd = scanner.next();
+                if(commands.contains(cmd) || line.matches(regex1) || line.matches(regex2)){
+                    return line.trim();
+                }
+                else {
+                    _controller.reportError("Invalid move. "
+                            + "Please try again.");
+                    continue;
+                }
             }
         }
     }
