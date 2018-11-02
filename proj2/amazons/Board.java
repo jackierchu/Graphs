@@ -147,6 +147,9 @@ class Board {
             int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
             for(int i = 1; i <= steps; i++) {
                 Square temp = from.queenMove(dir, i);
+                if (temp == null) {
+                    return false;
+                }
                 if(board[temp.col()][temp.row()] != EMPTY) {
                     return false;
                 }

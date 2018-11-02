@@ -73,10 +73,10 @@ final class Controller {
     /** Play Amazons. */
     void doManual(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn == "white"){
+        if(turn.equals("white")){
             _white = _manualPlayerTemplate.create(WHITE, this);
         }
-        else if(turn == "black"){
+        else if(turn.equals("black")) {
             _black = _manualPlayerTemplate.create(BLACK, this);
         }
         else{
@@ -87,10 +87,10 @@ final class Controller {
     /** Play Amazons. */
     void doAuto(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn == "white"){
+        if(turn.equals("white")){
             _white = _autoPlayerTemplate.create(WHITE, this);
         }
-        else if(turn == "black"){
+        else if(turn.equals("black")){
             _black = _autoPlayerTemplate.create(BLACK, this);
         }
         else{
