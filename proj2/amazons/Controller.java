@@ -70,6 +70,69 @@ final class Controller {
         }
     }
 
+    /** Play Amazons. */
+    void doManual(Matcher matcher) {
+        String turn = matcher.group(1);
+        if(turn == "white"){
+            _white = _manualPlayerTemplate.create(WHITE, this);
+        }
+        else if(turn == "black"){
+            _black = _manualPlayerTemplate.create(BLACK, this);
+        }
+        else{
+            throw new IllegalArgumentException("No other player than white or black");
+        }
+    }
+
+    /** Play Amazons. */
+    void doAuto(Matcher matcher) {
+        String turn = matcher.group(1);
+        if(turn == "white"){
+            _white = _autoPlayerTemplate.create(WHITE, this);
+        }
+        else if(turn == "black"){
+            _black = _autoPlayerTemplate.create(BLACK, this);
+        }
+        else{
+            throw new IllegalArgumentException("No other player than white or black");
+        }
+    }
+
+    /** Play Amazons. */
+    void doMove(Matcher matcher) {
+        try {
+            Move m = Move.mv(matcher.group());
+            System.out.println("The Move is " + _board.isLegal(m) + " legal");
+            if(_board.isLegal(m)){
+                _board.makeMove(m);
+                System.out.printf("===\n%s===\n", _board);
+            }
+        }
+        catch (Exception ex){
+            throw error("Incorrect Move");
+        }
+    }
+
+    void doMoveAlt(Matcher matcher){
+        String pattern = matcher.group();
+        Scanner scanner = new Scanner(pattern);
+        String from = scanner.next();
+        String to = scanner.next();
+        String spear = scanner.next();
+        try{
+            Move m= Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
+            System.out.println("The move is " + _board.isLegal(m) + " legal");
+
+            if(_board.isLegal(m)){
+                _board.makeMove(m);
+                System.out.printf("===\n%s===\n", _board);
+            }
+        }
+        catch (Exception ex){
+            throw error("Incorrect Move");
+        }
+    }
+
     /** Return the current board.  The value returned should not be
      *  modified by the caller. */
     Board board() {
@@ -137,13 +200,20 @@ final class Controller {
         protected final Consumer<Matcher> _processor;
     }
 
+    private final String regex1 = "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+    private final String regex2 = "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
+
     /** A list of Commands describing the valid textual commands to the
      *  Amazons program and the methods to process them. */
     private Command[] _commands = {
         new Command("quit$", this::doQuit),
         new Command("seed\\s+(\\d+)$", this::doSeed),
         new Command("dump$", this::doDump),
-        new Command("new$", this::doNew)
+        new Command("new$", this::doNew),
+        new Command(regex1, this::doMove),
+        new Command(regex2, this::doMoveAlt),
+        new Command("auto\\s+([a-z]+)$", this::doAuto),
+        new Command("manual\\s+([a-z]+)$", this::doManual)
     };
 
     /** A Matcher whose Pattern matches comments. */
