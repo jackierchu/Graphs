@@ -533,6 +533,44 @@ public class BoardTest {
         assertEquals((4 * 4 + 5) * 2 + 4 * 2, sizeTest.size());
     }
 
+    @Test
+    public void LegalMoveEdgeCaseTest() {
+        Board b = new Board();
+        b.put(SPEAR, 0, 2);
+        b.put(SPEAR, 0, 4);
+        b.put(SPEAR, 1, 3);
+        b.put(SPEAR, 1, 4);
+        b.put(SPEAR, 1, 2);
+        b.put(SPEAR, 2,0);
+        b.put(SPEAR, 4, 0);
+        b.put(SPEAR, 3, 1);
+        b.put(SPEAR, 5,0);
+        b.put(SPEAR, 2, 1);
+        b.put(SPEAR, 4, 1);
+        b.put(SPEAR, 5, 1);
+        b.put(SPEAR, 7, 1);
+        b.put(SPEAR, 7,0);
+
+        b.put(SPEAR, 6, 1);
+        b.put(SPEAR, 9, 2);
+        b.put(SPEAR, 9, 4);
+        b.put(SPEAR, 8, 3);
+        b.put(SPEAR, 8, 2);
+        b.put(SPEAR, 8, 4);
+
+        System.out.println(b.toString());
+        int i = 0;
+        Iterator<Move> thisOne = b.legalMoves(WHITE);
+        while (thisOne.hasNext()){
+            Move a = thisOne.next();
+            if (a != null) {
+                i += 1;
+            }
+        }
+        System.out.println(i);
+
+    }
+
 
 
 

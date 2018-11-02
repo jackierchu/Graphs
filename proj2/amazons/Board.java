@@ -333,6 +333,9 @@ class Board {
             if(!_spearThrows.hasNext()){
                 toNext();
             }
+            if(!_spearThrows.hasNext()) {
+                return null;
+            }
             Square spear = _spearThrows.next();
             if(spear != null) {
                 return mv(_start, _nextSquare, spear);
