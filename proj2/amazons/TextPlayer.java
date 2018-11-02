@@ -28,7 +28,7 @@ class TextPlayer extends Player {
     }
 
     private final HashSet<String> commands = new HashSet<>(Arrays.asList(
-            "new","dump","seed","manual","auto"
+            "new","dump","seed","manual","auto", "quit"
     ));
 
     private final String regex1 = "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";

@@ -495,6 +495,44 @@ public class BoardTest {
                     "j2-g5(e5)"
             ));
 
+    @Test
+    public void LegalMoveTest() {
+        Board b = new Board();
+        Iterator<Move> originalMove = b.legalMoves(WHITE);
+        for (int i = 0; i < 10; i ++) {
+            b.put(SPEAR, 2, i);
+            b.put(SPEAR, 7, i);
+        }
+        for (int j = 0; j < 10; j ++) {
+            b.put(SPEAR, j, 4);
+            b.put(SPEAR, j, 1);
+        }
+
+        Iterator<Move> thisOne = b.legalMoves(WHITE);
+
+        ArrayList<Move> sizeTest = new ArrayList<>();
+        while (thisOne.hasNext()) {
+            Move currMove = thisOne.next();
+            if (currMove != null) {
+                sizeTest.add(currMove);
+            }
+        }
+        assertEquals((3 * 3) * 2 + 4 * 2, sizeTest.size());
+        sizeTest.clear();
+
+        for(int i = 0; i < 10; i ++) {
+            b.put(SPEAR, i, 8);
+        }
+        Iterator<Move> anotherOne = b.legalMoves(BLACK);
+        while (anotherOne.hasNext()) {
+            Move currMove = anotherOne.next();
+            if (currMove != null) {
+                sizeTest.add(currMove);
+            }
+        }
+        assertEquals((4 * 4 + 5) * 2 + 4 * 2, sizeTest.size());
+    }
+
 
 
 

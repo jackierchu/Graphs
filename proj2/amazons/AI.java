@@ -109,16 +109,17 @@ class AI extends Player {
         }
         else {
             int bestSofarBeta = INFTY;
+
             for(Move m: moves){
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
                 bestSofarBeta = Math.min(res, bestSofarBeta);
                 if (bestSofarBeta < alpha) {
-                    if (saveMove) {
-                        _lastFoundMove = m;
-                    }
-                    return bestSofarBeta;
+                        if (saveMove) {
+                            _lastFoundMove = m;
+                        }
+                        return bestSofarBeta;
                 }
                 board.undo();
                 beta = Math.min(beta, bestSofarBeta);
