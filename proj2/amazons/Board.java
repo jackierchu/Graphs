@@ -206,6 +206,15 @@ class Board {
         board[from.col()][from.row()] = EMPTY;
         board[to.col()][to.row()] = this.turn();
         board[spear.col()][spear.row()] = SPEAR;
+        switchTurn();
+    }
+
+    void switchTurn() {
+        if (_turn == WHITE) {
+            _turn = BLACK;
+        } else {
+            _turn = WHITE;
+        }
     }
 
     /** Move according to MOVE, assuming it is a legal move. */
