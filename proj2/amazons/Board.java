@@ -21,8 +21,15 @@ import static amazons.Move.mv;
  */
 class Board {
 
+    int count = 0;
     /** The number of squares on a side of the board. */
     static final int SIZE = 10;
+
+    /** The unit move for a certain direction as specified in the Square class. */
+    static final int[][] dirToIterate = {
+            { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 },
+            { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 }
+    };
 
     /** Initializes a game board with SIZE squares on a side in the
      *  initial position. */
@@ -37,15 +44,18 @@ class Board {
 
     /** Copies MODEL into me. */
     void copy(Board model) {
-        _moveHistory = model.moveHistory();
-        _turn = model.turn();
-        _winner = model.winner();
-        board = new Piece[SIZE][SIZE];
+        if(model == this) return;
+
+        this._moveHistory = model._moveHistory;
+        this._turn = model._turn;
+        this._winner = model._winner;
+        Piece[][] newboard = new Piece[SIZE][SIZE];
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
-                board[i][j] = model.board[i][j];
+                newboard[i][j] = model.board[i][j];
             }
         }
+        this.board = newboard;
     }
 
     /** Clears the board to the initial position. */
@@ -89,12 +99,26 @@ class Board {
     /** Return the winner in the current position, or null if the game is
      *  not yet finished. */
     Piece winner() {
-        if(_winner == EMPTY){
-            return null;
+        String turnStr = _turn.toString();
+        int numofLegalMoves = 0;
+        Iterator<Move> itLegalMoves = legalMoves(_turn);
+        while (itLegalMoves.hasNext()){
+            if(itLegalMoves.next() != null) {
+                numofLegalMoves++;
+            }
         }
-        else {
-            return _winner;
+
+        if(numofLegalMoves == 0) {
+            System.out.println("Num of Legal Moves is 0");
+            if (turnStr.equals("W")) {
+                _winner = BLACK;
+                return _winner;
+            } else {
+                _winner = WHITE;
+                return _winner;
+            }
         }
+        return  null;
     }
 
     /** Return the contents the square at S. */
@@ -123,7 +147,6 @@ class Board {
     /** Set square (COL, ROW) to P. FIXED. */
     final void put(Piece p, int col, int row) {
         board[col][row] = p;
-        /** TO DO: Check whether p win this game after this put. */
         _winner = EMPTY;
     }
 
@@ -138,41 +161,56 @@ class Board {
      *  squares along it, other than FROM and ASEMPTY, must be
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
-            if(!from.isQueenMove(to)) {
+
+        if(!isLegal(from)) return false;
+        if(!from.isQueenMove(to)) return false;
+
+        int dir = from.direction(to);
+        if(dir == -1) return false;
+
+        int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
+        for(int i = 1; i <= steps; i++) {
+            Square temp = from.queenMove(dir, i);
+            if (temp == null) {
                 return false;
             }
-
-            int dir = from.direction(to);
-            int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
-            for(int i = 1; i <= steps; i++) {
-                Square temp = from.queenMove(dir, i);
-                if (temp == null) {
-                    return false;
-                }
-                if(board[temp.col()][temp.row()] != EMPTY) {
-                    if (asEmpty != null) {
-                        if (asEmpty != temp) {
-                            return false;
-                        }
-                    } else {
+            if(get(temp.col(), temp.row()) != EMPTY) {
+                if (asEmpty != null) {
+                    if (asEmpty != temp) {
                         return false;
                     }
-//                    return false;
+                } else {
+                    return false;
                 }
             }
-            return true;
         }
-//        else {
-//            if(isUnblockedMove(asEmpty, from, null)) {
-//                if(asEmpty == to) {
-//                    return true;
-//                }
-//                else {
-//                    return isUnblockedMove(from, to,null);
-//                }
-//            }
-//            return false;
-//        }
+        return true;
+    }
+
+    boolean isUnblockedBase (Square from, Square to, Square asEmpty) {
+        int direction = from.direction(to);
+        if (direction == -1) {
+            return false;
+        }
+
+        int[] unitMoves = dirToIterate[direction];
+        int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
+
+        for (int col = from.col() + unitMoves[0], row = from.row() + unitMoves[1], t = 0;
+             t < steps;
+             col += unitMoves[0], row += unitMoves[1], t += 1) {
+            if (get(col, row) != EMPTY) {
+                if (asEmpty != null){
+                    if (!(col == asEmpty.col() && row == asEmpty.row())) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 
     /** Return true iff FROM is a valid starting square for a move. */
@@ -180,7 +218,7 @@ class Board {
         int col = from.col();
         int row = from.row();
         Piece current = turn();
-        return board[col][row] == current;
+        return get(col, row) == current;
     }
 
     /** Return true iff FROM-TO is a valid first part of move, ignoring
@@ -198,14 +236,15 @@ class Board {
     /** Return true iff MOVE is a legal move in the current
      *  position. */
     boolean isLegal(Move move) {
-        return isLegal(move.from(), move.to(), move.spear());
+        return isLegal(move.from(), move.to(), null)
+                && isUnblockedBase(move.to(), move.spear(), move.from());
     }
 
     /** Move FROM-TO(SPEAR), assuming this is a legal move. */
     void makeMove(Square from, Square to, Square spear) {
-        board[from.col()][from.row()] = EMPTY;
-        board[to.col()][to.row()] = this.turn();
-        board[spear.col()][spear.row()] = SPEAR;
+        put(get(from.col(), from.row()), to.col(),to.row());
+        put(EMPTY, from.col(), from.row());
+        put(SPEAR, spear.col(), spear.row());
         switchTurn();
     }
 
@@ -228,9 +267,9 @@ class Board {
     void undo() {
         if(_moveHistory.empty()) return;
         Move move = _moveHistory.peek();
-        board[move.from().col()][move.from().row()] = this.turn();
-        board[move.to().col()][move.to().row()] = EMPTY;
-        board[move.spear().col()][move.spear().row()] = EMPTY;
+        put(get(move.to().col(),move.to().row()),move.from().col(), move.from().row());
+        put(EMPTY, move.to().col(), move.to().row());
+        put(EMPTY, move.spear().col(),move.spear().row());
         _moveHistory.pop();
     }
 
@@ -284,6 +323,9 @@ class Board {
 
         private Square getNext() {
             if(_dir < 8) {
+                if(_from == null){
+                    return null;
+                }
                 Square nextVisited = _from.queenMove(_dir, _steps);
                 if (nextVisited == null) {
                     toNext();
@@ -429,8 +471,6 @@ class Board {
     /** Cached value of winner on this board, or EMPTY if it has not been
      *  computed. */
     private Piece _winner;
-    /** Number of moves that have happened during the game */
-    private int _numMoves;
     /** 2D array that have the pieces for every location that is on board */
     private Piece [][] board;
     /** Stack that holds the history of moves */

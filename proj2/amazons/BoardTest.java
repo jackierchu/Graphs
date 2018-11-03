@@ -94,12 +94,12 @@ public class BoardTest {
     @Test
     public void isUnblockedMoveTestSecond() {
         Board newBoard = new Board();
-        Square beginning = Square.sq(0, 5);
-        Square end = Square.sq(5, 5);
-        Square newWhite = Square.sq(5, 0);
+        Square beginning = Square.sq(0, 3);
+        Square end = Square.sq(3, 3);
+        Square newWhite = Square.sq(3, 0);
         assertTrue(newBoard.isUnblockedMove(beginning, end, null));
         assertEquals(EMPTY, newBoard.get(5, 0));
-        assertTrue(newBoard.isUnblockedMove(beginning, newWhite, null));
+        assertFalse(newBoard.isUnblockedMove(beginning, newWhite, null));
     }
 
 

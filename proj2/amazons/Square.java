@@ -160,8 +160,8 @@ final class Square {
     static Square sq(String posn) {
         assert posn.matches(SQ);
         char char_col = posn.charAt(0);
-        char char_row = posn.charAt(1);
-        int index = Character.getNumericValue(char_row) - 1 + (char_col - 'a') * 10;
+        String sub = posn.substring(1);
+        int index =  Integer.valueOf(sub) - 1 + (char_col - 'a') * 10;
         return sq(index);
     }
 
