@@ -87,6 +87,7 @@ class AI extends Player {
 
         if(sense == 1){
             int bestSofarAlpha = -INFTY;
+            Move bestMove = moves.get(0);
             for(Move m: moves){
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
@@ -94,9 +95,8 @@ class AI extends Player {
                 bestSofarAlpha = Math.max(res, bestSofarAlpha);
                 if (bestSofarAlpha > beta) {
                     if (saveMove) {
-                        _lastFoundMove = m;
+                        bestMove = m;
                     }
-                    return bestSofarAlpha;
                 }
                 board.undo();
                 alpha = Math.max(alpha, bestSofarAlpha);
@@ -104,12 +104,13 @@ class AI extends Player {
                     break;
                 }
             }
+            _lastFoundMove = bestMove;
             System.out.println("bestSofarAlpha: " + bestSofarAlpha);
             return bestSofarAlpha;
         }
         else {
             int bestSofarBeta = INFTY;
-
+            Move bestMove = moves.get(0);
             for(Move m: moves){
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
@@ -117,9 +118,8 @@ class AI extends Player {
                 bestSofarBeta = Math.min(res, bestSofarBeta);
                 if (bestSofarBeta < alpha) {
                         if (saveMove) {
-                            _lastFoundMove = m;
+                            bestMove = m;
                         }
-                        return bestSofarBeta;
                 }
                 board.undo();
                 beta = Math.min(beta, bestSofarBeta);
@@ -127,6 +127,7 @@ class AI extends Player {
                     break;
                 }
             }
+            _lastFoundMove = bestMove;
             System.out.println("bestSofarBeta: " + bestSofarBeta);
             return bestSofarBeta;
         }
@@ -136,7 +137,10 @@ class AI extends Player {
      *  based on characteristics of BOARD. */
     private int maxDepth(Board board) {
         int N = board.numMoves();
-        return 20 - N;
+        if (N > 5) {
+            return 2;
+        }
+        return 1;
     }
 
 

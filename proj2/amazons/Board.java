@@ -138,7 +138,6 @@ class Board {
      *  squares along it, other than FROM and ASEMPTY, must be
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
-        if(asEmpty == null) {
             if(!from.isQueenMove(to)) {
                 return false;
             }
@@ -151,23 +150,30 @@ class Board {
                     return false;
                 }
                 if(board[temp.col()][temp.row()] != EMPTY) {
-                    return false;
+                    if (asEmpty != null) {
+                        if (asEmpty != temp) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+//                    return false;
                 }
             }
             return true;
         }
-        else {
-            if(isUnblockedMove(asEmpty, from, null)) {
-                if(asEmpty == to) {
-                    return true;
-                }
-                else {
-                    return isUnblockedMove(from, to,null);
-                }
-            }
-            return false;
-        }
-    }
+//        else {
+//            if(isUnblockedMove(asEmpty, from, null)) {
+//                if(asEmpty == to) {
+//                    return true;
+//                }
+//                else {
+//                    return isUnblockedMove(from, to,null);
+//                }
+//            }
+//            return false;
+//        }
+
 
     /** Return true iff FROM is a valid starting square for a move. */
     boolean isLegal(Square from) {

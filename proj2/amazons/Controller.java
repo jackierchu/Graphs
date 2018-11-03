@@ -54,6 +54,11 @@ final class Controller {
                     command = _black.myMove();
                 }
             } else {
+                if (_winner == BLACK) {
+                    System.out.println("* Black wins.");
+                } else {
+                    System.out.println("* White wins.");
+                }
                 command = _nonPlayer.myMove();
                 if (command == null) {
                     command = "quit";
