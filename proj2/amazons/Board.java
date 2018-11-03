@@ -209,6 +209,7 @@ class Board {
         switchTurn();
     }
 
+    /** Implemented Function */
     void switchTurn() {
         if (_turn == WHITE) {
             _turn = BLACK;
