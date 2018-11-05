@@ -26,7 +26,7 @@ class Board {
     static final int SIZE = 10;
 
     /** The unit move for a certain direction as specified in the Square class. */
-    static final int[][] dirToIterate = {
+    static final int[][] directionIterate = {
             { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 },
             { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 }
     };
@@ -194,7 +194,7 @@ class Board {
             return false;
         }
 
-        int[] unitMoves = dirToIterate[direction];
+        int[] unitMoves = directionIterate[direction];
         int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
 
         for (int col = from.col() + unitMoves[0], row = from.row() + unitMoves[1], t = 0;
