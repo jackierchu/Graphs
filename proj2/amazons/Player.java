@@ -3,7 +3,7 @@ package amazons;
 import static amazons.Utils.*;
 
 /** A generic Amazons Player.
- *  @author
+ *  @author Jacqueline Chu
  */
 abstract class Player {
 
