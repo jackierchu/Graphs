@@ -93,10 +93,8 @@ class AI extends Player {
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
                 bestSofarAlpha = Math.max(res, bestSofarAlpha);
-                if (bestSofarAlpha > beta) {
-                    if (saveMove) {
-                        bestMove = m;
-                    }
+                if (res > bestSofarAlpha) {
+                    bestMove = m;
                 }
                 board.undo();
                 alpha = Math.max(alpha, bestSofarAlpha);
@@ -105,7 +103,7 @@ class AI extends Player {
                 }
             }
             _lastFoundMove = bestMove;
-            System.out.println("bestSofarAlpha: " + bestSofarAlpha);
+//            System.out.println("bestSofarAlpha: " + bestSofarAlpha);
             return bestSofarAlpha;
         }
         else {
@@ -116,10 +114,8 @@ class AI extends Player {
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
                 bestSofarBeta = Math.min(res, bestSofarBeta);
-                if (bestSofarBeta < alpha) {
-                        if (saveMove) {
-                            bestMove = m;
-                        }
+                if (res < bestSofarBeta) {
+                    bestMove = m;
                 }
                 board.undo();
                 beta = Math.min(beta, bestSofarBeta);
@@ -128,7 +124,7 @@ class AI extends Player {
                 }
             }
             _lastFoundMove = bestMove;
-            System.out.println("bestSofarBeta: " + bestSofarBeta);
+//            System.out.println("bestSofarBeta: " + bestSofarBeta);
             return bestSofarBeta;
         }
     }

@@ -38,20 +38,21 @@ class TextPlayer extends Player {
     String myMove() {
         while (true) {
             String line = _controller.readLine();
-            System.out.println("Currently reading Command " + line);
             if (line == null) {
                 return "quit";
-            }
-            else {
+            } else if (line.startsWith("#")) {
+                continue;
+            } else {
                 Scanner scanner = new Scanner(line);
-                String cmd = scanner.next();
-                if(commands.contains(cmd) || line.matches(regex1) || line.matches(regex2)){
-                    return line.trim();
-                }
-                else {
-                    _controller.reportError("Invalid move. "
-                            + "Please try again.");
-                    continue;
+                if (scanner.hasNext()) {
+                    String cmd = scanner.next();
+                    if (commands.contains(cmd) || line.matches(regex1) || line.matches(regex2)) {
+                        return line.trim();
+                    } else {
+                        _controller.reportError("Invalid move. "
+                                + "Please try again.");
+                        continue;
+                    }
                 }
             }
         }

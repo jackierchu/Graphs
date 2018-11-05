@@ -1,6 +1,7 @@
 package amazons;
 
 import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -45,6 +46,7 @@ final class Controller {
         _white = _manualPlayerTemplate.create(WHITE, this);
         _black = _autoPlayerTemplate.create(BLACK, this);
         while (_playing) {
+            _winner = _board.winner();
             _view.update(_board);
             String command;
             if (_winner == null) {
@@ -107,10 +109,8 @@ final class Controller {
     void doMove(Matcher matcher) {
         try {
             Move m = Move.mv(matcher.group());
-            System.out.println("The Move is " + _board.isLegal(m) + " legal");
             if(_board.isLegal(m)){
                 _board.makeMove(m);
-                System.out.printf("===\n%s===\n", _board);
             }
         }
         catch (Exception ex){
@@ -126,11 +126,9 @@ final class Controller {
         String spear = scanner.next();
         try{
             Move m= Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
-            System.out.println("The move is " + _board.isLegal(m) + " legal");
 
             if(_board.isLegal(m)){
                 _board.makeMove(m);
-                System.out.printf("===\n%s===\n", _board);
             }
         }
         catch (Exception ex){

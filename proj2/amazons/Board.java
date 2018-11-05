@@ -109,7 +109,6 @@ class Board {
         }
 
         if(numofLegalMoves == 0) {
-            System.out.println("Num of Legal Moves is 0");
             if (turnStr.equals("W")) {
                 _winner = BLACK;
                 return _winner;
@@ -247,11 +246,11 @@ class Board {
         put(get(from.col(), from.row()), to.col(),to.row());
         put(EMPTY, from.col(), from.row());
         put(SPEAR, spear.col(), spear.row());
-        switchTurn();
+        switchMove();
     }
 
     /** Implemented Function */
-    void switchTurn() {
+    void switchMove() {
         if (_turn == WHITE) {
             _turn = BLACK;
         } else {
@@ -272,6 +271,7 @@ class Board {
         put(get(move.to().col(),move.to().row()),move.from().col(), move.from().row());
         put(EMPTY, move.to().col(), move.to().row());
         put(EMPTY, move.spear().col(),move.spear().row());
+        switchMove();
         _moveHistory.pop();
     }
 
@@ -415,7 +415,10 @@ class Board {
                     if(board[startSquare.col()][startSquare.row()] == _fromPiece){
                         _start = startSquare;
                         _hasNext = true;
-                        break;
+                        _pieceMoves = new ReachableFromIterator(_start, null);
+                        if (_pieceMoves.hasNext()) {
+                            break;
+                        }
                     }
                 }
 
