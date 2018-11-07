@@ -22,7 +22,7 @@ import static amazons.Move.mv;
 // GUI of the staff program.
 
 /** A widget that displays an Amazons game.
- *  @author
+ *  @author Jacqueline
  */
 class BoardWidget extends Pad {
 

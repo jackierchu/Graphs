@@ -1,7 +1,7 @@
 package amazons;
 
 /** The contents of a cell on the board.
- *  @author
+ *  @author Jacqueline Chu
  */
 enum Piece {
 

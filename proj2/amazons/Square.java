@@ -42,7 +42,7 @@ final class Square {
         return _index;
     }
 
-    /** Return true iff THIS - TO is a valid queen move. FIXED */
+    /** Return true iff THIS - TO is a valid queen move. */
     boolean isQueenMove(Square to) {
         if(this == to) {
             return false;
@@ -65,7 +65,7 @@ final class Square {
      *  DIR, or null if there is no such square.
      *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for west.
      *  If DIR has another value, return null. Thus, unless the result
-     *  is null the resulting square is a queen move away rom me. FIXED */
+     *  is null the resulting square is a queen move away rom me. */
     Square queenMove(int dir, int steps) {
         if(dir < 0 || dir > 7){
             return null;
@@ -142,7 +142,7 @@ final class Square {
     }
 
     /** Return the (unique) Square denoting the position COL ROW, where
-     *  COL ROW is the standard text format for a square (e.g., a4). FIXED */
+     *  COL ROW is the standard text format for a square (e.g., a4). */
     static Square sq(String col, String row) {
         if(col.length() > 1 || row.length() > 1){
             throw error("row or column out of bounds");
@@ -155,7 +155,7 @@ final class Square {
 
     /** Return the (unique) Square denoting the position in POSN, in the
      *  standard text format for a square (e.g. a4). POSN must be a
-     *  valid square designation. FIXED */
+     *  valid square designation. */
     static Square sq(String posn) {
         assert posn.matches(SQ);
         char char_col = posn.charAt(0);
@@ -169,7 +169,7 @@ final class Square {
         return SQUARE_LIST.iterator();
     }
 
-    /** Return the Square with index INDEX. FIXED */
+    /** Return the Square with index INDEX. */
     private Square(int index) {
         if(index < 0 && index > 99) {
             throw error("index out of bounds");

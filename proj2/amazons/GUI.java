@@ -14,7 +14,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 /** The GUI controller for an Amazons board and buttons.
- *  @author
+ *  @author Jacqueline Chu
  */
 class GUI extends TopLevel implements View, Reporter {
 

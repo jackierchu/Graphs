@@ -143,7 +143,7 @@ class Board {
         put(p, s.col(),s.row());
     }
 
-    /** Set square (COL, ROW) to P. FIXED. */
+    /** Set square (COL, ROW) to P. */
     final void put(Piece p, int col, int row) {
         board[col][row] = p;
         _winner = EMPTY;
@@ -346,7 +346,7 @@ class Board {
         }
 
         /** Advance _dir and _steps, so that the next valid Square is
-         *  _steps steps in direction _dir from _from. FIXED */
+         *  _steps steps in direction _dir from _from. */
         private void toNext() {
             _steps = 1;
             _dir ++;
