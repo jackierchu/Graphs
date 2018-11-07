@@ -33,7 +33,8 @@ class TextPlayer extends Player {
 
     private final String regex1 =
             "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
-    private final String regex2 = "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
+    private final String regex2 =
+            "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
 
     @Override
     String myMove() {
@@ -47,7 +48,8 @@ class TextPlayer extends Player {
                 Scanner scanner = new Scanner(line);
                 if (scanner.hasNext()) {
                     String cmd = scanner.next();
-                    if (commands.contains(cmd) || line.matches(regex1) || line.matches(regex2)) {
+                    if (commands.contains(cmd) || line.matches(regex1)
+                            || line.matches(regex2)) {
                         return line.trim();
                     } else {
                         _controller.reportError("Invalid move. "

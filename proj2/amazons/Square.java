@@ -48,7 +48,8 @@ final class Square {
             return false;
         }
         if(this.row() != to.row() && this.col() != to.col()
-                && abs(this.row() - to.row()) != abs(this.col() - to.col())) {
+                && abs(this.row() - to.row())
+                != abs(this.col() - to.col())) {
             return false;
         }
         return true;
@@ -125,7 +126,8 @@ final class Square {
 
     /** Return true iff COL ROW is a legal square. */
     static boolean exists(int col, int row) {
-        return row >= 0 && col >= 0 && row < Board.SIZE && col < Board.SIZE;
+        return row >= 0 && col >= 0
+                && row < Board.SIZE && col < Board.SIZE;
     }
 
     /** Return the (unique) Square denoting COL ROW. */
@@ -186,7 +188,8 @@ final class Square {
         new Square[Board.SIZE * Board.SIZE];
 
     /** SQUARES viewed as a List. */
-    private static final List<Square> SQUARE_LIST = Arrays.asList(SQUARES);
+    private static final List<Square> SQUARE_LIST =
+            Arrays.asList(SQUARES);
 
     static {
         for (int i = Board.SIZE * Board.SIZE - 1; i >= 0; i -= 1) {
@@ -197,7 +200,8 @@ final class Square {
     /** My index position. */
     private final int _index;
 
-    /** My row and column (redundant, since these are determined by _index). */
+    /** My row and column (redundant,
+     * since these are determined by _index). */
     private final int _row, _col;
 
     /** My String denotation. */

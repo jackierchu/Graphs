@@ -25,7 +25,8 @@ class Board {
     /** The number of squares on a side of the board. */
     static final int SIZE = 10;
 
-    /** The unit move for a certain direction as specified in the Square class. */
+    /** The unit move for a certain direction as
+     * specified in the Square class. */
     static final int[][] directionIterate = {
             { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 },
             { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 }
@@ -205,7 +206,8 @@ class Board {
              col += unitMoves[0], row += unitMoves[1], t += 1) {
             if (get(col, row) != EMPTY) {
                 if (asEmpty != null) {
-                    if (!(col == asEmpty.col() && row == asEmpty.row())) {
+                    if (!(col == asEmpty.col() && row ==
+                            asEmpty.row())) {
                         return false;
                     }
                 } else {

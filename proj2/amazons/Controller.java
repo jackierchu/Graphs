@@ -87,7 +87,8 @@ final class Controller {
             _black = _manualPlayerTemplate.create(BLACK, this);
         }
         else{
-            throw new IllegalArgumentException("No other player than white or black");
+            throw new IllegalArgumentException(
+                    "No other player than white or black");
         }
     }
 
@@ -101,7 +102,8 @@ final class Controller {
             _black = _autoPlayerTemplate.create(BLACK, this);
         }
         else{
-            throw new IllegalArgumentException("No other player than white or black");
+            throw new IllegalArgumentException(
+                    "No other player than white or black");
         }
     }
 
@@ -125,7 +127,8 @@ final class Controller {
         String to = scanner.next();
         String spear = scanner.next();
         try{
-            Move m= Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
+            Move m= Move.mv(Square.sq(from),
+                    Square.sq(to), Square.sq(spear));
 
             if(_board.isLegal(m)) {
                 _board.makeMove(m);
@@ -203,8 +206,10 @@ final class Controller {
         protected final Consumer<Matcher> _processor;
     }
 
-    private final String regex1 = "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
-    private final String regex2 = "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
+    private final String regex1 =
+            "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+    private final String regex2 =
+            "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
 
     /** A list of Commands describing the valid textual commands to the
      *  Amazons program and the methods to process them. */
