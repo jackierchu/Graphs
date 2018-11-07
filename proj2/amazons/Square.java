@@ -85,7 +85,7 @@ final class Square {
     }
 
     /** Return the direction (an int as defined in the documentation
-     *  for queenMove) of the queen move THIS-TO. FIXED */
+     *  for queenMove) of the queen move THIS-TO. */
     int direction(Square to) {
         assert isQueenMove(to);
         if (this.col() == to.col()) {
@@ -95,28 +95,27 @@ final class Square {
                 return 4;
             }
         }
-        if (this.row() == to.row()) {
+        else if (this.row() == to.row()) {
             if (this.col() < to.col()) {
                 return 2;
             } else {
                 return 6;
             }
         }
-        if (this.col() > to.col()) {
+        else if (this.col() > to.col()) {
             if (this.row() < to.row()) {
                 return 7;
             } else {
                 return 5;
             }
         }
-        if (this.col() < to.col()) {
+        else{
             if (this.row() < to.row()) {
                 return 1;
             } else {
                 return 3;
             }
         }
-        return -1;
     }
     @Override
     public String toString() {
