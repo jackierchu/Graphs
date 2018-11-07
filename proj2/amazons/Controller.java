@@ -1,7 +1,6 @@
 package amazons;
 
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -10,8 +9,6 @@ import java.util.function.Consumer;
 
 import static amazons.Utils.*;
 import static amazons.Piece.*;
-import static amazons.Square.sq;
-import static amazons.Square.SQ;
 
 /** The input/output and GUI controller for play of Amazons.
  *  @author Jacqueline Chu */
@@ -80,13 +77,11 @@ final class Controller {
     /** Play Amazons. */
     void doManual(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn.equals("white")) {
+        if (turn.equals("white")) {
             _white = _manualPlayerTemplate.create(WHITE, this);
-        }
-        else if(turn.equals("black")) {
+        } else if (turn.equals("black")) {
             _black = _manualPlayerTemplate.create(BLACK, this);
-        }
-        else{
+        } else {
             throw new IllegalArgumentException(
                     "No other player than white or black");
         }
@@ -95,13 +90,11 @@ final class Controller {
     /** Play Amazons. */
     void doAuto(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn.equals("white")) {
+        if (turn.equals("white")) {
             _white = _autoPlayerTemplate.create(WHITE, this);
-        }
-        else if(turn.equals("black")) {
+        } else if (turn.equals("black")) {
             _black = _autoPlayerTemplate.create(BLACK, this);
-        }
-        else{
+        } else {
             throw new IllegalArgumentException(
                     "No other player than white or black");
         }
@@ -111,11 +104,10 @@ final class Controller {
     void doMove(Matcher matcher) {
         try {
             Move m = Move.mv(matcher.group());
-            if(_board.isLegal(m)) {
+            if (_board.isLegal(m)) {
                 _board.makeMove(m);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw error("Incorrect Move");
         }
     }
@@ -126,15 +118,14 @@ final class Controller {
         String from = scanner.next();
         String to = scanner.next();
         String spear = scanner.next();
-        try{
-            Move m= Move.mv(Square.sq(from),
+        try {
+            Move m = Move.mv(Square.sq(from),
                     Square.sq(to), Square.sq(spear));
 
-            if(_board.isLegal(m)) {
+            if (_board.isLegal(m)) {
                 _board.makeMove(m);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw error("Incorrect Move");
         }
     }

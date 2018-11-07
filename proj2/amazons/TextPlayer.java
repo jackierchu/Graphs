@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 
-import static amazons.Move.mv;
-
 /** A Player that takes input as text commands from the standard input.
  *  @author Jacqueline Chu
  */
@@ -28,7 +26,7 @@ class TextPlayer extends Player {
     }
 
     private final HashSet<String> commands = new HashSet<>(Arrays.asList(
-            "new","dump","seed","manual","auto", "quit"
+            "new", "dump", "seed", "manual", "auto", "quit"
     ));
 
     private final String regex1 =

@@ -44,10 +44,10 @@ final class Square {
 
     /** Return true iff THIS - TO is a valid queen move. */
     boolean isQueenMove(Square to) {
-        if(this == to) {
+        if (this == to) {
             return false;
         }
-        if(this.row() != to.row() && this.col() != to.col()
+        if (this.row() != to.row() && this.col() != to.col()
                 && abs(this.row() - to.row())
                 != abs(this.col() - to.col())) {
             return false;
@@ -69,17 +69,17 @@ final class Square {
      *  If DIR has another value, return null. Thus, unless the result
      *  is null the resulting square is a queen move away rom me. */
     Square queenMove(int dir, int steps) {
-        if(dir < 0 || dir > 7) {
+        if (dir < 0 || dir > 7) {
             return null;
         }
 
-        if(steps <= 0) {
+        if (steps <= 0) {
             return null;
         }
 
         int col = this.col() + steps * DIR[dir][0];
         int row = this.row() + steps * DIR[dir][1];
-        if(exists(col, row)) {
+        if (exists(col, row)) {
             return sq(col, row);
         }
 
@@ -96,22 +96,19 @@ final class Square {
             } else {
                 return 4;
             }
-        }
-        else if (this.row() == to.row()) {
+        } else if (this.row() == to.row()) {
             if (this.col() < to.col()) {
                 return 2;
             } else {
                 return 6;
             }
-        }
-        else if (this.col() > to.col()) {
+        } else if (this.col() > to.col()) {
             if (this.row() < to.row()) {
                 return 7;
             } else {
                 return 5;
             }
-        }
-        else{
+        } else {
             if (this.row() < to.row()) {
                 return 1;
             } else {
@@ -147,13 +144,13 @@ final class Square {
     /** Return the (unique) Square denoting the position COL ROW, where
      *  COL ROW is the standard text format for a square (e.g., a4). */
     static Square sq(String col, String row) {
-        if(col.length() > 1 || row.length() > 1) {
+        if (col.length() > 1 || row.length() > 1) {
             throw error("row or column out of bounds");
         }
 
-        int num_col = col.charAt(0) - 'a';
-        int num_row = Integer.valueOf(row) - 1;
-        return sq(num_col, num_row);
+        int numCol = col.charAt(0) - 'a';
+        int numRow = Integer.valueOf(row) - 1;
+        return sq(numCol, numRow);
     }
 
     /** Return the (unique) Square denoting the position in POSN, in the
@@ -161,9 +158,9 @@ final class Square {
      *  valid square designation. */
     static Square sq(String posn) {
         assert posn.matches(SQ);
-        char char_col = posn.charAt(0);
+        char charCol = posn.charAt(0);
         String sub = posn.substring(1);
-        int index =  Integer.valueOf(sub) - 1 + (char_col - 'a') * 10;
+        int index =  Integer.valueOf(sub) - 1 + (charCol - 'a') * 10;
         return sq(index);
     }
 
@@ -174,13 +171,13 @@ final class Square {
 
     /** Return the Square with index INDEX. */
     private Square(int index) {
-        if(index < 0 && index > 99) {
+        if (index < 0 && index > 99) {
             throw error("index out of bounds");
         }
         _index = index;
         _row = index % 10;
         _col = index / 10;
-        _str = String.format("%c%d", (char)('a' + _col) , _row + 1);
+        _str = String.format("%c%d", (char) ('a' + _col), _row + 1);
     }
 
     /** The cache of all created squares, by index. */

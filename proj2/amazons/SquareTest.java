@@ -12,7 +12,7 @@ public class SquareTest {
         assertEquals(thirtyTwo, thirtyFive.queenMove(4, 3));
         assertEquals(thirtyFive, thirtyTwo.queenMove(0, 3));
 
-        Square twentyfour = Square.sq(2,4);
+        Square twentyfour = Square.sq(2, 4);
         assertEquals(twentyfour, thirtyFive.queenMove(5, 1));
         assertEquals(thirtyFive, twentyfour.queenMove(1, 1));
 
@@ -21,7 +21,7 @@ public class SquareTest {
         assertEquals(thirtyFive, sixtySeven.queenMove(5, 3));
 
         Square nintyFive = Square.sq(95);
-        assertEquals(nintyFive, thirtyFive.queenMove(2,6));
+        assertEquals(nintyFive, thirtyFive.queenMove(2, 6));
         assertEquals(thirtyFive, nintyFive.queenMove(6, 6));
 
         Square seventyOne = Square.sq(7, 1);
@@ -42,7 +42,7 @@ public class SquareTest {
         assertEquals(thirtyTwo, thirtyFive.queenMove(4, 3));
         assertEquals(thirtyFive, thirtyTwo.queenMove(0, 3));
 
-        Square twentyfour = Square.sq(2,4);
+        Square twentyfour = Square.sq(2, 4);
         assertEquals(twentyfour, thirtyFive.queenMove(5, 1));
         assertEquals(thirtyFive, twentyfour.queenMove(1, 1));
 
@@ -51,7 +51,7 @@ public class SquareTest {
         assertEquals(thirtyFive, sixtySeven.queenMove(5, 3));
 
         Square nintyFive = Square.sq(95);
-        assertEquals(nintyFive, thirtyFive.queenMove(2,6));
+        assertEquals(nintyFive, thirtyFive.queenMove(2, 6));
         assertEquals(thirtyFive, nintyFive.queenMove(6, 6));
 
         Square seventyOne = Square.sq(7, 1);
@@ -66,7 +66,7 @@ public class SquareTest {
     }
 
     @Test
-    public void TestWithNumber() {
+    public void testWithNumber() {
         Square zero = Square.sq(0);
         assertEquals("a1", zero.toString());
         assertEquals(0, zero.col());
@@ -94,7 +94,7 @@ public class SquareTest {
     }
 
     @Test
-    public void TestWithString() {
+    public void testWithString() {
         Square zero = Square.sq("a1");
         assertEquals("a1", zero.toString());
         assertEquals(0, zero.col());
@@ -143,7 +143,7 @@ public class SquareTest {
     public void directionOfTest() {
         Square twentyFour = Square.sq(24);
 
-        Square fiftyOne = Square.sq("f","2");
+        Square fiftyOne = Square.sq("f", "2");
         assertEquals(7, fiftyOne.direction(twentyFour));
         assertEquals(3, twentyFour.direction(fiftyOne));
 
@@ -155,7 +155,7 @@ public class SquareTest {
         assertEquals(4, twentyFive.direction(twentyFour));
         assertEquals(0, twentyFour.direction(twentyFive));
 
-        Square fiftyFour = Square.sq(5,4);
+        Square fiftyFour = Square.sq(5, 4);
         assertEquals(6, fiftyFour.direction(twentyFour));
         assertEquals(2, twentyFour.direction(fiftyFour));
     }
@@ -167,7 +167,7 @@ public class SquareTest {
         Square twentyNine = Square.sq(29);
         assertTrue(twentyFour.isQueenMove(twentyNine));
 
-        Square sixty =Square.sq(60);
+        Square sixty = Square.sq(60);
         assertTrue(twentyFour.isQueenMove(sixty));
 
         Square seventyNine = Square.sq(7, 9);

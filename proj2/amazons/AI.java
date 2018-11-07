@@ -6,13 +6,7 @@ package amazons;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import antlr.collections.Stack;
-
-import static java.lang.Math.*;
-
-import static amazons.Board.*;
 import static amazons.Piece.*;
-import static amazons.Utils.iterable;
 
 /** A Player that automatically generates moves.
  *  @author Jacqueline Chu
@@ -80,17 +74,17 @@ class AI extends Player {
 
         ArrayList<Move> moves = new ArrayList<>();
         Iterator<Move> newMoves = board.legalMoves();
-        while(newMoves.hasNext()) {
+        while (newMoves.hasNext()) {
             Move current = newMoves.next();
-            if(current != null) {
+            if (current != null) {
                 moves.add(current);
             }
         }
 
-        if(sense == 1) {
+        if (sense == 1) {
             int bestSofarAlpha = -INFTY;
             Move bestMove = moves.get(0);
-            for(Move m: moves) {
+            for (Move m: moves) {
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
@@ -100,17 +94,16 @@ class AI extends Player {
                 }
                 board.undo();
                 alpha = Math.max(alpha, bestSofarAlpha);
-                if(beta <= alpha) {
+                if (beta <= alpha) {
                     break;
                 }
             }
             _lastFoundMove = bestMove;
             return bestSofarAlpha;
-        }
-        else {
+        } else {
             int bestSofarBeta = INFTY;
             Move bestMove = moves.get(0);
-            for(Move m: moves) {
+            for (Move m: moves) {
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
@@ -120,7 +113,7 @@ class AI extends Player {
                 }
                 board.undo();
                 beta = Math.min(beta, bestSofarBeta);
-                if(beta <= alpha) {
+                if (beta <= alpha) {
                     break;
                 }
             }
@@ -158,15 +151,15 @@ class AI extends Player {
     /** Implemented Helper method for number of side moves */
     private int numSideMoves(Board board, Piece side) {
         ArrayList<Move> moves = new ArrayList<>();
-        for(int col = 0; col < board.SIZE; col++) {
+        for (int col = 0; col < board.SIZE; col++) {
             for (int row = 0; row < board.SIZE; row++) {
                 if (board.get(col, row) == side) {
                     Piece newPiece = board.get(col, row);
                     Iterator<Move> newMoves =
                             board.legalMoves(newPiece);
-                    while(newMoves.hasNext()) {
+                    while (newMoves.hasNext()) {
                         Move current = newMoves.next();
-                        if(current != null) {
+                        if (current != null) {
                             moves.add(newMoves.next());
                         }
                     }

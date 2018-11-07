@@ -10,35 +10,33 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import ucb.junit.textui;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BoardTest {
     static final String INIT_BOARD_STATE =
-            "   - - - B - - B - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   B - - - - - - - - B\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   W - - - - - - - - W\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - W - - W - - -\n";
+            "   - - - B - - B - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   B - - - - - - - - B\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   W - - - - - - - - W\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - W - - W - - -\n";
 
     static final String SMILE =
-            "   - - - - - - - - - -\n" +
-                    "   - S S S - - S S S -\n" +
-                    "   - S - S - - S - S -\n" +
-                    "   - S S S - - S S S -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - W - - - - W - -\n" +
-                    "   - - - W W W W - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n";
+            "   - - - - - - - - - -\n"
+                    + "   - S S S - - S S S -\n"
+                    + "   - S - S - - S - S -\n"
+                    + "   - S S S - - S S S -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - W - - - - W - -\n"
+                    + "   - - - W W W W - - -\n"
+                    + "   - - - - - - - - - -\n"
+                    + "   - - - - - - - - - -\n";
     private void makeSmile(Board b) {
         b.put(EMPTY, Square.sq(0, 3));
         b.put(EMPTY, Square.sq(0, 6));
@@ -110,7 +108,7 @@ public class BoardTest {
         }
         Iterator<Square> newIterator = newBoard.reachableFrom(Square.sq(0, 3), null);
         ArrayList<Square> newSquare = new ArrayList<>();
-        while(newIterator.hasNext()) {
+        while (newIterator.hasNext()) {
             Square newest = newIterator.next();
             System.out.println(newest);
         }
@@ -147,7 +145,7 @@ public class BoardTest {
         b2.undo();
 
         assertEquals(b2.toString(), b1.toString());
-        assertEquals((long)b1.numMoves(), (long)b2.numMoves());
+        assertEquals((long) b1.numMoves(), (long) b2.numMoves());
         b2.makeMove(firstMove);
         assertEquals(b2.toString(), b0.toString());
     }
@@ -158,18 +156,18 @@ public class BoardTest {
     @Test
     public void testReachableFrom() {
         Board b = new Board();
-        buildBoard(b, reachableFromTestBoard);
+        buildBoard(b, TESTBOARD);
         int numSquares = 0;
         Set<Square> squares = new HashSet<>();
         Iterator<Square> reachableFrom = b.reachableFrom(Square.sq(5, 5), null);
         while (reachableFrom.hasNext()) {
             Square s = reachableFrom.next();
-            assertTrue(reachableFromTestSquares.contains(s));
+            assertTrue(TESTSQUARES.contains(s));
             numSquares += 1;
             squares.add(s);
         }
-        assertEquals(reachableFromTestSquares.size(), numSquares);
-        assertEquals(reachableFromTestSquares.size(), squares.size());
+        assertEquals(TESTSQUARES.size(), numSquares);
+        assertEquals(TESTSQUARES.size(), squares.size());
     }
 
     /** Tests legalMovesIterator to make sure it returns all legal Moves.
@@ -178,18 +176,18 @@ public class BoardTest {
     @Test
     public void testLegalMoves() {
         Board b = new Board();
-        buildBoard(b, reachableFromTestBoard);
+        buildBoard(b, TESTBOARD);
         int numMoves = 0;
         Set<Move> moves = new HashSet<>();
         Iterator<Move> legalMoves = b.legalMoves(Piece.WHITE);
         while (legalMoves.hasNext()) {
             Move m = legalMoves.next();
-            assertTrue(legalMoveFromTestMoves.contains(m.toString()));
+            assertTrue(LEGALTESTMOVES.contains(m.toString()));
             numMoves += 1;
             moves.add(m);
         }
-        assertEquals(legalMoveFromTestMoves.size(), numMoves);
-        assertEquals(legalMoveFromTestMoves.size(), moves.size());
+        assertEquals(LEGALTESTMOVES.size(), numMoves);
+        assertEquals(LEGALTESTMOVES.size(), moves.size());
     }
 
 
@@ -210,7 +208,7 @@ public class BoardTest {
 
     static final Piece S = Piece.SPEAR;
 
-    static final Piece[][] reachableFromTestBoard =
+    static final Piece[][] TESTBOARD =
             {
                     { E, E, E, E, E, E, E, E, E, E },
                     { E, E, E, E, E, E, E, E, W, W },
@@ -224,7 +222,7 @@ public class BoardTest {
                     { E, E, E, E, E, E, E, E, E, E },
             };
 
-    static final Set<Square> reachableFromTestSquares =
+    static final Set<Square> TESTSQUARES =
             new HashSet<>(Arrays.asList(
                     Square.sq(5, 4),
                     Square.sq(4, 4),
@@ -234,52 +232,101 @@ public class BoardTest {
                     Square.sq(6, 4),
                     Square.sq(7, 3),
                     Square.sq(8, 2)));
-    static final Set<String> legalMoveFromTestMoves =
+    static final Set<String> LEGALTESTMOVES =
             new HashSet<String>(Arrays.asList(
-                    "f6-g6(h6)", "f6-g6(h5)", "f6-g6(i4)", "f6-g6(g5)", "f6-g6(f5)", "f6-g6(f6)",
-                    "f6-g6(e6)", "f6-h6(h5)", "f6-h6(h4)", "f6-h6(g5)", "f6-h6(g6)", "f6-h6(f6)",
-                    "f6-h6(e6)", "f6-g5(g6)", "f6-g5(h6)", "f6-g5(h5)", "f6-g5(h4)", "f6-g5(i3)",
-                    "f6-g5(f5)", "f6-g5(e5)", "f6-g5(f6)", "f6-h4(h5)", "f6-h4(h6)", "f6-h4(i4)",
-                    "f6-h4(i3)", "f6-h4(g3)", "f6-h4(f2)", "f6-h4(e1)", "f6-h4(g5)", "f6-h4(f6)",
-                    "f6-i3(i4)", "f6-i3(h2)", "f6-i3(g1)", "f6-i3(h4)", "f6-i3(g5)", "f6-i3(f6)",
-                    "f6-f5(f6)", "f6-f5(g6)", "f6-f5(g5)", "f6-f5(h5)", "f6-f5(e5)", "f6-f5(e6)",
-                    "f6-e5(e6)", "f6-e5(f6)", "f6-e5(f5)", "f6-e5(g5)", "f6-e5(h5)", "f6-e6(f6)",
-                    "f6-e6(g6)", "f6-e6(h6)", "f6-e6(f5)", "f6-e6(e5)", "h7-h8(h9)", "h7-h8(h10)",
-                    "h7-h8(i9)", "h7-h8(j10)", "h7-h8(i8)", "h7-h8(j8)", "h7-h8(h7)", "h7-h8(h6)",
-                    "h7-h8(h5)", "h7-h8(h4)", "h7-h8(g8)", "h7-h8(f8)", "h7-h8(e8)", "h7-h8(d8)",
-                    "h7-h8(c8)", "h7-h8(b8)", "h7-h8(a8)", "h7-h8(g9)", "h7-h8(f10)", "h7-h9(h10)",
-                    "h7-h9(i10)", "h7-h9(i9)", "h7-h9(j9)", "h7-h9(i8)", "h7-h9(j7)", "h7-h9(h8)",
-                    "h7-h9(h7)", "h7-h9(h6)", "h7-h9(h5)", "h7-h9(h4)", "h7-h9(g8)", "h7-h9(g9)",
-                    "h7-h9(f9)", "h7-h9(e9)", "h7-h9(d9)", "h7-h9(c9)", "h7-h9(b9)", "h7-h9(a9)",
-                    "h7-h9(g10)", "h7-h10(i10)", "h7-h10(j10)", "h7-h10(i9)", "h7-h10(j8)", "h7-h10(h9)",
-                    "h7-h10(h8)", "h7-h10(h7)", "h7-h10(h6)", "h7-h10(h5)", "h7-h10(h4)", "h7-h10(g9)",
-                    "h7-h10(f8)", "h7-h10(g10)", "h7-h10(f10)", "h7-h10(e10)", "h7-h10(d10)", "h7-h10(c10)",
-                    "h7-h10(b10)", "h7-h10(a10)", "h7-i8(i9)", "h7-i8(i10)", "h7-i8(j9)", "h7-i8(j8)",
-                    "h7-i8(j7)", "h7-i8(h7)", "h7-i8(g6)", "h7-i8(f5)", "h7-i8(h8)", "h7-i8(g8)",
-                    "h7-i8(f8)", "h7-i8(e8)", "h7-i8(d8)", "h7-i8(c8)", "h7-i8(b8)", "h7-i8(a8)",
-                    "h7-i8(h9)", "h7-i8(g10)", "h7-j9(j10)", "h7-j9(j8)", "h7-j9(j7)", "h7-j9(j6)",
-                    "h7-j9(j5)", "h7-j9(i8)", "h7-j9(h7)", "h7-j9(g6)", "h7-j9(f5)", "h7-j9(i9)",
-                    "h7-j9(h9)", "h7-j9(g9)", "h7-j9(f9)", "h7-j9(e9)", "h7-j9(d9)", "h7-j9(c9)",
-                    "h7-j9(b9)", "h7-j9(a9)", "h7-j9(i10)", "h7-h6(h7)", "h7-h6(h8)", "h7-h6(h9)",
-                    "h7-h6(h10)", "h7-h6(h5)", "h7-h6(h4)", "h7-h6(g5)", "h7-h6(g6)", "h7-h5(h6)",
-                    "h7-h5(h7)", "h7-h5(h8)", "h7-h5(h9)", "h7-h5(h10)", "h7-h5(i4)", "h7-h5(h4)",
-                    "h7-h5(g5)", "h7-h5(f5)", "h7-h5(e5)", "h7-h5(g6)", "h7-h4(h5)", "h7-h4(h6)",
-                    "h7-h4(h7)", "h7-h4(h8)", "h7-h4(h9)", "h7-h4(h10)", "h7-h4(i4)", "h7-h4(i3)",
-                    "h7-h4(g3)", "h7-h4(f2)", "h7-h4(e1)", "h7-h4(g5)", "h7-g6(h7)", "h7-g6(i8)",
-                    "h7-g6(j9)", "h7-g6(h6)", "h7-g6(h5)", "h7-g6(i4)", "h7-g6(g5)", "h7-g6(f5)",
-                    "h7-f5(g6)", "h7-f5(h7)", "h7-f5(i8)", "h7-f5(j9)", "h7-f5(g5)", "h7-f5(h5)",
-                    "h7-f5(e5)", "h7-f5(e6)", "h7-g8(g9)", "h7-g8(g10)", "h7-g8(h9)", "h7-g8(i10)",
-                    "h7-g8(h8)", "h7-g8(i8)", "h7-g8(j8)", "h7-g8(h7)", "h7-g8(f8)", "h7-g8(e8)",
-                    "h7-g8(d8)", "h7-g8(c8)", "h7-g8(b8)", "h7-g8(a8)", "h7-g8(f9)", "h7-g8(e10)",
-                    "h7-f9(f10)", "h7-f9(g10)", "h7-f9(g9)", "h7-f9(h9)", "h7-f9(i9)", "h7-f9(j9)",
-                    "h7-f9(g8)", "h7-f9(h7)", "h7-f9(f8)", "h7-f9(e8)", "h7-f9(e9)", "h7-f9(d9)",
-                    "h7-f9(c9)", "h7-f9(b9)", "h7-f9(a9)", "h7-f9(e10)", "h7-e10(f10)", "h7-e10(g10)",
-                    "h7-e10(h10)", "h7-e10(i10)", "h7-e10(j10)", "h7-e10(f9)", "h7-e10(g8)", "h7-e10(h7)",
-                    "h7-e10(e9)", "h7-e10(e8)", "h7-e10(d9)", "h7-e10(c8)", "h7-e10(b7)", "h7-e10(a6)",
-                    "h7-e10(d10)", "h7-e10(c10)", "h7-e10(b10)", "h7-e10(a10)", "i2-i3(i4)", "i2-i3(i2)",
-                    "i2-i3(i1)", "i2-i3(h2)", "i2-i3(g1)", "i2-i3(h4)", "i2-i3(g5)", "i2-i4(j5)",
-                    "i2-i4(i3)", "i2-i4(i2)", "i2-i4(i1)", "i2-i4(h4)", "i2-i4(h5)", "i2-i4(g6)",
-                    "i2-j1(i1)", "i2-j1(h1)", "i2-j1(g1)", "i2-j1(f1)", "i2-j1(e1)", "i2-j1(d1)",
+                    "f6-g6(h6)", "f6-g6(h5)",
+                    "f6-g6(i4)", "f6-g6(g5)",
+                    "f6-g6(f5)", "f6-g6(f6)",
+                    "f6-g6(e6)", "f6-h6(h5)",
+                    "f6-h6(h4)", "f6-h6(g5)",
+                    "f6-h6(g6)", "f6-h6(f6)",
+                    "f6-h6(e6)", "f6-g5(g6)",
+                    "f6-g5(h6)", "f6-g5(h5)",
+                    "f6-g5(h4)", "f6-g5(i3)",
+                    "f6-g5(f5)", "f6-g5(e5)",
+                    "f6-g5(f6)", "f6-h4(h5)",
+                    "f6-h4(h6)", "f6-h4(i4)",
+                    "f6-h4(i3)", "f6-h4(g3)",
+                    "f6-h4(f2)", "f6-h4(e1)", "f6-h4(g5)",
+                    "f6-h4(f6)",
+                    "f6-i3(i4)", "f6-i3(h2)", "f6-i3(g1)",
+                    "f6-i3(h4)", "f6-i3(g5)", "f6-i3(f6)",
+                    "f6-f5(f6)", "f6-f5(g6)", "f6-f5(g5)",
+                    "f6-f5(h5)", "f6-f5(e5)", "f6-f5(e6)",
+                    "f6-e5(e6)", "f6-e5(f6)", "f6-e5(f5)",
+                    "f6-e5(g5)", "f6-e5(h5)", "f6-e6(f6)",
+                    "f6-e6(g6)", "f6-e6(h6)", "f6-e6(f5)",
+                    "f6-e6(e5)", "h7-h8(h9)", "h7-h8(h10)",
+                    "h7-h8(i9)", "h7-h8(j10)", "h7-h8(i8)",
+                    "h7-h8(j8)", "h7-h8(h7)", "h7-h8(h6)",
+                    "h7-h8(h5)", "h7-h8(h4)", "h7-h8(g8)",
+                    "h7-h8(f8)", "h7-h8(e8)", "h7-h8(d8)",
+                    "h7-h8(c8)", "h7-h8(b8)", "h7-h8(a8)",
+                    "h7-h8(g9)", "h7-h8(f10)", "h7-h9(h10)",
+                    "h7-h9(i10)", "h7-h9(i9)", "h7-h9(j9)",
+                    "h7-h9(i8)", "h7-h9(j7)", "h7-h9(h8)",
+                    "h7-h9(h7)", "h7-h9(h6)", "h7-h9(h5)",
+                    "h7-h9(h4)", "h7-h9(g8)", "h7-h9(g9)",
+                    "h7-h9(f9)", "h7-h9(e9)", "h7-h9(d9)",
+                    "h7-h9(c9)", "h7-h9(b9)", "h7-h9(a9)",
+                    "h7-h9(g10)", "h7-h10(i10)", "h7-h10(j10)",
+                    "h7-h10(i9)", "h7-h10(j8)", "h7-h10(h9)",
+                    "h7-h10(h8)", "h7-h10(h7)", "h7-h10(h6)",
+                    "h7-h10(h5)", "h7-h10(h4)", "h7-h10(g9)",
+                    "h7-h10(f8)", "h7-h10(g10)", "h7-h10(f10)",
+                    "h7-h10(e10)", "h7-h10(d10)", "h7-h10(c10)",
+                    "h7-h10(b10)", "h7-h10(a10)", "h7-i8(i9)",
+                    "h7-i8(i10)", "h7-i8(j9)", "h7-i8(j8)",
+                    "h7-i8(j7)", "h7-i8(h7)", "h7-i8(g6)",
+                    "h7-i8(f5)", "h7-i8(h8)", "h7-i8(g8)",
+                    "h7-i8(f8)", "h7-i8(e8)", "h7-i8(d8)",
+                    "h7-i8(c8)", "h7-i8(b8)", "h7-i8(a8)",
+                    "h7-i8(h9)", "h7-i8(g10)", "h7-j9(j10)",
+                    "h7-j9(j8)", "h7-j9(j7)", "h7-j9(j6)",
+                    "h7-j9(j5)", "h7-j9(i8)", "h7-j9(h7)",
+                    "h7-j9(g6)", "h7-j9(f5)", "h7-j9(i9)",
+                    "h7-j9(h9)", "h7-j9(g9)", "h7-j9(f9)",
+                    "h7-j9(e9)", "h7-j9(d9)", "h7-j9(c9)",
+                    "h7-j9(b9)", "h7-j9(a9)", "h7-j9(i10)",
+                    "h7-h6(h7)", "h7-h6(h8)", "h7-h6(h9)",
+                    "h7-h6(h10)", "h7-h6(h5)", "h7-h6(h4)",
+                    "h7-h6(g5)", "h7-h6(g6)", "h7-h5(h6)",
+                    "h7-h5(h7)", "h7-h5(h8)", "h7-h5(h9)",
+                    "h7-h5(h10)", "h7-h5(i4)", "h7-h5(h4)",
+                    "h7-h5(g5)", "h7-h5(f5)", "h7-h5(e5)",
+                    "h7-h5(g6)", "h7-h4(h5)", "h7-h4(h6)",
+                    "h7-h4(h7)", "h7-h4(h8)", "h7-h4(h9)",
+                    "h7-h4(h10)", "h7-h4(i4)", "h7-h4(i3)",
+                    "h7-h4(g3)", "h7-h4(f2)", "h7-h4(e1)",
+                    "h7-h4(g5)", "h7-g6(h7)", "h7-g6(i8)",
+                    "h7-g6(j9)", "h7-g6(h6)", "h7-g6(h5)",
+                    "h7-g6(i4)", "h7-g6(g5)", "h7-g6(f5)",
+                    "h7-f5(g6)", "h7-f5(h7)", "h7-f5(i8)",
+                    "h7-f5(j9)", "h7-f5(g5)", "h7-f5(h5)",
+                    "h7-f5(e5)", "h7-f5(e6)", "h7-g8(g9)",
+                    "h7-g8(g10)", "h7-g8(h9)", "h7-g8(i10)",
+                    "h7-g8(h8)", "h7-g8(i8)", "h7-g8(j8)",
+                    "h7-g8(h7)", "h7-g8(f8)", "h7-g8(e8)",
+                    "h7-g8(d8)", "h7-g8(c8)", "h7-g8(b8)",
+                    "h7-g8(a8)", "h7-g8(f9)", "h7-g8(e10)",
+                    "h7-f9(f10)", "h7-f9(g10)", "h7-f9(g9)",
+                    "h7-f9(h9)", "h7-f9(i9)", "h7-f9(j9)",
+                    "h7-f9(g8)", "h7-f9(h7)", "h7-f9(f8)",
+                    "h7-f9(e8)", "h7-f9(e9)", "h7-f9(d9)",
+                    "h7-f9(c9)", "h7-f9(b9)", "h7-f9(a9)",
+                    "h7-f9(e10)", "h7-e10(f10)", "h7-e10(g10)",
+                    "h7-e10(h10)", "h7-e10(i10)", "h7-e10(j10)",
+                    "h7-e10(f9)", "h7-e10(g8)", "h7-e10(h7)",
+                    "h7-e10(e9)", "h7-e10(e8)", "h7-e10(d9)",
+                    "h7-e10(c8)", "h7-e10(b7)", "h7-e10(a6)",
+                    "h7-e10(d10)", "h7-e10(c10)", "h7-e10(b10)",
+                    "h7-e10(a10)", "i2-i3(i4)", "i2-i3(i2)",
+                    "i2-i3(i1)", "i2-i3(h2)", "i2-i3(g1)", "i2-i3(h4)",
+                    "i2-i3(g5)", "i2-i4(j5)",
+                    "i2-i4(i3)", "i2-i4(i2)", "i2-i4(i1)", "i2-i4(h4)",
+                    "i2-i4(h5)", "i2-i4(g6)",
+                    "i2-j1(i1)", "i2-j1(h1)", "i2-j1(g1)", "i2-j1(f1)",
+                    "i2-j1(e1)", "i2-j1(d1)",
                     "i2-j1(c1)",
                     "i2-j1(b1)",
                     "i2-j1(a1)",
@@ -496,14 +543,14 @@ public class BoardTest {
             ));
 
     @Test
-    public void LegalMoveTest() {
+    public void anotherLegalMoveTest() {
         Board b = new Board();
         Iterator<Move> originalMove = b.legalMoves(WHITE);
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 10; i++) {
             b.put(SPEAR, 2, i);
             b.put(SPEAR, 7, i);
         }
-        for (int j = 0; j < 10; j ++) {
+        for (int j = 0; j < 10; j++) {
             b.put(SPEAR, j, 4);
             b.put(SPEAR, j, 1);
         }
@@ -520,7 +567,7 @@ public class BoardTest {
         assertEquals((3 * 3) * 2 + 4 * 2, sizeTest.size());
         sizeTest.clear();
 
-        for(int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 10; i++) {
             b.put(SPEAR, i, 8);
         }
         Iterator<Move> anotherOne = b.legalMoves(BLACK);
@@ -534,22 +581,22 @@ public class BoardTest {
     }
 
     @Test
-    public void LegalMoveEdgeCaseTest() {
+    public void legalMoveEdgeCaseTest() {
         Board b = new Board();
         b.put(SPEAR, 0, 2);
         b.put(SPEAR, 0, 4);
         b.put(SPEAR, 1, 3);
         b.put(SPEAR, 1, 4);
         b.put(SPEAR, 1, 2);
-        b.put(SPEAR, 2,0);
+        b.put(SPEAR, 2, 0);
         b.put(SPEAR, 4, 0);
         b.put(SPEAR, 3, 1);
-        b.put(SPEAR, 5,0);
+        b.put(SPEAR, 5, 0);
         b.put(SPEAR, 2, 1);
         b.put(SPEAR, 4, 1);
         b.put(SPEAR, 5, 1);
         b.put(SPEAR, 7, 1);
-        b.put(SPEAR, 7,0);
+        b.put(SPEAR, 7, 0);
 
         b.put(SPEAR, 6, 1);
         b.put(SPEAR, 9, 2);

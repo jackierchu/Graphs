@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Formatter;
 import java.util.Stack;
-import java.util.NoSuchElementException;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
@@ -27,7 +26,7 @@ class Board {
 
     /** The unit move for a certain direction as
      * specified in the Square class. */
-    static final int[][] directionIterate = {
+    static final int[][] DIRECTION = {
             { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 },
             { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 }
     };
@@ -45,14 +44,14 @@ class Board {
 
     /** Copies MODEL into me. */
     void copy(Board model) {
-        if(model == this) return;
+        if (model == this) return;
 
         this._moveHistory = model._moveHistory;
         this._turn = model._turn;
         this._winner = model._winner;
         Piece[][] newboard = new Piece[SIZE][SIZE];
-        for(int i = 0; i < SIZE; i++) {
-            for(int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 newboard[i][j] = model.board[i][j];
             }
         }
@@ -66,8 +65,8 @@ class Board {
         _turn = WHITE;
         _winner = EMPTY;
 
-        for(int i = 0; i < SIZE; i++) {
-            for(int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 board[i][j] = EMPTY;
             }
         }
@@ -104,12 +103,12 @@ class Board {
         int numofLegalMoves = 0;
         Iterator<Move> itLegalMoves = legalMoves(_turn);
         while (itLegalMoves.hasNext()) {
-            if(itLegalMoves.next() != null) {
+            if (itLegalMoves.next() != null) {
                 numofLegalMoves++;
             }
         }
 
-        if(numofLegalMoves == 0) {
+        if (numofLegalMoves == 0) {
             if (turnStr.equals("W")) {
                 _winner = BLACK;
                 return _winner;
@@ -141,7 +140,7 @@ class Board {
 
     /** Set square S to P. */
     final void put(Piece p, Square s) {
-        put(p, s.col(),s.row());
+        put(p, s.col(), s.row());
     }
 
     /** Set square (COL, ROW) to P. */
@@ -162,20 +161,20 @@ class Board {
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
 
-        if(!isLegal(from)) return false;
-        if(!from.isQueenMove(to)) return false;
+        if (!isLegal(from)) return false;
+        if (!from.isQueenMove(to)) return false;
 
         int dir = from.direction(to);
-        if(dir == -1) return false;
+        if (dir == -1) return false;
 
         int steps = max(abs(from.col() - to.col()),
                 abs(from.row() - to.row()));
-        for(int i = 1; i <= steps; i++) {
+        for (int i = 1; i <= steps; i++) {
             Square temp = from.queenMove(dir, i);
             if (temp == null) {
                 return false;
             }
-            if(get(temp.col(), temp.row()) != EMPTY) {
+            if (get(temp.col(), temp.row()) != EMPTY) {
                 if (asEmpty != null) {
                     if (asEmpty != temp) {
                         return false;
@@ -190,13 +189,13 @@ class Board {
 
     /** Implemented Helper method for isUnblockedMove */
 
-    boolean isUnblockedBase (Square from, Square to, Square asEmpty) {
+    boolean isUnblockedBase(Square from, Square to, Square asEmpty) {
         int direction = from.direction(to);
         if (direction == -1) {
             return false;
         }
 
-        int[] unitMoves = directionIterate[direction];
+        int[] unitMoves = DIRECTION[direction];
         int steps = max(abs(from.col() - to.col()),
                 abs(from.row() - to.row()));
 
@@ -206,8 +205,8 @@ class Board {
              col += unitMoves[0], row += unitMoves[1], t += 1) {
             if (get(col, row) != EMPTY) {
                 if (asEmpty != null) {
-                    if (!(col == asEmpty.col() && row ==
-                            asEmpty.row())) {
+                    if (!(col == asEmpty.col() && row
+                            == asEmpty.row())) {
                         return false;
                     }
                 } else {
@@ -248,7 +247,7 @@ class Board {
 
     /** Move FROM-TO(SPEAR), assuming this is a legal move. */
     void makeMove(Square from, Square to, Square spear) {
-        put(get(from.col(), from.row()), to.col(),to.row());
+        put(get(from.col(), from.row()), to.col(), to.row());
         put(EMPTY, from.col(), from.row());
         put(SPEAR, spear.col(), spear.row());
         switchMove();
@@ -266,17 +265,17 @@ class Board {
     /** Move according to MOVE, assuming it is a legal move. */
     void makeMove(Move move) {
         _moveHistory.push(move);
-        makeMove(move.from(),move.to(),move.spear());
+        makeMove(move.from(), move.to(), move.spear());
     }
 
     /** Undo one move.  Has no effect on the initial board. */
     void undo() {
-        if(_moveHistory.empty()) return;
+        if (_moveHistory.empty()) return;
         Move move = _moveHistory.peek();
-        put(get(move.to().col(),move.to().row()),
+        put(get(move.to().col(), move.to().row()),
                 move.from().col(), move.from().row());
         put(EMPTY, move.to().col(), move.to().row());
-        put(EMPTY, move.spear().col(),move.spear().row());
+        put(EMPTY, move.spear().col(), move.spear().row());
         switchMove();
         _moveHistory.pop();
     }
@@ -330,8 +329,8 @@ class Board {
         }
 
         private Square getNext() {
-            if(_dir < 8) {
-                if(_from == null) {
+            if (_dir < 8) {
+                if (_from == null) {
                     return null;
                 }
                 Square nextVisited = _from.queenMove(_dir, _steps);
@@ -357,7 +356,7 @@ class Board {
          *  _steps steps in direction _dir from _from. */
         private void toNext() {
             _steps = 1;
-            _dir ++;
+            _dir++;
         }
 
         /** Starting square. */
@@ -398,17 +397,16 @@ class Board {
         }
 
         private Move getNextMove() {
-            if(!_spearThrows.hasNext()) {
+            if (!_spearThrows.hasNext()) {
                 toNext();
             }
-            if(!_spearThrows.hasNext()) {
+            if (!_spearThrows.hasNext()) {
                 return null;
             }
             Square spear = _spearThrows.next();
-            if(spear != null) {
+            if (spear != null) {
                 return mv(_start, _nextSquare, spear);
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -417,11 +415,11 @@ class Board {
          *  _start-_nextSquare(sp), where sp is the next value of
          *  _spearThrows. */
         private void toNext() {
-            if(!_pieceMoves.hasNext()) {
-                while(_startingSquares.hasNext()) {
+            if (!_pieceMoves.hasNext()) {
+                while (_startingSquares.hasNext()) {
                     Square startSquare = _startingSquares.next();
-                    if(board[startSquare.col()][startSquare.row()] ==
-                            _fromPiece) {
+                    if (board[startSquare.col()][startSquare.row()]
+                            == _fromPiece) {
                         _start = startSquare;
                         _hasNext = true;
                         _pieceMoves = new ReachableFromIterator(_start,
@@ -432,7 +430,7 @@ class Board {
                     }
                 }
 
-                if(!_startingSquares.hasNext()) {
+                if (!_startingSquares.hasNext()) {
                     _hasNext = false;
                 }
 
@@ -441,7 +439,7 @@ class Board {
             }
 
             _nextSquare = _pieceMoves.next();
-            if(_nextSquare != null) {
+            if (_nextSquare != null) {
                 _spearThrows = new ReachableFromIterator(_nextSquare,
                         _start);
             }
@@ -468,12 +466,12 @@ class Board {
     @Override
     public String toString() {
         Formatter boardFormatter = new Formatter();
-        for(int row = SIZE - 1; row >= 0; row--) {
+        for (int row = SIZE - 1; row >= 0; row--) {
             boardFormatter.format(" ");
             boardFormatter.format(" ");
-            for(int col = 0; col < SIZE; col++) {
-                boardFormatter.format(" " +
-                        get(col, row).toString());
+            for (int col = 0; col < SIZE; col++) {
+                boardFormatter.format(" "
+                        + get(col, row).toString());
             }
             boardFormatter.format("\n");
         }
