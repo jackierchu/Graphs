@@ -208,19 +208,18 @@ public class BoardTest {
 
     static final Piece S = Piece.SPEAR;
 
-    static final Piece[][] TESTBOARD =
-            {
-                    { E, E, E, E, E, E, E, E, E, E },
-                    { E, E, E, E, E, E, E, E, W, W },
-                    { E, E, E, E, E, E, E, S, E, S },
-                    { E, E, E, S, S, S, S, E, E, S },
-                    { E, E, E, S, E, E, E, E, B, E },
-                    { E, E, E, S, E, W, E, E, B, E },
-                    { E, E, E, S, S, S, B, W, B, E },
-                    { E, E, E, E, E, E, E, E, E, E },
-                    { E, E, E, E, E, E, E, E, E, E },
-                    { E, E, E, E, E, E, E, E, E, E },
-            };
+    static final Piece[][] TESTBOARD = {
+            { E, E, E, E, E, E, E, E, E, E },
+            { E, E, E, E, E, E, E, E, W, W },
+            { E, E, E, E, E, E, E, S, E, S },
+            { E, E, E, S, S, S, S, E, E, S },
+            { E, E, E, S, E, E, E, E, B, E },
+            { E, E, E, S, E, W, E, E, B, E },
+            { E, E, E, S, S, S, B, W, B, E },
+            { E, E, E, E, E, E, E, E, E, E },
+            { E, E, E, E, E, E, E, E, E, E },
+            { E, E, E, E, E, E, E, E, E, E },
+    };
 
     static final Set<Square> TESTSQUARES =
             new HashSet<>(Arrays.asList(

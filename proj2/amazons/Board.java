@@ -44,7 +44,9 @@ class Board {
 
     /** Copies MODEL into me. */
     void copy(Board model) {
-        if (model == this) return;
+        if (model == this) {
+            return;
+        }
 
         this._moveHistory = model._moveHistory;
         this._turn = model._turn;
@@ -161,12 +163,16 @@ class Board {
      *  empty. ASEMPTY may be null, in which case it has no effect. */
     boolean isUnblockedMove(Square from, Square to, Square asEmpty) {
 
-        if (!isLegal(from)) return false;
-        if (!from.isQueenMove(to)) return false;
-
+        if (!isLegal(from)) {
+            return false;
+        }
+        if (!from.isQueenMove(to)) {
+            return false;
+        }
         int dir = from.direction(to);
-        if (dir == -1) return false;
-
+        if (dir == -1) {
+            return false;
+        }
         int steps = max(abs(from.col() - to.col()),
                 abs(from.row() - to.row()));
         for (int i = 1; i <= steps; i++) {
@@ -270,7 +276,9 @@ class Board {
 
     /** Undo one move.  Has no effect on the initial board. */
     void undo() {
-        if (_moveHistory.empty()) return;
+        if (_moveHistory.empty()) {
+            return;
+        }
         Move move = _moveHistory.peek();
         put(get(move.to().col(), move.to().row()),
                 move.from().col(), move.from().row());
