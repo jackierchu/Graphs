@@ -187,7 +187,7 @@ class Board {
         return true;
     }
 
-    /** Implemented Helper method for isUnblockedMove */
+    /** Implemented helper method for isUnblockedMove */
 
     boolean isUnblockedBase(Square from, Square to, Square asEmpty) {
         int direction = from.direction(to);
