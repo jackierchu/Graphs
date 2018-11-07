@@ -50,8 +50,8 @@ class Board {
         this._turn = model._turn;
         this._winner = model._winner;
         Piece[][] newboard = new Piece[SIZE][SIZE];
-        for(int i = 0; i < SIZE; i++){
-            for(int j = 0; j < SIZE; j++){
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
                 newboard[i][j] = model.board[i][j];
             }
         }
@@ -65,8 +65,8 @@ class Board {
         _turn = WHITE;
         _winner = EMPTY;
 
-        for(int i = 0; i < SIZE; i++){
-            for(int j = 0; j < SIZE; j++){
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
                 board[i][j] = EMPTY;
             }
         }
@@ -102,7 +102,7 @@ class Board {
         String turnStr = _turn.toString();
         int numofLegalMoves = 0;
         Iterator<Move> itLegalMoves = legalMoves(_turn);
-        while (itLegalMoves.hasNext()){
+        while (itLegalMoves.hasNext()) {
             if(itLegalMoves.next() != null) {
                 numofLegalMoves++;
             }
@@ -167,7 +167,8 @@ class Board {
         int dir = from.direction(to);
         if(dir == -1) return false;
 
-        int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
+        int steps = max(abs(from.col() - to.col()),
+                abs(from.row() - to.row()));
         for(int i = 1; i <= steps; i++) {
             Square temp = from.queenMove(dir, i);
             if (temp == null) {
@@ -195,13 +196,15 @@ class Board {
         }
 
         int[] unitMoves = directionIterate[direction];
-        int steps = max(abs(from.col() - to.col()), abs(from.row() - to.row()));
+        int steps = max(abs(from.col() - to.col()),
+                abs(from.row() - to.row()));
 
-        for (int col = from.col() + unitMoves[0], row = from.row() + unitMoves[1], t = 0;
+        for (int col = from.col() + unitMoves[0],
+             row = from.row() + unitMoves[1], t = 0;
              t < steps;
              col += unitMoves[0], row += unitMoves[1], t += 1) {
             if (get(col, row) != EMPTY) {
-                if (asEmpty != null){
+                if (asEmpty != null) {
                     if (!(col == asEmpty.col() && row == asEmpty.row())) {
                         return false;
                     }
@@ -268,7 +271,8 @@ class Board {
     void undo() {
         if(_moveHistory.empty()) return;
         Move move = _moveHistory.peek();
-        put(get(move.to().col(),move.to().row()),move.from().col(), move.from().row());
+        put(get(move.to().col(),move.to().row()),
+                move.from().col(), move.from().row());
         put(EMPTY, move.to().col(), move.to().row());
         put(EMPTY, move.spear().col(),move.spear().row());
         switchMove();
@@ -325,7 +329,7 @@ class Board {
 
         private Square getNext() {
             if(_dir < 8) {
-                if(_from == null){
+                if(_from == null) {
                     return null;
                 }
                 Square nextVisited = _from.queenMove(_dir, _steps);
@@ -334,7 +338,9 @@ class Board {
                     return getNext();
                 }
 
-                if (nextVisited != _asEmpty && board[nextVisited.col()][nextVisited.row()] != EMPTY) {
+                if (nextVisited != _asEmpty
+                        && board[nextVisited.col()][nextVisited.row()]
+                        != EMPTY) {
                     toNext();
                     return getNext();
                 }
@@ -390,7 +396,7 @@ class Board {
         }
 
         private Move getNextMove() {
-            if(!_spearThrows.hasNext()){
+            if(!_spearThrows.hasNext()) {
                 toNext();
             }
             if(!_spearThrows.hasNext()) {
@@ -409,29 +415,33 @@ class Board {
          *  _start-_nextSquare(sp), where sp is the next value of
          *  _spearThrows. */
         private void toNext() {
-            if(!_pieceMoves.hasNext()){
-                while(_startingSquares.hasNext()){
+            if(!_pieceMoves.hasNext()) {
+                while(_startingSquares.hasNext()) {
                     Square startSquare = _startingSquares.next();
-                    if(board[startSquare.col()][startSquare.row()] == _fromPiece){
+                    if(board[startSquare.col()][startSquare.row()] ==
+                            _fromPiece) {
                         _start = startSquare;
                         _hasNext = true;
-                        _pieceMoves = new ReachableFromIterator(_start, null);
+                        _pieceMoves = new ReachableFromIterator(_start,
+                                null);
                         if (_pieceMoves.hasNext()) {
                             break;
                         }
                     }
                 }
 
-                if(!_startingSquares.hasNext()){
+                if(!_startingSquares.hasNext()) {
                     _hasNext = false;
                 }
 
-                _pieceMoves = new ReachableFromIterator(_start, null);
+                _pieceMoves = new ReachableFromIterator(_start,
+                        null);
             }
 
             _nextSquare = _pieceMoves.next();
             if(_nextSquare != null) {
-                _spearThrows = new ReachableFromIterator(_nextSquare, _start);
+                _spearThrows = new ReachableFromIterator(_nextSquare,
+                        _start);
             }
         }
 
@@ -459,8 +469,9 @@ class Board {
         for(int row = SIZE - 1; row >= 0; row--) {
             boardFormatter.format(" ");
             boardFormatter.format(" ");
-            for(int col = 0; col < SIZE; col++){
-                boardFormatter.format(" " + get(col, row).toString());
+            for(int col = 0; col < SIZE; col++) {
+                boardFormatter.format(" " +
+                        get(col, row).toString());
             }
             boardFormatter.format("\n");
         }

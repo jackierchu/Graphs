@@ -80,7 +80,7 @@ final class Controller {
     /** Play Amazons. */
     void doManual(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn.equals("white")){
+        if(turn.equals("white")) {
             _white = _manualPlayerTemplate.create(WHITE, this);
         }
         else if(turn.equals("black")) {
@@ -94,10 +94,10 @@ final class Controller {
     /** Play Amazons. */
     void doAuto(Matcher matcher) {
         String turn = matcher.group(1);
-        if(turn.equals("white")){
+        if(turn.equals("white")) {
             _white = _autoPlayerTemplate.create(WHITE, this);
         }
-        else if(turn.equals("black")){
+        else if(turn.equals("black")) {
             _black = _autoPlayerTemplate.create(BLACK, this);
         }
         else{
@@ -109,16 +109,16 @@ final class Controller {
     void doMove(Matcher matcher) {
         try {
             Move m = Move.mv(matcher.group());
-            if(_board.isLegal(m)){
+            if(_board.isLegal(m)) {
                 _board.makeMove(m);
             }
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             throw error("Incorrect Move");
         }
     }
 
-    void doMoveAlt(Matcher matcher){
+    void doMoveAlt(Matcher matcher) {
         String pattern = matcher.group();
         Scanner scanner = new Scanner(pattern);
         String from = scanner.next();
@@ -127,11 +127,11 @@ final class Controller {
         try{
             Move m= Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
 
-            if(_board.isLegal(m)){
+            if(_board.isLegal(m)) {
                 _board.makeMove(m);
             }
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             throw error("Incorrect Move");
         }
     }

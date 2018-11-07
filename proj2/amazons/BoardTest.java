@@ -561,7 +561,7 @@ public class BoardTest {
         System.out.println(b.toString());
         int i = 0;
         Iterator<Move> thisOne = b.legalMoves(WHITE);
-        while (thisOne.hasNext()){
+        while (thisOne.hasNext()) {
             Move a = thisOne.next();
             if (a != null) {
                 i += 1;

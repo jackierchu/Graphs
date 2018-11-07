@@ -53,9 +53,11 @@ class AI extends Player {
     private Move findMove() {
         Board b = new Board(board());
         if (_myPiece == WHITE) {
-            findMove(b, maxDepth(b), true, 1, -INFTY, INFTY);
+            findMove(b, maxDepth(b),
+                    true, 1, -INFTY, INFTY);
         } else {
-            findMove(b, maxDepth(b), true, -1, -INFTY, INFTY);
+            findMove(b, maxDepth(b),
+                    true, -1, -INFTY, INFTY);
         }
         return _lastFoundMove;
     }
@@ -70,25 +72,25 @@ class AI extends Player {
      *  and minimal value or value < ALPHA if SENSE==-1. Searches up to
      *  DEPTH levels.  Searching at level 0 simply returns a static estimate
      *  of the board value and does not set _lastMoveFound. */
-    private int findMove(Board board, int depth, boolean saveMove, int sense,
-                         int alpha, int beta) {
+    private int findMove(Board board, int depth, boolean saveMove,
+                         int sense, int alpha, int beta) {
         if (depth == 0 || board.winner() != null) {
             return staticScore(board);
         }
 
         ArrayList<Move> moves = new ArrayList<>();
         Iterator<Move> newMoves = board.legalMoves();
-        while(newMoves.hasNext()){
+        while(newMoves.hasNext()) {
             Move current = newMoves.next();
             if(current != null) {
                 moves.add(current);
             }
         }
 
-        if(sense == 1){
+        if(sense == 1) {
             int bestSofarAlpha = -INFTY;
             Move bestMove = moves.get(0);
-            for(Move m: moves){
+            for(Move m: moves) {
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
@@ -98,18 +100,17 @@ class AI extends Player {
                 }
                 board.undo();
                 alpha = Math.max(alpha, bestSofarAlpha);
-                if(beta <= alpha){
+                if(beta <= alpha) {
                     break;
                 }
             }
             _lastFoundMove = bestMove;
-//            System.out.println("bestSofarAlpha: " + bestSofarAlpha);
             return bestSofarAlpha;
         }
         else {
             int bestSofarBeta = INFTY;
             Move bestMove = moves.get(0);
-            for(Move m: moves){
+            for(Move m: moves) {
                 board.makeMove(m);
                 int res = findMove(board, depth - 1,
                         saveMove, -1, alpha, beta);
@@ -119,12 +120,11 @@ class AI extends Player {
                 }
                 board.undo();
                 beta = Math.min(beta, bestSofarBeta);
-                if(beta <= alpha){
+                if(beta <= alpha) {
                     break;
                 }
             }
             _lastFoundMove = bestMove;
-//            System.out.println("bestSofarBeta: " + bestSofarBeta);
             return bestSofarBeta;
         }
     }
@@ -156,14 +156,15 @@ class AI extends Player {
     }
 
     /** Implemented Helper method for number of side moves */
-    private int numSideMoves(Board board, Piece side){
+    private int numSideMoves(Board board, Piece side) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int col = 0; col < board.SIZE; col++) {
             for (int row = 0; row < board.SIZE; row++) {
                 if (board.get(col, row) == side) {
                     Piece newPiece = board.get(col, row);
-                    Iterator<Move> newMoves = board.legalMoves(newPiece);
-                    while(newMoves.hasNext()){
+                    Iterator<Move> newMoves =
+                            board.legalMoves(newPiece);
+                    while(newMoves.hasNext()) {
                         Move current = newMoves.next();
                         if(current != null) {
                             moves.add(newMoves.next());

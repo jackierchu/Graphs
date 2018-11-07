@@ -31,7 +31,8 @@ class TextPlayer extends Player {
             "new","dump","seed","manual","auto", "quit"
     ));
 
-    private final String regex1 = "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+    private final String regex1 =
+            "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
     private final String regex2 = "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
 
     @Override

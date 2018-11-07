@@ -47,7 +47,8 @@ final class Square {
         if(this == to) {
             return false;
         }
-        if(this.row() != to.row() && this.col() != to.col() && abs(this.row() - to.row()) != abs(this.col() - to.col())) {
+        if(this.row() != to.row() && this.col() != to.col()
+                && abs(this.row() - to.row()) != abs(this.col() - to.col())) {
             return false;
         }
         return true;
@@ -67,17 +68,17 @@ final class Square {
      *  If DIR has another value, return null. Thus, unless the result
      *  is null the resulting square is a queen move away rom me. */
     Square queenMove(int dir, int steps) {
-        if(dir < 0 || dir > 7){
+        if(dir < 0 || dir > 7) {
             return null;
         }
 
-        if(steps <= 0){
+        if(steps <= 0) {
             return null;
         }
 
         int col = this.col() + steps * DIR[dir][0];
         int row = this.row() + steps * DIR[dir][1];
-        if(exists(col, row)){
+        if(exists(col, row)) {
             return sq(col, row);
         }
 
@@ -144,7 +145,7 @@ final class Square {
     /** Return the (unique) Square denoting the position COL ROW, where
      *  COL ROW is the standard text format for a square (e.g., a4). */
     static Square sq(String col, String row) {
-        if(col.length() > 1 || row.length() > 1){
+        if(col.length() > 1 || row.length() > 1) {
             throw error("row or column out of bounds");
         }
 
