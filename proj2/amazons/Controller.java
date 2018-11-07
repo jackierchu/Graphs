@@ -103,11 +103,11 @@ final class Controller {
     /** Play Amazons. */
     void doMove(Matcher matcher) {
         Move m = Move.mv(matcher.group());
-        if(m == null){
+        if (m == null) {
             throw error("Incorrect Move");
         }
 
-        if(_board.isLegal(m)){
+        if (_board.isLegal(m)) {
             _board.makeMove(m);
         }
     }
@@ -119,13 +119,13 @@ final class Controller {
         String to = scanner.next();
         String spear = scanner.next();
 
-        if(from == null || to == null || spear == null){
+        if (from == null || to == null || spear == null) {
             throw error("Incorrect Move");
         }
 
-        Move m= Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
+        Move m = Move.mv(Square.sq(from), Square.sq(to), Square.sq(spear));
 
-        if(_board.isLegal(m)){
+        if (_board.isLegal(m)) {
             _board.makeMove(m);
         }
     }
