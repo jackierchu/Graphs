@@ -1,7 +1,7 @@
 package amazons;
 
 /** A Player that takes input from a GUI.
- *  @author
+ *  @author Jacqueline Chu
  */
 class GUIPlayer extends Player implements Reporter {
 
