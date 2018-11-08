@@ -110,7 +110,6 @@ public class BoardTest {
         ArrayList<Square> newSquare = new ArrayList<>();
         while (newIterator.hasNext()) {
             Square newest = newIterator.next();
-            System.out.println(newest);
         }
     }
 
@@ -127,11 +126,9 @@ public class BoardTest {
             newBoard.put(SPEAR, j, 4);
         }
 
-        System.out.println(newBoard.toString());
         Iterator<Move> newMove = newBoard.legalMoves(WHITE);
         while (newMove.hasNext()) {
             Move current = newMove.next();
-            System.out.println(current.toString());
         }
     }
 
@@ -604,7 +601,6 @@ public class BoardTest {
         b.put(SPEAR, 8, 2);
         b.put(SPEAR, 8, 4);
 
-        System.out.println(b.toString());
         int i = 0;
         Iterator<Move> thisOne = b.legalMoves(WHITE);
         while (thisOne.hasNext()) {
@@ -613,7 +609,6 @@ public class BoardTest {
                 i += 1;
             }
         }
-        System.out.println(i);
 
     }
 
