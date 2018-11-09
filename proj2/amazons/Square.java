@@ -170,14 +170,14 @@ final class Square {
     }
 
     /** Created value for Square. */
-    public static final int minSquareIndex = 0;
+    public static final int MIN_SQUARE_INDEX = 0;
 
     /** Created Value for Square. */
-    public static final int maxSquareIndex = 99;
+    public static final int MAX_SQUARE_INDEX = 99;
 
     /** Return the Square with index INDEX. */
     private Square(int index) {
-        if (index < minSquareIndex && index > maxSquareIndex) {
+        if (index < MIN_SQUARE_INDEX && index > MAX_SQUARE_INDEX) {
             throw error("index out of bounds");
         }
         _index = index;

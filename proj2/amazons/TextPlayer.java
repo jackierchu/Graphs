@@ -25,12 +25,16 @@ class TextPlayer extends Player {
         return new TextPlayer(piece, controller);
     }
 
+    /** Implemented HashSet. */
     private final HashSet<String> commands = new HashSet<>(Arrays.asList(
             "new", "dump", "seed", "manual", "auto", "quit"
     ));
 
+    /** Implemented regex. */
     private final String regex1 =
             "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+
+    /** Implemented regex. */
     private final String regex2 =
             "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
 

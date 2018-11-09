@@ -8,11 +8,6 @@ import java.util.regex.Pattern;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-// This skeleton provides a bit of suggested structure.   It's up to you to
-// discover what needs to be added.  You are NOT required to reproduce the
-// GUI of the staff program.
-
-
 /** The GUI controller for an Amazons board and buttons.
  *  @author Jacqueline Chu
  */
@@ -24,8 +19,6 @@ class GUI extends TopLevel implements View, Reporter {
     /** A new window with given TITLE providing a view of an Amazons board. */
     GUI(String title) {
         super(title, true);
-        System.err.println("Error: --display not implemented.");
-        System.exit(2);
 
         addMenuButton("Game->Quit", this::quit);
         addMenuButton("Settings->Seed", this::newSeed);
