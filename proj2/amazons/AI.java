@@ -143,7 +143,7 @@ class AI extends Player {
         return whiteNumMoves - blackNumMoves;
     }
 
-    /** Implemented Helper method for number of side moves.
+    /** Implemented Helper function method for number of side moves.
      * @return Returns the number of side moves.
      * @param board  Board
      * @param side Side */

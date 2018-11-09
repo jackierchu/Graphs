@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import static amazons.Piece.*;
 import static amazons.Square.sq;
@@ -59,13 +60,40 @@ class BoardWidget extends Pad {
     private void drawGrid(Graphics2D g) {
         g.setColor(LIGHT_SQUARE_COLOR);
         g.fillRect(0, 0, BOARD_SIDE, BOARD_SIDE);
-        // FIXME
+
+        boolean isLightColor;
+        for(int i = 0; i < Board.SIZE; i++){
+            isLightColor = i % 2 == 0? true : false;
+            for(int j = 0; j < Board.SIZE; j++){
+                g.setColor(isLightColor? LIGHT_SQUARE_COLOR : DARK_SQUARE_COLOR);
+                g.fillRect(SQUARE_SIDE * i, SQUARE_SIDE * j, SQUARE_SIDE, SQUARE_SIDE);
+                isLightColor = !isLightColor;
+            }
+        }
+
+        for (int k = 0; k <= BOARD_SIDE; k += SQUARE_SIDE) {
+            g.drawLine(cx(k), cy(0), cx(k), cy(BOARD_SIDE));
+        }
+        for (int k = 0; k <= BOARD_SIDE; k += SQUARE_SIDE) {
+            g.drawLine(cx(0), cy(k), cx(BOARD_SIDE), cy(k));
+        }
     }
 
     @Override
     public synchronized void paintComponent(Graphics2D g) {
         drawGrid(g);
-        // FIXME
+        for(int i = 0; i < Board.SIZE; i++){
+            for(int j = 0; j < Board.SIZE; j++){
+                Piece piece = _board.get(i,j);
+                if(piece == WHITE || piece == BLACK) {
+                    drawQueen(g, sq(i, j), piece);
+                }
+                else if(piece == SPEAR){
+                    g.setColor(SPEAR_COLOR);
+                    g.fillRect(cx(i), cy(j), SQUARE_SIDE, SQUARE_SIDE);
+                }
+            }
+        }
     }
 
     /** Draw a queen for side PIECE at square S on G.  */
@@ -76,9 +104,45 @@ class BoardWidget extends Pad {
 
     /** Handle a click on S.*/
     private void click(Square s) {
-        // FIXME
-        repaint();
+        Piece current = _board.turn();
+        if(_numClicked % 3 == 1){
+            if(_board.get(s) == current){
+                _from = s;
+            }
+            else{
+                if(_numClicked > 0) _numClicked--;
+                warn("Invalid from position for this queen. Please try again");
+            }
+        }
+        else if(_numClicked % 3 == 2){
+            _to = s;
+            if(_board.isLegal(_from, _to)){
+                _to = s;
+            }
+            else{
+                if(_numClicked > 0) _numClicked--;
+                warn("Invalid to position for this queen. Please try again");
+            }
+        }
+        else{
+            _spear = s;
+            if(_board.isLegal(_from, _to, _spear)){
+                _spear = s;
+                _commands.add(_from + " " + _to + " " + _spear);
+                repaint();
+                _numClicked = 0;
+            }
+            else{
+                if(_numClicked > 0) _numClicked--;
+                warn("Invalid spear position. Please try again");
+            }
+        }
     }
+
+    private static void warn(String message){
+        JOptionPane.showMessageDialog(null, message, "warning", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
     /** Handle mouse click event E. */
     private synchronized void mouseClicked(String unused, MouseEvent e) {
@@ -141,4 +205,9 @@ class BoardWidget extends Pad {
 
     /** True iff accepting moves from user. */
     private boolean _acceptingMoves;
+
+    private int _numClicked = 0;
+    private Square _from;
+    private Square _to;
+    private Square _spear;
 }
