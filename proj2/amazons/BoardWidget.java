@@ -8,18 +8,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import static amazons.Piece.*;
 import static amazons.Square.sq;
-import static amazons.Move.mv;
-
-// This skeleton provides a bit of suggested structure.   It's up to you to
-// discover what needs to be added.  You are NOT required to reproduce the
-// GUI of the staff program.
 
 /** A widget that displays an Amazons game.
  *  @author Jacqueline
@@ -80,7 +74,7 @@ class BoardWidget extends Pad {
                     cx(s.col()) + 2, cy(s.row()) + 4, null);
     }
 
-    /** Handle a click on S. */
+    /** Handle a click on S.*/
     private void click(Square s) {
         // FIXME
         repaint();

@@ -1,9 +1,4 @@
 package amazons;
-
-// NOTICE:
-// This file is a SUGGESTED skeleton.  NOTHING here or in any other source
-// file is sacred.  If any of it confuses you, throw it out and do it your way.
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import static amazons.Piece.*;
@@ -148,7 +143,10 @@ class AI extends Player {
         return whiteNumMoves - blackNumMoves;
     }
 
-    /** Implemented Helper method for number of side moves */
+    /** Implemented Helper method for number of side moves.
+     * @return Returns the number of side moves.
+     * @param board  Board
+     * @param side Side */
     private int numSideMoves(Board board, Piece side) {
         ArrayList<Move> moves = new ArrayList<>();
         for (int col = 0; col < board.SIZE; col++) {

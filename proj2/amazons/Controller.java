@@ -74,7 +74,8 @@ final class Controller {
         }
     }
 
-    /** Play Amazons. */
+    /** Play Amazons.
+     * @param matcher matcher */
     void doManual(Matcher matcher) {
         String turn = matcher.group(1);
         if (turn.equals("white")) {
@@ -87,7 +88,8 @@ final class Controller {
         }
     }
 
-    /** Play Amazons. */
+    /** Play Amazons.
+     * @param matcher matcher */
     void doAuto(Matcher matcher) {
         String turn = matcher.group(1);
         if (turn.equals("white")) {
@@ -100,7 +102,8 @@ final class Controller {
         }
     }
 
-    /** Play Amazons. */
+    /** Play Amazons.
+     * @param matcher matcher */
     void doMove(Matcher matcher) {
         Move m = Move.mv(matcher.group());
         if (m == null) {
@@ -111,7 +114,8 @@ final class Controller {
             _board.makeMove(m);
         }
     }
-
+    /** DoMove Method.
+     * @param matcher matcher */
     void doMoveAlt(Matcher matcher) {
         String pattern = matcher.group();
         Scanner scanner = new Scanner(pattern);
@@ -196,9 +200,10 @@ final class Controller {
         /** The function object that implements my command. */
         protected final Consumer<Matcher> _processor;
     }
-
+    /** Created regex. */
     private final String regex1 =
             "[a-z][0-9]+[-][a-z][0-9]+[(][a-z][0-9]+[)]";
+    /** Created regex. */
     private final String regex2 =
             "[a-z][0-9]+\\s+[a-z][0-9]+\\s+[a-z][0-9]+\\s+";
 

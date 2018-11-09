@@ -1,9 +1,4 @@
 package amazons;
-
-// NOTICE:
-// This file is a SUGGESTED skeleton.  NOTHING here or in any other source
-// file is sacred.  If any of it confuses you, throw it out and do it your way.
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Formatter;
@@ -19,8 +14,8 @@ import static amazons.Move.mv;
  *  @author Jacqueline Chu
  */
 class Board {
-
-    int count = 0;
+    /** Returning integer of count 0. */
+    private int count = 0;
     /** The number of squares on a side of the board. */
     static final int SIZE = 10;
 
@@ -193,7 +188,11 @@ class Board {
         return true;
     }
 
-    /** Implemented helper method for isUnblockedMove */
+    /** Implemented helper method for isUnblockedMove.
+     * @return Base of isUnblocked
+     * @param asEmpty asEmpty
+     * @param from from
+     * @param to to */
 
     boolean isUnblockedBase(Square from, Square to, Square asEmpty) {
         int direction = from.direction(to);
@@ -259,7 +258,7 @@ class Board {
         switchMove();
     }
 
-    /** Implemented Function */
+    /** Implemented Function. */
     void switchMove() {
         if (_turn == WHITE) {
             _turn = BLACK;
@@ -335,7 +334,8 @@ class Board {
             _next = getNext();
             return temp;
         }
-
+        /** Implemented getNext function.
+         * @return The next move */
         private Square getNext() {
             if (_dir < 8) {
                 if (_from == null) {
@@ -403,7 +403,8 @@ class Board {
             _nextMove = getNextMove();
             return temp;
         }
-
+        /** Implemented getNextMove function.
+         * @return Get the next move */
         private Move getNextMove() {
             if (!_spearThrows.hasNext()) {
                 toNext();
@@ -467,7 +468,7 @@ class Board {
         private Iterator<Square> _spearThrows;
         /** Has next variable. */
         private boolean _hasNext;
-        /** Next Move */
+        /** Next Move. */
         private Move _nextMove;
     }
 
@@ -495,9 +496,9 @@ class Board {
     /** Cached value of winner on this board, or EMPTY if it has not been
      *  computed. */
     private Piece _winner;
-    /** 2D array that have the pieces for every location that is on board */
+    /** 2D array that have the pieces for every location that is on board. */
     private Piece [][] board;
-    /** Stack that holds the history of moves */
+    /** Stack that holds the history of moves. */
     private Stack<Move> _moveHistory;
 
 }

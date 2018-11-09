@@ -169,9 +169,15 @@ final class Square {
         return SQUARE_LIST.iterator();
     }
 
+    /** Created value for Square. */
+    public static final int minSquareIndex = 0;
+
+    /** Created Value for Square. */
+    public static final int maxSquareIndex = 99;
+
     /** Return the Square with index INDEX. */
     private Square(int index) {
-        if (index < 0 && index > 99) {
+        if (index < minSquareIndex && index > maxSquareIndex) {
             throw error("index out of bounds");
         }
         _index = index;

@@ -106,7 +106,8 @@ public class BoardTest {
         for (int i = 1; i < 9; i++) {
             newBoard.put(SPEAR, 3, i);
         }
-        Iterator<Square> newIterator = newBoard.reachableFrom(Square.sq(0, 3), null);
+        Iterator<Square> newIterator =
+                newBoard.reachableFrom(Square.sq(0, 3), null);
         ArrayList<Square> newSquare = new ArrayList<>();
         while (newIterator.hasNext()) {
             Square newest = newIterator.next();
