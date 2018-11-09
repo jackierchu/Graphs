@@ -137,34 +137,41 @@ class AI extends Player {
             return WINNING_VALUE;
         }
 
-        int whiteNumMoves = numSideMoves(board, WHITE);
-        int blackNumMoves = numSideMoves(board, BLACK);
+        Piece current = board.turn();
 
-        return whiteNumMoves - blackNumMoves;
+        int flag;
+        if(current == WHITE){
+            flag = 1;
+        }
+        else {
+            flag = -1;
+        }
+
+        return flag * numReachableMoves(board, current);
     }
 
     /** Implemented Helper function method for number of side moves.
      * @return Returns the number of side moves.
      * @param board  Board
      * @param side Side */
-    private int numSideMoves(Board board, Piece side) {
-        ArrayList<Move> moves = new ArrayList<>();
-        for (int col = 0; col < board.SIZE; col++) {
-            for (int row = 0; row < board.SIZE; row++) {
-                if (board.get(col, row) == side) {
-                    Piece newPiece = board.get(col, row);
-                    Iterator<Move> newMoves =
-                            board.legalMoves(newPiece);
-                    while (newMoves.hasNext()) {
-                        Move current = newMoves.next();
-                        if (current != null) {
-                            moves.add(newMoves.next());
-                        }
-                    }
+    private int numReachableMoves(Board board, Piece side) {
+        ArrayList<Square> queens = new ArrayList<>();
+        int count = 0;
+        for(int i = 0; i < Board.SIZE; i++){
+            for(int j = 0; j < Board.SIZE; j++){
+                if(board.get(i, j) == side){
+                    queens.add(Square.sq(i,j));
                 }
             }
         }
-        return moves.size();
+        for(Square q : queens){
+            Iterator<Square> reachableMoves = board.reachableFrom(q, null);
+            while (reachableMoves.hasNext()){
+                count++;
+                reachableMoves.next();
+            }
+        }
+        return count;
     }
 
 }
