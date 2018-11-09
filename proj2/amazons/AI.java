@@ -140,10 +140,9 @@ class AI extends Player {
         Piece current = board.turn();
 
         int flag;
-        if(current == WHITE){
+        if (current == WHITE) {
             flag = 1;
-        }
-        else {
+        } else {
             flag = -1;
         }
 
@@ -157,16 +156,16 @@ class AI extends Player {
     private int numReachableMoves(Board board, Piece side) {
         ArrayList<Square> queens = new ArrayList<>();
         int count = 0;
-        for(int i = 0; i < Board.SIZE; i++){
-            for(int j = 0; j < Board.SIZE; j++){
-                if(board.get(i, j) == side){
-                    queens.add(Square.sq(i,j));
+        for (int i = 0; i < Board.SIZE; i++) {
+            for (int j = 0; j < Board.SIZE; j++) {
+                if (board.get(i, j) == side) {
+                    queens.add(Square.sq(i, j));
                 }
             }
         }
-        for(Square q : queens){
+        for (Square q : queens) {
             Iterator<Square> reachableMoves = board.reachableFrom(q, null);
-            while (reachableMoves.hasNext()){
+            while (reachableMoves.hasNext()) {
                 count++;
                 reachableMoves.next();
             }
