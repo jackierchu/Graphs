@@ -22,6 +22,9 @@ class GUI extends TopLevel implements View, Reporter {
 
         addMenuButton("Game->Quit", this::quit);
         addMenuButton("Settings->Seed", this::newSeed);
+        addMenuButton("Play->Auto", this::auto);
+        addMenuButton("Play->Manual Black", this::manualBlack);
+        addMenuButton("Play->Manual White", this::manualWhite);
 
         _widget = new BoardWidget(_pendingCommands);
         add(_widget,
@@ -53,6 +56,25 @@ class GUI extends TopLevel implements View, Reporter {
             }
         }
     }
+
+    private void auto(String dummy) {
+        String autoblack = "auto black";
+        String autowhite = "auto white";
+        _pendingCommands.offer(autoblack);
+        _pendingCommands.offer(autowhite);
+    }
+
+    private void manualBlack(String dummy) {
+        String manualblack = "manual black";
+        _pendingCommands.offer(manualblack);
+    }
+
+    private void manualWhite(String dummy) {
+        String manualwhite = "manual white";
+        _pendingCommands.offer(manualwhite);
+    }
+
+
 
     /** Return the next command from our widget, waiting for it as necessary.
      *  The BoardWidget uses _pendingCommands to queue up moves that it
