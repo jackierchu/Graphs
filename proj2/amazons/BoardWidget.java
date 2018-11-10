@@ -107,42 +107,47 @@ class BoardWidget extends Pad {
     /** Handle a click on S.*/
     private void click(Square s) {
         Piece current = _board.turn();
-        if (_numClicked % 3 == 1) {
-            if(_board.get(s) == current) {
-                _from = s;
-            }
-            else {
-                if(_numClicked > 0) _numClicked--;
-                warn("Invalid from position for this queen.");
-            }
-        }
-        else if (_numClicked % 3 == 2) {
+        if (_numClicked % 3 == 2) {
             _to = s;
-            if(_board.isLegal(_from, _to)) {
+            if (_board.isLegal(_from, _to)) {
                 _to = s;
-            }
-            else {
-                if (_numClicked > 0) _numClicked--;
+            } else if (_numClicked > 0) {
+                _numClicked--;
+                warn("Invalid to position for this queen.");
+            } else {
                 warn("Invalid to position for this queen.");
             }
-        }
-        else {
+        } else if (_numClicked % 3 == 1) {
+            if (_board.get(s) == current) {
+                _from = s;
+            } else if (_numClicked > 0) {
+                _numClicked--;
+                warn("Invalid from position for this queen.");
+            } else {
+                warn("Invalid from position for this queen.");
+            }
+        } else {
             _spear = s;
             if (_board.isLegal(_from, _to, _spear)) {
                 _spear = s;
-                _commands.add(_from + " " + _to + " " + _spear);
+                String command = _from + " " + _to + " " + _spear;
+                _commands.add(command);
                 repaint();
                 _numClicked = 0;
-            }
-            else {
-                if (_numClicked > 0) _numClicked--;
+            } else if (_numClicked > 0) {
+                _numClicked--;
+                warn("Invalid spear position.");
+            } else {
                 warn("Invalid spear position.");
             }
         }
     }
 
-    private static void warn(String message){
-        JOptionPane.showMessageDialog(null, message, "warning", JOptionPane.INFORMATION_MESSAGE);
+    /** Warn message.
+     * @param message message */
+    private static void warn(String message) {
+        JOptionPane.showMessageDialog(null, message,
+                "warning", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Handle mouse click event E. */

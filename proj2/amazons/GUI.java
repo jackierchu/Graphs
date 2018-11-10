@@ -58,21 +58,22 @@ class GUI extends TopLevel implements View, Reporter {
         }
     }
 
+    /** Implemented. */
     private void autoBlack(String dummy) {
         String autoblack = "auto black";
         _pendingCommands.offer(autoblack);
     }
-
+    /** Implemented. */
     private void autoWhite(String dummy) {
         String autowhite = "auto white";
         _pendingCommands.offer(autowhite);
     }
-
+    /** Implemented. */
     private void manualBlack(String dummy) {
         String manualblack = "manual black";
         _pendingCommands.offer(manualblack);
     }
-
+    /** Implemented. */
     private void manualWhite(String dummy) {
         String manualwhite = "manual white";
         _pendingCommands.offer(manualwhite);
