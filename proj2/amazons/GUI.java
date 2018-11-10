@@ -22,7 +22,8 @@ class GUI extends TopLevel implements View, Reporter {
 
         addMenuButton("Game->Quit", this::quit);
         addMenuButton("Settings->Seed", this::newSeed);
-        addMenuButton("Play->Auto", this::auto);
+        addMenuButton("Play->Auto Black", this::autoBlack);
+        addMenuButton("Play->Auto White", this::autoWhite);
         addMenuButton("Play->Manual Black", this::manualBlack);
         addMenuButton("Play->Manual White", this::manualWhite);
 
@@ -57,10 +58,13 @@ class GUI extends TopLevel implements View, Reporter {
         }
     }
 
-    private void auto(String dummy) {
+    private void autoBlack(String dummy) {
         String autoblack = "auto black";
-        String autowhite = "auto white";
         _pendingCommands.offer(autoblack);
+    }
+
+    private void autoWhite(String dummy) {
+        String autowhite = "auto white";
         _pendingCommands.offer(autowhite);
     }
 
