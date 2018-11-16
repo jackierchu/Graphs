@@ -65,8 +65,37 @@ public class Graph {
     // an integer array consisting of the shortest distances from 'startVertex'
     // to all other vertices.
     public int[] dijkstras(int startVertex) {
-        // TODO: Your code here!
-        return null;
+//        explored = new HashSet<Integer>();
+//        int[] paths = new int[startVertex];
+//        explored.add(1);
+//        paths[0] = 0;
+//        while (explored.size() < startVertex){
+//            int w = -1;
+//            int l = 1000000;
+//            for (int node : explored){
+//                for (int[] edge : vertices.get(node - 1)){
+//                    if (!explored.contains(edge[0])){
+//                        if (paths[node-1] + edge[1] < l){
+//                            w = edge[0];
+//                            l = paths[node-1] + edge[1];
+//                        }
+//                    }
+//                }
+//            }
+//            if (w != -1){
+//                explored.add(w);
+//                paths[w-1] = l;
+//                //System.out.println(w + " " + l);
+//            } else {
+//                for (int i = 0; i < startVertex; i++){
+//                    if (!explored.contains(i+1)){
+//                        paths[i] = 1000000;
+//                    }
+//                }
+//                break;
+//            }
+//        }
+        return null; // return paths
     }
 
     // Returns the Edge object corresponding to the listed vertices, v1 and v2.

@@ -24,23 +24,20 @@ public class MazeDepthFirstPaths extends MazeExplorer {
         edgeTo[s] = s;
     }
 
-    private void dfs(int v) {
-        marked[v] = true;
+    private void dfs(int x) {
+        marked[x] = true;
         announce();
-
-        if (v == t) {
+        if (x == t) {
             targetFound = true;
         }
-
         if (targetFound) {
             return;
         }
-
-        for (int w : maze.adj(v)) {
+        for (int w : maze.adj(x)) {
             if (!marked[w]) {
-                edgeTo[w] = v;
+                edgeTo[w] = x;
                 announce();
-                distTo[w] = distTo[v] + 1;
+                distTo[w] = distTo[x] ++;
                 dfs(w);
                 if (targetFound) {
                     return;
