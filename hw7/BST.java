@@ -14,11 +14,19 @@ public class BST {
     }
 
     /**
-     * Provide a descriptive comment for this method here.
+     * Provide a descriptive comment for this method here. FIXED
      */
     private BSTNode linkedListToTree(Iterator iter, int n) {
-        // YOUR CODE HERE
-        return null;
+        if (n <= 0) {
+            return null;
+        }
+
+        BSTNode leftNode = linkedListToTree(iter, n/2);
+        root = new BSTNode(iter.next());
+        BSTNode rightNode = linkedListToTree(iter, n - n / 2 - 1);
+        root.left = leftNode;
+        root.right = rightNode;
+        return root;
     }
 
     /**
@@ -54,5 +62,8 @@ public class BST {
 
         /** Right child. */
         protected BSTNode right;
+        public BSTNode(Object i){
+            item = i;
+        }
     }
 }

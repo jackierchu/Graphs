@@ -29,11 +29,36 @@ public class RedBlackTree<T extends Comparable<T>> {
      * given node r, and returns the root node.
      *
      * @param r root of the 2-3-4 tree.
-     * @return root of the Red-Black tree for given 2-3-4 tree.
+     * @return root of the Red-Black tree for given 2-3-4 tree. FIXED
      */
     RBTreeNode<T> buildRedBlackTree(BTree.Node<T> r) {
-        // YOUR CODE HERE
-        return null;
+        RBTreeNode<T> roottree = null;
+        if (r == null) {
+            return null;
+        } else if (r.getItemCount() == 1) {
+            roottree = new RBTreeNode(
+                    true,
+                    r.getItemAt(0),
+                    buildRedBlackTree(r.getChildAt(0)), buildRedBlackTree(r.getChildAt(1)));
+        } else if (r.getItemCount() == 2) {
+            roottree = new RBTreeNode(
+                    true, r.getItemAt(0),
+                    buildRedBlackTree(r.getChildAt(0)), null);
+            roottree.right = new RBTreeNode(
+                    false, r.getItemAt(1),
+                    buildRedBlackTree(r.getChildAt(1)), buildRedBlackTree(r.getChildAt(2)));
+        } else if (r.getItemCount() == 3) {
+            roottree = new RBTreeNode(
+                    true, r.getItemAt(1));
+            roottree.left = new RBTreeNode(
+                    false, r.getItemAt(0),
+                    buildRedBlackTree(r.getChildAt(0)), buildRedBlackTree(r.getChildAt(1)));
+            roottree.right = new RBTreeNode(
+                    false, r.getItemAt(2),
+                    buildRedBlackTree(r.getChildAt(2)), buildRedBlackTree(r.getChildAt(3)));
+        }
+        return roottree;
+
     }
 
     /**
@@ -42,11 +67,19 @@ public class RedBlackTree<T extends Comparable<T>> {
      * immediately return the input node.
      *
      * @param node root of the given (sub)tree.
-     * @return new root of the (sub)tree.
+     *  FIXED
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // YOUR CODE HERE
-        return null;
+        if (node == null || node.right == null) {
+            return node;
+        }
+        RBTreeNode aNode = new RBTreeNode(
+                node.isBlack, node.left.item,
+                node.left.left, null);
+        aNode.right = new RBTreeNode(
+                false, node.item,
+                node.left.right, node.right);
+        return aNode;
     }
 
     /**
@@ -55,11 +88,20 @@ public class RedBlackTree<T extends Comparable<T>> {
      * immediately return the input node.
      *
      * @param node root of the given (sub)tree.
-     * @return new root of the (sub)tree.
+     * @return new root of the (sub)tree. FIXED
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // YOUR CODE HERE
-        return null;
+        if (node == null || node.right == null) {
+            return node;
+        }
+        RBTreeNode aNode = new RBTreeNode(
+                node.isBlack, node.right.item,
+                null, node.right.right);
+        aNode.left = new RBTreeNode(
+                false, node.item,
+                node.left, node.right.left);
+        return aNode;
+
     }
 
     /**
@@ -106,39 +148,36 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
 
-        // Insert (return) new red leaf node.
         if (node == null) {
-            // YOUR CODE HERE
-
+            return new RBTreeNode(false,item);
         }
 
-        // Handle normal binary search tree insertion.
         int comp = item.compareTo(node.item);
         if (comp == 0) {
             return node; // do nothing.
         } else if (comp < 0) {
-            // YOUR CODE HERE
+            node.left = insert(node.left, item);
 
         } else {
-            // YOUR CODE HERE
+            node.right = insert(node.right, item);
 
         }
 
         // handle case C and "Right-leaning" situation.
         if (isRed(node.right) && !isRed(node.left)) {
-            // YOUR CODE HERE
+            node = rotateLeft(node);
 
         }
 
         // handle case B
         if (isRed(node.left) && isRed(node.left.left)) {
-            // YOUR CODE HERE
+            node = rotateRight(node);
 
         }
 
         // handle case A
         if (isRed(node.left) && isRed(node.right)) {
-            // YOUR CODE HERE
+            flipColors(node);
 
         }
         return node;
