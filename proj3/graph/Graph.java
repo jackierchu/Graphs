@@ -20,8 +20,6 @@ package graph;
  *  Graphs may have self edges, but no multi-edges (edges with the same
  *  end points).
  *
- *  Edges in a Graph are ordered by the sequence in which they were added.
- *
  *  @author P. N. Hilfinger
  */
 public abstract class Graph {
@@ -64,7 +62,7 @@ public abstract class Graph {
     public abstract int add();
 
     /** Add an edge incident on U and V. If I am directed, the edge is
-     *  directed (leaves U and enters V).  Assumes U and V are my
+     *  directed (leaves U and enters V).  Requires that U and V are my
      *  vertices.  Has no effect if there is already an edge from U to
      *  V.  Returns a unique positive number identifying the edge,
      *  different from those returned for any other existing edge. */
@@ -79,12 +77,12 @@ public abstract class Graph {
     /** Returns an Iteration over all vertices in numerical order. */
     public abstract Iteration<Integer> vertices();
 
-    /** Returns an iteration over all successors of V in the order the edges
-     *  to them were added.  Empty if V is not my vertex. */
+    /** Returns an iteration over all successors of V.
+     *  Empty if V is not my vertex. */
     public abstract Iteration<Integer> successors(int v);
 
-    /** Returns an iteration over all predecessors of V in the order the edges
-     *  to them were added.  Empty if V is not my vertex. */
+    /** Returns an iteration over all predecessors of V.
+     *  Empty if V is not my vertex. */
     public abstract Iteration<Integer> predecessors(int v);
 
     /** Returns successors(V).  This is a synonym typically used on

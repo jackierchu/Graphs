@@ -73,7 +73,7 @@ class Proj3_Make_Tester(testing.Tester):
             std = self.to_lines(testing.contents(self.standard_output_file
                                                  (testid)))
             test_out = self.to_lines(self.stdout)
-            if set(std) != set(test_out):
+            if std != test_out:
                 self.reason = "Wrong sequence of rebuilding commands issued"
 
 show=None

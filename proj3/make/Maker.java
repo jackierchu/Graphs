@@ -8,12 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Set;
 import java.util.Scanner;
 
 import static java.util.Arrays.asList;
@@ -59,7 +57,7 @@ class Maker {
     void readMakefile(String makefileName) {
         Scanner inp;
         String target;
-        HashSet<String> dependencies;
+        ArrayList<String> dependencies;
         ArrayList<String> commands;
 
         target = null;
@@ -91,7 +89,7 @@ class Maker {
                     error("One or more bad prerequisites: '%s'",
                           parsed.group(2));
                 }
-                dependencies = new HashSet<>();
+                dependencies = new ArrayList<>();
                 if (!parsed.group(2).isEmpty()) {
                     dependencies.addAll(asList(SPACES.split(parsed.group(2))));
                 }
@@ -114,7 +112,7 @@ class Maker {
      *  to makegraph, or add DEPENDENCIES and COMMANDS to that rule, if it
      *  already exists.  Returns the rule. */
     private Rule addRule(String target,
-                         Set<String> dependencies,
+                         List<String> dependencies,
                          List<String> commands) {
         if (target != null) {
             Rule rule;
@@ -125,7 +123,7 @@ class Maker {
             }
             for (String dependency: dependencies) {
                 Rule depRule = addRule(dependency,
-                                       Collections.<String>emptySet(),
+                                       Collections.<String>emptyList(),
                                        Collections.<String>emptyList());
                 rule.addDependency(depRule);
             }
@@ -138,7 +136,7 @@ class Maker {
 
     /** Issue instructions to build TARGET. */
     void build(String target) {
-        Rule targetRule = addRule(target, Collections.<String>emptySet(),
+        Rule targetRule = addRule(target, Collections.<String>emptyList(),
                                   Collections.<String>emptyList());
         int v = targetRule.getVertex();
         if (_traversal == null) {
