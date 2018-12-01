@@ -3,6 +3,12 @@ package graph;
 /* See restrictions in Graph.java. */
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.TreeSet;
+import java.util.Comparator;
+import java.util.LinkedList;
+
+import java.util.List;
 
 /** The shortest paths through an edge-weighted graph.
  *  By overrriding methods getWeight, setWeight, getPredecessor, and
@@ -12,6 +18,18 @@ import java.util.List;
  *  @author
  */
 public abstract class ShortestPaths {
+
+    /** Implemented function. */
+    private final Comparator<Integer> NodeComparator = (o1, o2) -> {
+        double edge = getWeight(o1) + estimatedDistance(o1);
+        double newEdge = getWeight(o2) + estimatedDistance(o2);
+        if (edge < newEdge) {
+            return -1;
+        } else if (edge > newEdge) {
+            return 1;
+        }
+        return o1 - o2;
+    };
 
     /** The shortest paths in G from SOURCE. */
     public ShortestPaths(Graph G, int source) {
@@ -23,25 +41,45 @@ public abstract class ShortestPaths {
         _G = G;
         _source = source;
         _dest = dest;
-        // FIXME
+        _fringe = new TreeSet<>(NodeComparator);
+        // FIXME FIXED
     }
 
     /** Initialize the shortest paths.  Must be called before using
      *  getWeight, getPredecessor, and pathTo. */
     public void setPaths() {
-        // FIXME
+        // FIXME FIXED
+        _fringe.add(_source);
+        for (int v : _G.vertices()) {
+            setWeight(v, Double.MAX_VALUE);
+        }
+        setWeight(_source, 0);
+        while (_fringe.isEmpty() == false) {
+            int currentOne = _fringe.pollFirst();
+            if (currentOne == _dest) return;
+            for (int successor: _G.successors(currentOne)) {
+                double old = getWeight(successor);
+                double newer = getWeight(currentOne) + getWeight(currentOne, successor);
+                if (old > newer) {
+                    _fringe.remove(successor);
+                    setWeight(successor, newer);
+                    _fringe.add(successor);
+                    setPredecessor(successor, currentOne);
+                }
+            }
+        }
     }
 
     /** Returns the starting vertex. */
     public int getSource() {
-        // FIXME
-        return 0;
+        // FIXME FIXED
+        return _source;
     }
 
     /** Returns the target vertex, or 0 if there is none. */
     public int getDest() {
-        // FIXME
-        return 0;
+        // FIXME FIXED
+        return _dest;
     }
 
     /** Returns the current weight of vertex V in the graph.  If V is
@@ -73,8 +111,16 @@ public abstract class ShortestPaths {
      *  at V that represents a shortest path to V.  Invalid if there is a
      *  destination vertex other than V. */
     public List<Integer> pathTo(int v) {
-        // FIXME
-        return null;
+        // FIXME FIXED
+        LinkedList<Integer> result = new LinkedList<>();
+        while (getPredecessor(v) != 0) {
+            result.addFirst(v);
+            v = getPredecessor(v);
+        }
+        if (result.getFirst() != _source) {
+            result.addFirst(_source);
+        }
+        return result;
     }
 
     /** Returns a list of vertices starting at the source and ending at the
@@ -83,7 +129,7 @@ public abstract class ShortestPaths {
         return pathTo(getDest());
     }
 
-    // FIXME
+    // FIXME FIXED
 
     /** The graph being searched. */
     protected final Graph _G;
@@ -91,6 +137,8 @@ public abstract class ShortestPaths {
     private final int _source;
     /** The target vertex. */
     private final int _dest;
-    // FIXME
+    // FIXME FIXED
+    /** Implemented the fringe. */
+    protected TreeSet<Integer> _fringe;
 
 }

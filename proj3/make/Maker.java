@@ -2,6 +2,7 @@ package make;
 
 import graph.DepthFirstTraversal;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -40,16 +41,20 @@ class Maker {
         String name;
         name = "<unknown>";
         try {
-            Scanner inp = null; // FIXME
+            FileReader file = new FileReader(fileInfoName); /** I added */
+            Scanner inp = new Scanner(file); // FIXME
             _currentTime = inp.nextInt();
             while (inp.hasNext()) {
-                // FILL IN
+                // FILL IN Filled
+                _ages.put(inp.next(), inp.nextInt());
             }
             inp.close();
         } catch (NoSuchElementException excp) {
             error("Near entry for %s: %s", name, excp.getMessage());
+        } catch (FileNotFoundException excp) {
+            error(excp.getMessage());
         }
-        // FIXME?
+        // FIXME DON'T KNOW HOW TO FIX
     }
 
     /** Read make rules from the file named MAKEFILENAME and form the dependence
@@ -64,10 +69,11 @@ class Maker {
         dependencies = null;
         commands = null;
         try {
-            inp = null;  // FIXME
-        } catch (NullPointerException excp) { // REPLACE WITH PROPER catch
-            // FILL IN
-            error("Could not find makefile: %s", makefileName);
+            FileReader file = new FileReader(makefileName);
+            inp = new Scanner(file);  // FIXME
+        } catch (FileNotFoundException excp) { // REPLACE WITH PROPER catch
+            // FILL IN FILLED
+            error(excp.getMessage());
             return;
         }
 
@@ -184,7 +190,8 @@ class Maker {
 
         @Override
         protected boolean postVisit(int v0) {
-            // FILL IN
+            // FILL IN FILLED
+            _depends.getLabel(v0).rebuild();
             return true;
         }
     }

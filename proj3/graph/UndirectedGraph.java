@@ -16,16 +16,14 @@ public class UndirectedGraph extends GraphObj {
 
     @Override
     public int inDegree(int v) {
-        // FIXME
-        return 0;
+        // FIXME FIXED
+        return outDegree(v);
     }
 
+    // FIXME FIXED
     @Override
     public Iteration<Integer> predecessors(int v) {
-        // FIXME
-        return null;
+        return successors(v);
     }
-
-    // FIXME
 
 }

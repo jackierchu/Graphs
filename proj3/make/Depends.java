@@ -8,9 +8,9 @@ import graph.LabeledGraph;
  *  @author
  */
 class Depends extends LabeledGraph<Rule, Integer> {
-    // REPLACE WITH SOLUTION
+    // REPLACE WITH SOLUTION //FIXME FIXED
     /** An empty dependency graph. */
     Depends() {
-        super(null);
+        super(new graph.DirectedGraph());
     }
 }

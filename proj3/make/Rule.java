@@ -22,14 +22,23 @@ class Rule {
 
     /** Add the target of DEPENDENT to my dependencies. */
     void addDependency(Rule dependent) {
-        // FILL IN
+        // FILL IN FILLED //FIXME FIXED
+        _depends.add(this.getVertex(), dependent.getVertex());
     }
 
     /** Add COMMANDS to my command set.  Signals IllegalStateException if
      *  COMMANDS is non-empty, but I already have a non-empty command set.
      */
     void addCommands(List<String> commands) {
-        // FILL IN
+        // FILL IN //FIXME FIXED
+        if (commands.isEmpty() == false && _commands.isEmpty() == false) {
+            throw new IllegalStateException();
+        } else {
+            for(int i = 0; i < commands.size(); i++){
+                String s = commands.get(i);
+                _commands.add(s);
+            }
+        }
     }
 
     /** Return the vertex representing me. */
@@ -55,14 +64,27 @@ class Rule {
     /** Check that dependencies are in fact built before it's time to rebuild
      *  a node. */
     private void checkFinishedDependencies() {
-        // FILL IN
+        // FILL IN FILLED //FIXME FIXED
+        for (int i : _depends.successors(getVertex())) {
+            boolean isUnfinished = _depends.getLabel(i).isUnfinished();
+            if (isUnfinished) {
+                error("Error: The build is unfinished.");
+            }
+        }
     }
 
     /** Return true iff I am out of date and need to be rebuilt (including the
      *  case where I do not exist).  Assumes that my dependencies are all
      *  successfully rebuilt. */
     private boolean outOfDate() {
-        // FILL IN
+        // FILL IN FILLED //FIXME FIXED
+        if (getTime() == null) return true;
+
+        for (Integer i : _depends.successors(getVertex())) {
+            if (getTime() < _depends.getLabel(i).getTime()) return true;
+            if (_depends.getLabel(i).getTime() == null) return true;
+        }
+
         return false;
     }
 
@@ -75,8 +97,15 @@ class Rule {
             if (_commands.isEmpty()) {
                 error("%s needs to be rebuilt, but has no commands",
                       _target);
+                //FILL IN BELOW //FIXME FIXED
+            } else {
+                _time = _maker.getCurrentTime();
+                for(int i = 0; i < _commands.size(); i++){
+                    String command = _commands.get(i);
+                    System.out.println(command);
+                }
             }
-            // FILL IN
+            // FILL IN FILLED ABOVE
         }
         _finished = true;
     }

@@ -4,6 +4,7 @@ import graph.DirectedGraph;
 import graph.LabeledGraph;
 import graph.SimpleShortestPaths;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Iterator;
 
 import static trip.Main.error;
 
@@ -27,7 +29,8 @@ class Trip {
         int n;
         n = 0;
         try {
-            Scanner inp = null; // REPLACE WITH SOLUTION
+            FileReader fileForMap = new FileReader(name);
+            Scanner inp = new Scanner(fileForMap); // REPLACE WITH SOLUTION REPLACED //FIXME FIXED
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {
@@ -43,7 +46,7 @@ class Trip {
                     break;
                 }
             }
-        } catch (NullPointerException excp) { // REPLACE WITH PROPER catch
+        } catch (FileNotFoundException excp) { // REPLACE WITH PROPER catch REPLACED //FIXME FIXED
             error(excp.getMessage());
         } catch (InputMismatchException excp) {
             error("bad entry #%d", n);
@@ -94,7 +97,7 @@ class Trip {
      *  Adjacent roads with the same name and direction are combined.
      *  */
     int reportSegment(int seq, int from, List<Integer> segment) {
-        // FILL THIS IN
+        // FILL THIS IN FILLED //FIXME FIXED
         return seq;
     }
 
@@ -123,7 +126,10 @@ class Trip {
         }
 
         // FILL THIS IN TO CREATE TWO EDGES LABELED WITH ROADS FROM V0 to V1
-        // AND BACK.
+        // AND BACK. //FIXME FIXED BELOW
+
+        _map.add(v0, v1, new Road(name, dir, length));
+        _map.add(v1, v0, new Road(name, dir.reverse(), length));
     }
 
     /** Represents the network of Locations and Roads. */
@@ -136,8 +142,8 @@ class Trip {
     private static class RoadMap extends LabeledGraph<Location, Road> {
         /** An empty RoadMap. */
         RoadMap() {
-            // REPLACE WITH SOLUTION
-            super(null);
+            // REPLACE WITH SOLUTION REPLACE //FIXME FIXED
+            super(new DirectedGraph());
         }
     }
 
@@ -151,14 +157,15 @@ class Trip {
 
         @Override
         protected double getWeight(int u, int v) {
-            // REPLACE WITH SOLUTION
-            return 0.0;
+            // REPLACE WITH SOLUTION //FIXME FIXED
+            return _map.getLabel(u, v).length();
         }
 
         @Override
         protected double estimatedDistance(int v) {
             // REPLACE WITH SOLUTION
-            return 0.0;
+            Location currentLocation = _map.getLabel(v);
+            return currentLocation.dist(_finalLocation); //FIXME FIXED
         }
 
         /** Location of the destination. */
