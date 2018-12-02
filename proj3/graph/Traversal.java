@@ -113,6 +113,17 @@ public abstract class Traversal {
         return false;
     }
 
+    /** Process the successors of vertex U.  Assumes U has been visited.  This
+     *  default implementation simply processes each successor using
+     *  processSuccessor. */
+    protected void processSuccessors(int u) {
+        for (int v : _G.successors(u)) {
+            if (processSuccessor(u, v)) {
+                _fringe.add(v);
+            }
+        }
+    }
+
     /** Process successor V to U.  Returns true iff V is then to
      *  be added to the fringe.  By default, returns true iff V is unmarked. */
     protected boolean processSuccessor(int u, int v) {

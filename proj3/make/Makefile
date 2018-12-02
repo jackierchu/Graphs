@@ -49,7 +49,7 @@ unit: default
 	java -ea -cp $(CPATH) make.UnitTest
 
 integration:
-	$(MAKE) -C ../testing make-check
+	$(MAKE) -C ../testing make check
 
 # 'make clean' will clean up stuff you can reconstruct.
 clean:
