@@ -92,5 +92,4 @@ public class GraphTest {
         assertEquals(5, g.vertexSize());
         assertEquals(2, g.edgeSize());
     }
-
 }

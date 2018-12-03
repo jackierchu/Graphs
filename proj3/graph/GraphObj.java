@@ -52,7 +52,8 @@ abstract class GraphObj extends Graph {
 
     @Override
     public int outDegree(int v) {
-        int result = _adjList.get(v).size();
+        int idx = _vertices.indexOf(v);
+        int result = _adjList.get(idx).size();
         return result;
         // FIXME FIXED
     }
@@ -113,7 +114,7 @@ abstract class GraphObj extends Graph {
             }
         }
         for(int i = 0; i < size; i++){
-            if(vertices.get(i) > 0){
+            if (vertices.get(i) > 0) {
                 return i+1;
             }
         }
@@ -197,10 +198,10 @@ abstract class GraphObj extends Graph {
     private void removeEdges(int v) {
         ArrayList<int[]> updated = new ArrayList<>();
         for(int i = 0; i < _edges.size(); i++){
-            int[] pair = _edges.get(i);
+            int[] pairOfEdges = _edges.get(i);
 
-            if (pair[0] != v && pair[1] != v) {
-                updated.add(pair);
+            if (pairOfEdges[0] != v && pairOfEdges[1] != v) {
+                updated.add(pairOfEdges);
             }
         }
         _edges = updated;

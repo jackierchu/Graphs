@@ -98,6 +98,41 @@ class Trip {
      *  */
     int reportSegment(int seq, int from, List<Integer> segment) {
         // FILL THIS IN FILLED //FIXME FIXED
+        Iterator<Integer> iterate = segment.iterator();
+        String secName = "";
+        String lastRoad = "";
+        String secDir = "";
+        double myDistance = 0;
+        int firstV = iterate.next();
+        int secV = iterate.next();
+        Road firstR = _map.getLabel(firstV, secV);
+        String firstD = firstR.direction().fullName();
+        String firstStreet = firstR.toString();
+        double firstDist = firstR.length();
+        for (int i = 0; iterate.hasNext(); i++) {
+            firstV = secV;
+            secV = iterate.next();
+            Road myR = _map.getLabel(firstV, secV);
+            secName = myR.toString();
+            Direction myD = myR.direction();
+            secDir = myD.fullName();
+            myDistance = myR.length();
+            if (secName.equals(firstStreet) && secDir.equals(firstD)) {
+                firstDist += myDistance;
+            } else {
+                System.out.printf("%d. Take %s %s for %.1f miles.%n",
+                        seq, firstStreet, firstD, firstDist);
+                seq += 1;
+                firstD = secDir;
+                firstDist = myDistance;
+                firstStreet = secName;
+            }
+            Location name = _map.getLabel(secV);
+            lastRoad = name.toString();
+        }
+        System.out.printf("%d. Take %s %s for %.1f miles to %s.%n",
+                seq, secName, secDir, firstDist, lastRoad);
+        seq += 1;
         return seq;
     }
 
