@@ -1,5 +1,7 @@
 package make;
 
+import graph.Iteration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +86,6 @@ class Rule {
             if (getTime() < _depends.getLabel(i).getTime()) return true;
             if (_depends.getLabel(i).getTime() == null) return true;
         }
-
         return false;
     }
 

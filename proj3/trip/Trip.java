@@ -98,40 +98,46 @@ class Trip {
      *  */
     int reportSegment(int seq, int from, List<Integer> segment) {
         // FILL THIS IN FILLED //FIXME FIXED
-        Iterator<Integer> iterate = segment.iterator();
-        String secName = "";
+        Iterator<Integer> iterateSegment = segment.iterator();
+        String currentStreet = "";
         String lastRoad = "";
-        String secDir = "";
-        double myDistance = 0;
-        int firstV = iterate.next();
-        int secV = iterate.next();
-        Road firstR = _map.getLabel(firstV, secV);
-        String firstD = firstR.direction().fullName();
-        String firstStreet = firstR.toString();
-        double firstDist = firstR.length();
-        for (int i = 0; iterate.hasNext(); i++) {
+        String currentDirection = "";
+        String previousDirection;
+        String previousStreet;
+        Road currentRoad;
+        double currentDistance;
+        double sumDistance;
+
+        int firstV = iterateSegment.next(),
+                secV = iterateSegment.next();
+
+        currentRoad = _map.getLabel(firstV, secV);
+        previousDirection = currentRoad.direction().fullName();
+        previousStreet = currentRoad.toString();
+        sumDistance = currentRoad.length();
+
+        while (iterateSegment.hasNext()) {
             firstV = secV;
-            secV = iterate.next();
-            Road myR = _map.getLabel(firstV, secV);
-            secName = myR.toString();
-            Direction myD = myR.direction();
-            secDir = myD.fullName();
-            myDistance = myR.length();
-            if (secName.equals(firstStreet) && secDir.equals(firstD)) {
-                firstDist += myDistance;
+            secV = iterateSegment.next();
+            currentRoad = _map.getLabel(firstV, secV);
+            currentStreet = currentRoad.toString();
+            currentDirection = currentRoad.direction().fullName();
+            currentDistance = currentRoad.length();
+            if (currentStreet.equals(previousStreet)
+                    && currentDirection.equals(previousDirection)) {
+                sumDistance += currentDistance;
             } else {
                 System.out.printf("%d. Take %s %s for %.1f miles.%n",
-                        seq, firstStreet, firstD, firstDist);
+                        seq, previousStreet, previousDirection, sumDistance);
                 seq += 1;
-                firstD = secDir;
-                firstDist = myDistance;
-                firstStreet = secName;
+                sumDistance = currentDistance;
+                previousStreet = currentStreet;
+                previousDirection = currentDirection;
             }
-            Location name = _map.getLabel(secV);
-            lastRoad = name.toString();
+            lastRoad = _map.getLabel(secV).toString();
         }
         System.out.printf("%d. Take %s %s for %.1f miles to %s.%n",
-                seq, secName, secDir, firstDist, lastRoad);
+                seq, currentStreet, currentDirection, sumDistance, lastRoad);
         seq += 1;
         return seq;
     }
