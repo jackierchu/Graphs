@@ -24,22 +24,25 @@ default:
 	$(MAKE) -C graph default
 	$(MAKE) -C make default
 	$(MAKE) -C trip default
+	$(MAKE) -C grader default
 
 check: unit integration
 
-unit:
+unit: default
 	$(MAKE) -C graph unit
 	$(MAKE) -C make unit
 	$(MAKE) -C trip unit
+	$(MAKE) -C grader unit
 
-integration:
+integration: default
 	$(MAKE) -C testing check
 
 # Check style of source files.
-style: $(CLASSES)
+style:
 	$(MAKE) STYLEPROG=$(STYLEPROG) -C graph style
 	$(MAKE) STYLEPROG=$(STYLEPROG) -C trip style
 	$(MAKE) STYLEPROG=$(STYLEPROG) -C make style
+	$(MAKE) STYLEPROG=$(STYLEPROG) -C grader style
 
 # 'make clean' will clean up stuff you can reconstruct.
 clean:
