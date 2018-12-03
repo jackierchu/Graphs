@@ -99,33 +99,34 @@ class Trip {
     int reportSegment(int seq, int from, List<Integer> segment) {
         // FILL THIS IN FILLED //FIXME FIXED
         Iterator<Integer> iterateSegment = segment.iterator();
+
+        double currentDistance;
+        double sumDistance;
         String currentStreet = "";
         String lastRoad = "";
         String currentDirection = "";
         String previousDirection;
         String previousStreet;
-        Road currentRoad;
-        double currentDistance;
-        double sumDistance;
+        Road firstRoad;
 
         int firstV = iterateSegment.next(),
                 secV = iterateSegment.next();
 
-        currentRoad = _map.getLabel(firstV, secV);
-        previousDirection = currentRoad.direction().fullName();
-        previousStreet = currentRoad.toString();
-        sumDistance = currentRoad.length();
+        firstRoad = _map.getLabel(firstV, secV);
+        previousDirection = firstRoad.direction().fullName();
+        previousStreet = firstRoad.toString();
+        sumDistance = firstRoad.length();
 
         while (iterateSegment.hasNext()) {
             firstV = secV;
             secV = iterateSegment.next();
-            currentRoad = _map.getLabel(firstV, secV);
-            currentStreet = currentRoad.toString();
-            currentDirection = currentRoad.direction().fullName();
-            currentDistance = currentRoad.length();
+            firstRoad = _map.getLabel(firstV, secV);
+            currentStreet = firstRoad.toString();
+            currentDirection = firstRoad.direction().fullName();
+            currentDistance = firstRoad.length();
             if (currentStreet.equals(previousStreet)
                     && currentDirection.equals(previousDirection)) {
-                sumDistance += currentDistance;
+                sumDistance = sumDistance + currentDistance;
             } else {
                 System.out.printf("%d. Take %s %s for %.1f miles.%n",
                         seq, previousStreet, previousDirection, sumDistance);
