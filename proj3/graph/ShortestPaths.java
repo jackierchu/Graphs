@@ -37,17 +37,22 @@ public abstract class ShortestPaths {
      *  getWeight, getPredecessor, and pathTo. */
     public void setPaths() {
         // FIXME FIXED
-        vertices = new Object[_G.vertexSize() + 1][3];
-        for (int i = 0; i < _G.vertexSize() + 1; i += 1) {
+        int length = _G.vertexSize() + 1;
+        vertices = new Object[length][3];
+
+        for (int i = 0; i < length; i++) {
             vertices[i][0] = i;
             vertices[i][1] = infinity;
             vertices[i][2] = 0;
         }
+
         vertices[_source][1] = 0.0;
         vertices[_source][2] = 0;
-        for (int j = _source; j < _G.vertexSize() + 1; j += 1) {
+
+        for (int j = _source; j < length; j++) {
             shortestpaths.add(j);
         }
+
         pathTo();
     }
 
@@ -94,29 +99,32 @@ public abstract class ShortestPaths {
     public List<Integer> pathTo(int v) {
         // FIXME FIXED
         outerloop:
-        while (!shortestpaths.isEmpty()) {
-            int vertex = shortestpaths.pollFirst();
-            for (int k : _G.successors(vertex)) {
-                if ((getWeight(vertex) + getWeight(vertex, k)) < getWeight(k)) {
-                    setWeight(k, getWeight(vertex) + getWeight(vertex, k));
-                    shortestpaths.remove(k);
-                    shortestpaths.add(k);
-                    setPredecessor(k, vertex);
+        while (shortestpaths.isEmpty() == false) {
+            int item = shortestpaths.pollFirst();
+            for (int s : _G.successors(item)) {
+                double newer = getWeight(item) + getWeight(item, s);
+                if ( newer < getWeight(s)) {
+                    setWeight(s, newer);
+                    shortestpaths.remove(s);
+                    shortestpaths.add(s);
+                    setPredecessor(s, item);
                 }
-                if (k == _dest) {
+                if (s == _dest) {
                     break outerloop;
                 }
             }
         }
 
         ArrayList<Integer> result = new ArrayList<>();
-        int a = v;
-        while (a != 0 && a != _source) {
-            result.add(a);
-            a = getPredecessor(a);
+        int value = v;
+        while (value != 0 && value != _source) {
+            result.add(value);
+            value = getPredecessor(value);
         }
-        result.add(a);
+
+        result.add(value);
         Collections.reverse(result);
+
         return result;
     }
 
@@ -140,12 +148,12 @@ public abstract class ShortestPaths {
     private Comparator<Integer> comparator = new Comparator<Integer>() {
         @Override
         public int compare(Integer o1, Integer o2) {
-            if (getWeight(o2) + estimatedDistance(o2)
-                    < getWeight(o1) + estimatedDistance(o1)) {
+            double first = getWeight(o1) + estimatedDistance(o1);
+            double second = getWeight(o2) + estimatedDistance(o2);
+            if ( second < first) {
                 return 1;
             }
-            if (getWeight(o2) + estimatedDistance(o2)
-                    > getWeight(o1) + estimatedDistance(o1)) {
+            else if (second > first) {
                 return -1;
             }
             return 0;
