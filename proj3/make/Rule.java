@@ -119,7 +119,7 @@ class Rule {
     private int _vertex;
     /** My command list. */
     private ArrayList<String> _commands = new ArrayList<>();
-    /** True iff I have been brought up to date. */
+    /** True if and only if I have been brought up to date. */
     private boolean _finished;
     /** My change time, or null if I don't exist. */
     private Integer _time;
