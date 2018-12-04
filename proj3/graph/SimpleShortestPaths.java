@@ -28,55 +28,48 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
     @Override
     public double getWeight(int v) {
         // FIXME FIXED
-        int index = -1;
-        for (int i = 0; i < vertices.length; i += 1) {
-            if ((int) vertices[i][0] == v) {
-                index = i;
-            }
+        int idx = -1;
+
+        for (int i = 0; i < vertices.length; i++) {
+            if ((int) vertices[i][0] == v) idx = i;
         }
-        if (index == -1) {
-            return infinity;
-        }
-        return (double) vertices[index][1];
+
+        if (idx == -1) return infinity;
+
+        return (double) vertices[idx][1];
     }
 
     @Override
     protected void setWeight(int v, double w) {
         // FIXME FIXED
-        int index = -1;
-        for (int i = 0; i < vertices.length; i += 1) {
-            if ((int) vertices[i][0] == v) {
-                index = i;
-            }
+        int idx = -1;
+        for (int i = 0; i < vertices.length; i++) {
+            if ((int) vertices[i][0] == v) idx = i;
         }
-        if (index == -1) {
-            return;
-        }
-        vertices[index][1] = w;
+
+        if (idx == -1) return;
+
+        vertices[idx][1] = w;
     }
 
     @Override
     public int getPredecessor(int v) {
         // FIXME
-        int index = -1;
-        for (int i = 0; i < vertices.length; i += 1) {
-            if ((int) vertices[i][0] == v) {
-                index = i;
-            }
+        int idx = -1;
+        for (int i = 0; i < vertices.length; i++) {
+            if ((int) vertices[i][0] == v) idx = i;
         }
-        return (int) vertices[index][2];
+        return (int) vertices[idx][2];
     }
 
     @Override
     protected void setPredecessor(int v, int u) {
         // FIXME FIXED
-        int index = -1;
-        for (int i = 0; i < vertices.length; i += 1) {
-            if ((int) vertices[i][0] == v) {
-                index = i;
-            }
+        int idx = -1;
+        for (int i = 0; i < vertices.length; i++) {
+            if ((int) vertices[i][0] == v) idx = i;
         }
-        vertices[index][2] = u;
+        vertices[idx][2] = u;
     }
 
     // FIXME FIXED

@@ -100,45 +100,44 @@ class Trip {
         // FILL THIS IN FILLED //FIXME FIXED
         Iterator<Integer> iterateSegment = segment.iterator();
 
-        double currentDistance;
-        double sumDistance;
-        String currentStreet = "";
+        double currDist;
+        double sumDist;
+        String currSt = "";
         String lastRoad = "";
-        String currentDirection = "";
+        String currDirection = "";
         String previousDirection;
-        String previousStreet;
+        String previousSt;
         Road firstRoad;
 
-        int firstV = iterateSegment.next(),
-                secV = iterateSegment.next();
+        int firstV = iterateSegment.next();
+        int secondV = iterateSegment.next();
 
-        firstRoad = _map.getLabel(firstV, secV);
+        firstRoad = _map.getLabel(firstV, secondV);
         previousDirection = firstRoad.direction().fullName();
-        previousStreet = firstRoad.toString();
-        sumDistance = firstRoad.length();
+        previousSt = firstRoad.toString();
+        sumDist = firstRoad.length();
 
         while (iterateSegment.hasNext()) {
-            firstV = secV;
-            secV = iterateSegment.next();
-            firstRoad = _map.getLabel(firstV, secV);
-            currentStreet = firstRoad.toString();
-            currentDirection = firstRoad.direction().fullName();
-            currentDistance = firstRoad.length();
-            if (currentStreet.equals(previousStreet)
-                    && currentDirection.equals(previousDirection)) {
-                sumDistance = sumDistance + currentDistance;
+            firstV = secondV;
+            secondV = iterateSegment.next();
+            firstRoad = _map.getLabel(firstV, secondV);
+            currSt = firstRoad.toString();
+            currDirection = firstRoad.direction().fullName();
+            currDist = firstRoad.length();
+            if (currSt.equals(previousSt) && currDirection.equals(previousDirection)) {
+                sumDist = sumDist + currDist;
             } else {
                 System.out.printf("%d. Take %s %s for %.1f miles.%n",
-                        seq, previousStreet, previousDirection, sumDistance);
+                        seq, previousSt, previousDirection, sumDist);
                 seq += 1;
-                sumDistance = currentDistance;
-                previousStreet = currentStreet;
-                previousDirection = currentDirection;
+                sumDist = currDist;
+                previousSt = currSt;
+                previousDirection = currDirection;
             }
-            lastRoad = _map.getLabel(secV).toString();
+            lastRoad = _map.getLabel(secondV).toString();
         }
         System.out.printf("%d. Take %s %s for %.1f miles to %s.%n",
-                seq, currentStreet, currentDirection, sumDistance, lastRoad);
+                seq, currSt, currDirection, sumDist, lastRoad);
         seq += 1;
         return seq;
     }
