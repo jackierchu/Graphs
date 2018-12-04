@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Collections;
 
 import java.util.List;
 
@@ -19,18 +20,6 @@ import java.util.List;
  */
 public abstract class ShortestPaths {
 
-    /** Implemented function. */
-    private final Comparator<Integer> NodeComparator = (o1, o2) -> {
-        double edge = getWeight(o1) + estimatedDistance(o1);
-        double newEdge = getWeight(o2) + estimatedDistance(o2);
-        if (edge < newEdge) {
-            return -1;
-        } else if (edge > newEdge) {
-            return 1;
-        }
-        return o1 - o2;
-    };
-
     /** The shortest paths in G from SOURCE. */
     public ShortestPaths(Graph G, int source) {
         this(G, source, 0);
@@ -41,7 +30,6 @@ public abstract class ShortestPaths {
         _G = G;
         _source = source;
         _dest = dest;
-        _fringe = new TreeSet<>(NodeComparator);
         // FIXME FIXED
     }
 
@@ -49,25 +37,18 @@ public abstract class ShortestPaths {
      *  getWeight, getPredecessor, and pathTo. */
     public void setPaths() {
         // FIXME FIXED
-        _fringe.add(_source);
-        for (int v : _G.vertices()) {
-            setWeight(v, Double.MAX_VALUE);
+        vertices = new Object[_G.vertexSize() + 1][3];
+        for (int i = 0; i < _G.vertexSize() + 1; i += 1) {
+            vertices[i][0] = i;
+            vertices[i][1] = infinity;
+            vertices[i][2] = 0;
         }
-        setWeight(_source, 0);
-        while (_fringe.isEmpty() == false) {
-            int currentOne = _fringe.pollFirst();
-            if (currentOne == _dest) return;
-            for (int successor: _G.successors(currentOne)) {
-                double old = getWeight(successor);
-                double newer = getWeight(currentOne) + getWeight(currentOne, successor);
-                if (old > newer) {
-                    _fringe.remove(successor);
-                    setWeight(successor, newer);
-                    _fringe.add(successor);
-                    setPredecessor(successor, currentOne);
-                }
-            }
+        vertices[_source][1] = 0.0;
+        vertices[_source][2] = 0;
+        for (int j = _source; j < _G.vertexSize() + 1; j += 1) {
+            shortestpaths.add(j);
         }
+        pathTo();
     }
 
     /** Returns the starting vertex. */
@@ -112,14 +93,30 @@ public abstract class ShortestPaths {
      *  destination vertex other than V. */
     public List<Integer> pathTo(int v) {
         // FIXME FIXED
-        LinkedList<Integer> result = new LinkedList<>();
-        while (getPredecessor(v) != 0) {
-            result.addFirst(v);
-            v = getPredecessor(v);
+        outerloop:
+        while (!shortestpaths.isEmpty()) {
+            int vertex = shortestpaths.pollFirst();
+            for (int k : _G.successors(vertex)) {
+                if ((getWeight(vertex) + getWeight(vertex, k)) < getWeight(k)) {
+                    setWeight(k, getWeight(vertex) + getWeight(vertex, k));
+                    shortestpaths.remove(k);
+                    shortestpaths.add(k);
+                    setPredecessor(k, vertex);
+                }
+                if (k == _dest) {
+                    break outerloop;
+                }
+            }
         }
-        if (result.getFirst() != _source) {
-            result.addFirst(_source);
+
+        ArrayList<Integer> result = new ArrayList<>();
+        int a = v;
+        while (a != 0 && a != _source) {
+            result.add(a);
+            a = getPredecessor(a);
         }
+        result.add(a);
+        Collections.reverse(result);
         return result;
     }
 
@@ -138,7 +135,25 @@ public abstract class ShortestPaths {
     /** The target vertex. */
     private final int _dest;
     // FIXME FIXED
-    /** Implemented the fringe. */
-    protected TreeSet<Integer> _fringe;
+    protected double infinity = Double.MAX_VALUE;
+    /** Comparator for my Treeset. */
+    private Comparator<Integer> comparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            if (getWeight(o2) + estimatedDistance(o2)
+                    < getWeight(o1) + estimatedDistance(o1)) {
+                return 1;
+            }
+            if (getWeight(o2) + estimatedDistance(o2)
+                    > getWeight(o1) + estimatedDistance(o1)) {
+                return -1;
+            }
+            return 0;
+        }
+    };
+    /** Treeset for priorit queue. */
+    private TreeSet<Integer> shortestpaths = new TreeSet<>(comparator);
+    /** Array of array to represent vertices. */
+    protected Object[][] vertices;
 
 }

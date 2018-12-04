@@ -9,10 +9,6 @@ package graph;
  */
 public abstract class SimpleShortestPaths extends ShortestPaths {
 
-    /** All the predecessors of the vertex. */
-    int[] predecessors;
-    /** Double array that has the weights for every vertex. */
-    double[] weights;
 
     /** The shortest paths in G from SOURCE. */
     public SimpleShortestPaths(Graph G, int source) {
@@ -22,9 +18,6 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
     /** A shortest path in G from SOURCE to DEST. */
     public SimpleShortestPaths(Graph G, int source, int dest) {
         super(G, source, dest);  // FIXME? FIXED
-        int maxVertex = G.maxVertex();
-        predecessors = new int[maxVertex + 1];
-        weights = new double[maxVertex + 1];
     }
 
     /** Returns the current weight of edge (U, V) in the graph.  If (U, V) is
@@ -35,25 +28,55 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
     @Override
     public double getWeight(int v) {
         // FIXME FIXED
-        return weights[v];
+        int index = -1;
+        for (int i = 0; i < vertices.length; i += 1) {
+            if ((int) vertices[i][0] == v) {
+                index = i;
+            }
+        }
+        if (index == -1) {
+            return infinity;
+        }
+        return (double) vertices[index][1];
     }
 
     @Override
     protected void setWeight(int v, double w) {
         // FIXME FIXED
-        weights[v] = w;
+        int index = -1;
+        for (int i = 0; i < vertices.length; i += 1) {
+            if ((int) vertices[i][0] == v) {
+                index = i;
+            }
+        }
+        if (index == -1) {
+            return;
+        }
+        vertices[index][1] = w;
     }
 
     @Override
     public int getPredecessor(int v) {
         // FIXME
-        return predecessors[v];
+        int index = -1;
+        for (int i = 0; i < vertices.length; i += 1) {
+            if ((int) vertices[i][0] == v) {
+                index = i;
+            }
+        }
+        return (int) vertices[index][2];
     }
 
     @Override
     protected void setPredecessor(int v, int u) {
         // FIXME FIXED
-        predecessors[getPredecessor(v)] = u;
+        int index = -1;
+        for (int i = 0; i < vertices.length; i += 1) {
+            if ((int) vertices[i][0] == v) {
+                index = i;
+            }
+        }
+        vertices[index][2] = u;
     }
 
     // FIXME FIXED
