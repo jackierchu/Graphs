@@ -34,19 +34,19 @@ public abstract class ShortestPaths {
      *  getWeight, getPredecessor, and pathTo. */
     public void setPaths() {
         int length = _G.vertexSize() + 1;
-        vertices = new Object[length][3];
+        theVertex = new Object[length][3];
 
         for (int i = 0; i < length; i++) {
-            vertices[i][0] = i;
-            vertices[i][1] = infinity;
-            vertices[i][2] = 0;
+            theVertex[i][0] = i;
+            theVertex[i][1] = infiniteValue;
+            theVertex[i][2] = 0;
         }
 
-        vertices[_source][1] = 0.0;
-        vertices[_source][2] = 0;
+        theVertex[_source][1] = 0.0;
+        theVertex[_source][2] = 0;
 
         for (int j = _source; j < length; j++) {
-            shortestpaths.add(j);
+            shortestPath.add(j);
         }
 
         pathTo();
@@ -92,14 +92,14 @@ public abstract class ShortestPaths {
      *  destination vertex other than V. */
     public List<Integer> pathTo(int v) {
         outerloop:
-        while (!shortestpaths.isEmpty()) {
-            int item = shortestpaths.pollFirst();
+        while (!shortestPath.isEmpty()) {
+            int item = shortestPath.pollFirst();
             for (int s : _G.successors(item)) {
                 double newer = getWeight(item) + getWeight(item, s);
                 if (newer < getWeight(s)) {
                     setWeight(s, newer);
-                    shortestpaths.remove(s);
-                    shortestpaths.add(s);
+                    shortestPath.remove(s);
+                    shortestPath.add(s);
                     setPredecessor(s, item);
                 }
                 if (s == _dest) {
@@ -121,21 +121,21 @@ public abstract class ShortestPaths {
         return result;
     }
 
-    /** Returns a list of vertices starting at the source and ending at the
-     *  destination vertex. Invalid if the destination is not specified. */
+    /** Returns list of vertices starting at the source and ending at the
+     *  destination. Invalid if the destination isn't specified. */
     public List<Integer> pathTo() {
         return pathTo(getDest());
     }
 
 
-    /** The graph being searched. */
+    /** The graph that is being searched. */
     protected final Graph _G;
-    /** The starting vertex. */
+    /** The starting vertex source. */
     private final int _source;
-    /** The target vertex. */
+    /** The target vertex dest. */
     private final int _dest;
-    /** Double infinity variable. */
-    protected double infinity = Double.MAX_VALUE;
+    /** Double variable for maximum value. */
+    protected double infiniteValue = Double.MAX_VALUE;
     /** Comparator for my Treeset. */
     private Comparator<Integer> comparator = new Comparator<Integer>() {
         @Override
@@ -150,9 +150,11 @@ public abstract class ShortestPaths {
             return 0;
         }
     };
-    /** Treeset for priorit queue. */
-    private TreeSet<Integer> shortestpaths = new TreeSet<>(comparator);
-    /** Array of array to represent vertices. */
-    protected Object[][] vertices;
+
+    /** Implemented double array object. */
+    protected Object[][] theVertex;
+    /** The treeset that provides shortest path. */
+    private TreeSet<Integer> shortestPath = new TreeSet<>(comparator);
+
 
 }

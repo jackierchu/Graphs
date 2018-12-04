@@ -29,24 +29,24 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
     public double getWeight(int v) {
         int idx = -1;
 
-        for (int i = 0; i < vertices.length; i++) {
-            if ((int) vertices[i][0] == v) {
+        for (int i = 0; i < theVertex.length; i++) {
+            if ((int) theVertex[i][0] == v) {
                 idx = i;
             }
         }
 
         if (idx == -1) {
-            return infinity;
+            return infiniteValue;
         }
 
-        return (double) vertices[idx][1];
+        return (double) theVertex[idx][1];
     }
 
     @Override
     protected void setWeight(int v, double w) {
         int idx = -1;
-        for (int i = 0; i < vertices.length; i++) {
-            if ((int) vertices[i][0] == v) {
+        for (int i = 0; i < theVertex.length; i++) {
+            if ((int) theVertex[i][0] == v) {
                 idx = i;
             }
         }
@@ -55,29 +55,29 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
             return;
         }
 
-        vertices[idx][1] = w;
+        theVertex[idx][1] = w;
     }
 
     @Override
     public int getPredecessor(int v) {
         int idx = -1;
-        for (int i = 0; i < vertices.length; i++) {
-            if ((int) vertices[i][0] == v) {
+        for (int i = 0; i < theVertex.length; i++) {
+            if ((int) theVertex[i][0] == v) {
                 idx = i;
             }
         }
-        return (int) vertices[idx][2];
+        return (int) theVertex[idx][2];
     }
 
     @Override
     protected void setPredecessor(int v, int u) {
         int idx = -1;
-        for (int i = 0; i < vertices.length; i++) {
-            if ((int) vertices[i][0] == v) {
+        for (int i = 0; i < theVertex.length; i++) {
+            if ((int) theVertex[i][0] == v) {
                 idx = i;
             }
         }
-        vertices[idx][2] = u;
+        theVertex[idx][2] = u;
     }
 
 }

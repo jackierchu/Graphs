@@ -44,7 +44,9 @@ public abstract class Traversal {
     /** Initialize the fringe to V0 and perform a traversal. */
     public void traverse(Collection<Integer> V0) {
         _fringe.clear();
-        _fringe.addAll(V0);
+        for (int a : V0) {
+            _fringe.add(a);
+        }
 
         while (!_fringe.isEmpty()) {
             int current = _fringe.remove();
@@ -52,9 +54,9 @@ public abstract class Traversal {
                 mark(current);
                 visit(current);
                 _fringe.add(current);
-                for (int value: _G.successors(current)) {
-                    if (processSuccessor(current, value)) {
-                        _fringe.add(value);
+                for (int adj: _G.successors(current)) {
+                    if (processSuccessor(current, adj)) {
+                        _fringe.add(adj);
                     }
                 }
             } else {
