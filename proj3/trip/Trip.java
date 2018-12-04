@@ -6,8 +6,6 @@ import graph.SimpleShortestPaths;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -20,7 +18,7 @@ import static trip.Main.error;
 
 /** Encapsulates a map containing sites, positions, and road distances between
  *  them.
- *  @author
+ *  @author Jacqueline Chu
  */
 class Trip {
 
@@ -30,7 +28,7 @@ class Trip {
         n = 0;
         try {
             FileReader fileForMap = new FileReader(name);
-            Scanner inp = new Scanner(fileForMap); // REPLACE WITH SOLUTION REPLACED //FIXME FIXED
+            Scanner inp = new Scanner(fileForMap);
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {
@@ -46,7 +44,7 @@ class Trip {
                     break;
                 }
             }
-        } catch (FileNotFoundException excp) { // REPLACE WITH PROPER catch REPLACED //FIXME FIXED
+        } catch (FileNotFoundException excp) {
             error(excp.getMessage());
         } catch (InputMismatchException excp) {
             error("bad entry #%d", n);
@@ -97,7 +95,6 @@ class Trip {
      *  Adjacent roads with the same name and direction are combined.
      *  */
     int reportSegment(int seq, int from, List<Integer> segment) {
-        // FILL THIS IN FILLED //FIXME FIXED
         Iterator<Integer> iterateSegment = segment.iterator();
 
         double currDist;
@@ -124,7 +121,8 @@ class Trip {
             currSt = firstRoad.toString();
             currDirection = firstRoad.direction().fullName();
             currDist = firstRoad.length();
-            if (currSt.equals(previousSt) && currDirection.equals(previousDirection)) {
+            if (currSt.equals(previousSt)
+                    && currDirection.equals(previousDirection)) {
                 sumDist = sumDist + currDist;
             } else {
                 System.out.printf("%d. Take %s %s for %.1f miles.%n",
@@ -166,9 +164,6 @@ class Trip {
             error("location %s not defined", to);
         }
 
-        // FILL THIS IN TO CREATE TWO EDGES LABELED WITH ROADS FROM V0 to V1
-        // AND BACK. //FIXME FIXED BELOW
-
         _map.add(v0, v1, new Road(name, dir, length));
         _map.add(v1, v0, new Road(name, dir.reverse(), length));
     }
@@ -183,7 +178,6 @@ class Trip {
     private static class RoadMap extends LabeledGraph<Location, Road> {
         /** An empty RoadMap. */
         RoadMap() {
-            // REPLACE WITH SOLUTION REPLACE //FIXME FIXED
             super(new DirectedGraph());
         }
     }
@@ -198,15 +192,13 @@ class Trip {
 
         @Override
         protected double getWeight(int u, int v) {
-            // REPLACE WITH SOLUTION //FIXME FIXED
             return _map.getLabel(u, v).length();
         }
 
         @Override
         protected double estimatedDistance(int v) {
-            // REPLACE WITH SOLUTION
             Location currentLocation = _map.getLabel(v);
-            return currentLocation.dist(_finalLocation); //FIXME FIXED
+            return currentLocation.dist(_finalLocation);
         }
 
         /** Location of the destination. */

@@ -4,7 +4,6 @@ import graph.DepthFirstTraversal;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,11 +40,10 @@ class Maker {
         String name;
         name = "<unknown>";
         try {
-            FileReader file = new FileReader(fileInfoName); /** I added */
-            Scanner inp = new Scanner(file); // FIXME
+            FileReader file = new FileReader(fileInfoName);
+            Scanner inp = new Scanner(file);
             _currentTime = inp.nextInt();
             while (inp.hasNext()) {
-                // FILL IN Filled
                 _ages.put(inp.next(), inp.nextInt());
             }
             inp.close();
@@ -54,7 +52,6 @@ class Maker {
         } catch (FileNotFoundException excp) {
             error(excp.getMessage());
         }
-        // FIXME DON'T KNOW HOW TO FIX
     }
 
     /** Read make rules from the file named MAKEFILENAME and form the dependence
@@ -70,9 +67,8 @@ class Maker {
         commands = null;
         try {
             FileReader file = new FileReader(makefileName);
-            inp = new Scanner(file);  // FIXME
-        } catch (FileNotFoundException excp) { // REPLACE WITH PROPER catch
-            // FILL IN FILLED
+            inp = new Scanner(file);
+        } catch (FileNotFoundException excp) {
             error(excp.getMessage());
             return;
         }
@@ -190,7 +186,6 @@ class Maker {
 
         @Override
         protected boolean postVisit(int v0) {
-            // FILL IN FILLED
             _depends.getLabel(v0).rebuild();
             return true;
         }

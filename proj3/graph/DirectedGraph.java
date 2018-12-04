@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /** Represents a general unlabeled directed graph whose vertices are denoted by
  *  positive integers. Graphs may have self edges.
  *
- *  @author
+ *  @author Jacqueline Chu
  */
 public class DirectedGraph extends GraphObj {
 
@@ -22,9 +22,8 @@ public class DirectedGraph extends GraphObj {
         Iteration<Integer> iterator = predecessors(v);
         while (iterator.hasNext()) {
             iterator.next();
-            count ++;
+            count++;
         }
-        // FIXME FIXED
         return count;
     }
 
@@ -39,8 +38,6 @@ public class DirectedGraph extends GraphObj {
                 list.add(edge[0]);
             }
         }
-        // FIXME FIXED
         return Iteration.iteration(list);
     }
-    // FIXME FIXED
 }

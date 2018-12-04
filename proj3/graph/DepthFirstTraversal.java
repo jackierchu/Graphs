@@ -7,14 +7,13 @@ import java.util.Collections;
 /** Implements a depth-first traversal of a graph.  Generally, the
  *  client will extend this class, overriding the visit and
  *  postVisit methods, as desired (by default, they do nothing).
- *  @author
+ *  @author Jacqueline Chu
  */
 public class DepthFirstTraversal extends Traversal {
 
     /** A depth-first Traversal of G. */
     protected DepthFirstTraversal(Graph G) {
         super(G, Collections.asLifoQueue(new ArrayDeque<Integer>()));
-        // FIXME FIXED
     }
 
     @Override
@@ -37,6 +36,5 @@ public class DepthFirstTraversal extends Traversal {
     protected boolean shouldPostVisit(int v) {
         return true;
     }
-    // FIXME FIXED
 
 }

@@ -6,17 +6,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.Collections;
 
-import java.util.List;
 
 /** The shortest paths through an edge-weighted graph.
  *  By overrriding methods getWeight, setWeight, getPredecessor, and
  *  setPredecessor, the client can determine how to represent the weighting
  *  and the search results.  By overriding estimatedDistance, clients
  *  can search for paths to specific destinations using A* search.
- *  @author
+ *  @author Jacqueline Chu
  */
 public abstract class ShortestPaths {
 
@@ -30,13 +28,11 @@ public abstract class ShortestPaths {
         _G = G;
         _source = source;
         _dest = dest;
-        // FIXME FIXED
     }
 
     /** Initialize the shortest paths.  Must be called before using
      *  getWeight, getPredecessor, and pathTo. */
     public void setPaths() {
-        // FIXME FIXED
         int length = _G.vertexSize() + 1;
         vertices = new Object[length][3];
 
@@ -58,13 +54,11 @@ public abstract class ShortestPaths {
 
     /** Returns the starting vertex. */
     public int getSource() {
-        // FIXME FIXED
         return _source;
     }
 
     /** Returns the target vertex, or 0 if there is none. */
     public int getDest() {
-        // FIXME FIXED
         return _dest;
     }
 
@@ -97,13 +91,12 @@ public abstract class ShortestPaths {
      *  at V that represents a shortest path to V.  Invalid if there is a
      *  destination vertex other than V. */
     public List<Integer> pathTo(int v) {
-        // FIXME FIXED
         outerloop:
-        while (shortestpaths.isEmpty() == false) {
+        while (!shortestpaths.isEmpty()) {
             int item = shortestpaths.pollFirst();
             for (int s : _G.successors(item)) {
                 double newer = getWeight(item) + getWeight(item, s);
-                if ( newer < getWeight(s)) {
+                if (newer < getWeight(s)) {
                     setWeight(s, newer);
                     shortestpaths.remove(s);
                     shortestpaths.add(s);
@@ -134,7 +127,6 @@ public abstract class ShortestPaths {
         return pathTo(getDest());
     }
 
-    // FIXME FIXED
 
     /** The graph being searched. */
     protected final Graph _G;
@@ -142,7 +134,7 @@ public abstract class ShortestPaths {
     private final int _source;
     /** The target vertex. */
     private final int _dest;
-    // FIXME FIXED
+    /** Double infinity variable. */
     protected double infinity = Double.MAX_VALUE;
     /** Comparator for my Treeset. */
     private Comparator<Integer> comparator = new Comparator<Integer>() {
@@ -150,10 +142,9 @@ public abstract class ShortestPaths {
         public int compare(Integer o1, Integer o2) {
             double first = getWeight(o1) + estimatedDistance(o1);
             double second = getWeight(o2) + estimatedDistance(o2);
-            if ( second < first) {
+            if (second < first) {
                 return 1;
-            }
-            else if (second > first) {
+            } else if (second > first) {
                 return -1;
             }
             return 0;

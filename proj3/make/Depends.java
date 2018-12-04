@@ -5,10 +5,9 @@ import graph.LabeledGraph;
 /** A directed, labeled subtype of Graph that describes dependencies between
  *  targets in a Makefile. The nodes correspond to Rules and edges out
  *  of rules are numbered to indicate the ordering of dependencies.
- *  @author
+ *  @author Jacqueline Chu
  */
 class Depends extends LabeledGraph<Rule, Integer> {
-    // REPLACE WITH SOLUTION //FIXME FIXED
     /** An empty dependency graph. */
     Depends() {
         super(new graph.DirectedGraph());

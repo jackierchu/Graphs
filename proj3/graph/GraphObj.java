@@ -1,5 +1,4 @@
 package graph;
-import net.sf.saxon.ma.arrays.ArrayFunctionSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +9,7 @@ import static java.util.Collections.max;
 /** A partial implementation of Graph containing elements common to
  *  directed and undirected graphs.
  *
- *  @author
+ *  @author Jacqueline Chu
  */
 abstract class GraphObj extends Graph {
 
@@ -52,15 +51,15 @@ abstract class GraphObj extends Graph {
     public int outDegree(int v) {
         ArrayList<Integer> filled = new ArrayList<>();
         int maxValue = max(_vertices);
-        for (int i=1; i<=maxValue; i++){
-            if(_vertices.contains(i)){
+        for (int i = 1; i <= maxValue; i++) {
+            if (_vertices.contains(i)) {
                 filled.add(i);
             } else {
                 filled.add(0);
             }
         }
         int vIndex = filled.indexOf(v);
-        if(vIndex == -1){
+        if (vIndex == -1) {
             return 0;
         }
         return _adjList.get(vIndex).size();
@@ -76,7 +75,9 @@ abstract class GraphObj extends Graph {
 
     @Override
     public boolean contains(int u, int v) {
-        if (!contains(u) || !contains(v)) return false;
+        if (!contains(u) || !contains(v)) {
+            return false;
+        }
         for (int[] e : _edges) {
             if ((e[0] == u  && e[1] == v)
                     || (!isDirected() && e[0] == v && e[1] == u)) {
@@ -86,8 +87,14 @@ abstract class GraphObj extends Graph {
         return false;
     }
 
-    /** Implemented method. */
-    private boolean edgeContains(int u, int v) { return edgeIndex(u, v) != -1; }
+    /** Implemented method.
+     * @return returns value
+     * @param u  u
+     * @param v v */
+
+    private boolean edgeContains(int u, int v) {
+        return edgeIndex(u, v) != -1;
+    }
 
     @Override
     public int add() {
@@ -106,21 +113,23 @@ abstract class GraphObj extends Graph {
         return curMin;
     }
 
-    /** NEW Implemented helper method. */
+    /** NEW Implemented helper method.
+     * @return  min slot
+     * @param max max*/
     private int checkEmptySlot(int max) {
         int minSlot = max;
-        for (int i = 1; i <=max ; i++) {
+        for (int i = 1; i <= max; i++) {
             if (!_vertices.contains(i)) {
                 return i;
             }
         }
-        return minSlot+1;
+        return minSlot + 1;
     }
 
     @Override
     public int add(int u, int v) {
         if (isDirected()) {
-            if(!edgeContains(u, v)){
+            if (!edgeContains(u, v)) {
                 _edges.add(new int[]{u, v});
             }
             int uIndex = _vertices.indexOf(u);
@@ -128,9 +137,9 @@ abstract class GraphObj extends Graph {
             uAdjs.add(v);
             _adjList.set(uIndex, uAdjs);
         } else {
-            int min = Math.min(u,v);
-            int max = Math.max(u,v);
-            if(!edgeContains(min, max)){
+            int min = Math.min(u, v);
+            int max = Math.max(u, v);
+            if (!edgeContains(min, max)) {
                 _edges.add(new int[]{min, max});
             }
 
@@ -138,10 +147,10 @@ abstract class GraphObj extends Graph {
             int vIndex = _vertices.indexOf(v);
             ArrayList<Integer> uAdjs = _adjList.get(uIndex);
             ArrayList<Integer> vAdjs = _adjList.get(vIndex);
-            if(!uAdjs.contains(v)){
+            if (!uAdjs.contains(v)) {
                 uAdjs.add(v);
             }
-            if(!vAdjs.contains(u)){
+            if (!vAdjs.contains(u)) {
                 vAdjs.add(u);
             }
             _adjList.set(uIndex, uAdjs);
@@ -159,7 +168,8 @@ abstract class GraphObj extends Graph {
         }
     }
 
-    /** NEW Implemented method. */
+    /** NEW Implemented method.
+     * @param v v */
     private void removeAdjacentList(int v) {
         int vIndex = _vertices.indexOf(v);
         _adjList.set(vIndex, new ArrayList<>());
@@ -168,7 +178,8 @@ abstract class GraphObj extends Graph {
         }
     }
 
-    /** Implemented helper method for remove(int v). */
+    /** Implemented helper method for remove(int v).
+     * @param v v */
     private void removeEdges(int v) {
         if (!_edges.isEmpty()) {
             ArrayList<int[]> updated = new ArrayList<>();
@@ -193,12 +204,16 @@ abstract class GraphObj extends Graph {
         }
     }
 
-    /** Implemented helper method that is used in remove(int u, int v) and at the top. */
+    /** Implemented helper method that is used in
+     * remove(int u, int v) and at the top.
+     * @param v v
+     * @param u u
+     * @return -1 */
     private int edgeIndex(int u, int v) {
         int size = _edges.size();
         for (int i = 0; i < size; i++) {
             int[] edge = _edges.get(i);
-            if(!isDirected() && u > v) {
+            if (!isDirected() && u > v) {
                 if (edge[0] == v && edge[1] == u) {
                     return i;
                 }
@@ -218,15 +233,15 @@ abstract class GraphObj extends Graph {
     public Iteration<Integer> successors(int v) {
         ArrayList<Integer> filled = new ArrayList<>();
         int maxValue = max(_vertices);
-        for (int i=1; i<=maxValue; i++){
-            if(_vertices.contains(i)){
+        for (int i = 1; i <= maxValue; i++) {
+            if (_vertices.contains(i)) {
                 filled.add(i);
             } else {
                 filled.add(0);
             }
         }
         int vIndex = filled.indexOf(v);
-        if(vIndex == -1){
+        if (vIndex == -1) {
             return Iteration.iteration(new ArrayList<>());
         }
         return Iteration.iteration(_adjList.get(vIndex));
@@ -247,9 +262,9 @@ abstract class GraphObj extends Graph {
 
     @Override
     protected int edgeId(int u, int v) {
-        if (!isDirected()){
-            int max = Math.max(u,v);
-            int min = Math.min(u,v);
+        if (!isDirected()) {
+            int max = Math.max(u, v);
+            int min = Math.min(u, v);
             u = min;
             v = max;
         }

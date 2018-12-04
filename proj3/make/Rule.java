@@ -1,7 +1,5 @@
 package make;
 
-import graph.Iteration;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,6 @@ class Rule {
 
     /** Add the target of DEPENDENT to my dependencies. */
     void addDependency(Rule dependent) {
-        // FILL IN FILLED //FIXME FIXED
         _depends.add(this.getVertex(), dependent.getVertex());
     }
 
@@ -32,11 +29,10 @@ class Rule {
      *  COMMANDS is non-empty, but I already have a non-empty command set.
      */
     void addCommands(List<String> commands) {
-        // FILL IN //FIXME FIXED
-        if (commands.isEmpty() == false && _commands.isEmpty() == false) {
+        if (!commands.isEmpty() && !_commands.isEmpty()) {
             throw new IllegalStateException();
         } else {
-            for(int i = 0; i < commands.size(); i++){
+            for (int i = 0; i < commands.size(); i++) {
                 String s = commands.get(i);
                 _commands.add(s);
             }
@@ -66,7 +62,6 @@ class Rule {
     /** Check that dependencies are in fact built before it's time to rebuild
      *  a node. */
     private void checkFinishedDependencies() {
-        // FILL IN FILLED //FIXME FIXED
         for (int i : _depends.successors(getVertex())) {
             boolean isUnfinished = _depends.getLabel(i).isUnfinished();
             if (isUnfinished) {
@@ -79,12 +74,17 @@ class Rule {
      *  case where I do not exist).  Assumes that my dependencies are all
      *  successfully rebuilt. */
     private boolean outOfDate() {
-        // FILL IN FILLED //FIXME FIXED
-        if (getTime() == null) return true;
+        if (getTime() == null) {
+            return true;
+        }
 
         for (Integer i : _depends.successors(getVertex())) {
-            if (getTime() < _depends.getLabel(i).getTime()) return true;
-            if (_depends.getLabel(i).getTime() == null) return true;
+            if (getTime() < _depends.getLabel(i).getTime()) {
+                return true;
+            }
+            if (_depends.getLabel(i).getTime() == null) {
+                return true;
+            }
         }
         return false;
     }
@@ -98,15 +98,13 @@ class Rule {
             if (_commands.isEmpty()) {
                 error("%s needs to be rebuilt, but has no commands",
                       _target);
-                //FILL IN BELOW //FIXME FIXED
             } else {
                 _time = _maker.getCurrentTime();
-                for(int i = 0; i < _commands.size(); i++){
+                for (int i = 0; i < _commands.size(); i++) {
                     String command = _commands.get(i);
                     System.out.println(command);
                 }
             }
-            // FILL IN FILLED ABOVE
         }
         _finished = true;
     }

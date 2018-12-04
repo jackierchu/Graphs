@@ -2,9 +2,6 @@ package graph;
 
 /* See restrictions in Graph.java. */
 
-import org.checkerframework.checker.units.qual.C;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +24,7 @@ import java.util.Queue;
  *
  *  Traversals may be interrupted or restarted, remembering the previously
  *  marked vertices.
- *  @author
+ *  @author Jacqueline Chu
  */
 public abstract class Traversal {
 
@@ -41,18 +38,16 @@ public abstract class Traversal {
 
     /** Unmark all vertices in the graph. */
     public void clear() {
-        // FIXME FIXED
         _marked.clear();
     }
 
     /** Initialize the fringe to V0 and perform a traversal. */
     public void traverse(Collection<Integer> V0) {
-        // FIXME FIXED
         _fringe.clear();
         _fringe.addAll(V0);
-        while(_fringe.isEmpty() == false) {
+        while (!_fringe.isEmpty()) {
             int curr = _fringe.remove();
-            if (marked(curr) == false) {
+            if (!marked(curr)) {
                 mark(curr);
                 visit(curr);
                 _fringe.add(curr);
@@ -62,7 +57,7 @@ public abstract class Traversal {
                     }
                 }
             } else {
-                if (shouldPostVisit(curr) && _postVisited.contains(curr) == false) {
+                if (shouldPostVisit(curr) && !_postVisited.contains(curr)) {
                     if (!_postVisited.contains(curr)) {
                         postVisit(curr);
                         _postVisited.add(curr);
@@ -79,13 +74,11 @@ public abstract class Traversal {
 
     /** Returns true iff V has been marked. */
     protected boolean marked(int v) {
-        // FIXME FIXED
         return _marked.contains(v);
     }
 
     /** Mark vertex V. */
     protected void mark(int v) {
-        // FIXME FIXED
         _marked.add(v);
     }
 
@@ -134,7 +127,6 @@ public abstract class Traversal {
     private final Graph _G;
     /** The fringe. */
     protected final Queue<Integer> _fringe;
-    // FIXME FIXED
     /** Private array list. */
     private ArrayList<Integer> _marked;
     /** Private array list. */
