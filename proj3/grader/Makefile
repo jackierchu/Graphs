@@ -23,8 +23,7 @@ SRCS := $(wildcard *.java)
 
 # Flags to pass to Java compilations (include debugging info and report
 # "unsafe" operations.)
-JFLAGS = -g -Xlint:unchecked -Xlint:deprecation \
-	-sourcepath .. -classpath ..:$(CLASSPATH)
+JFLAGS = -g -Xlint:unchecked -Xlint:deprecation
 
 CPATH = "..:$(CLASSPATH):;..;$(CLASSPATH)"
 
@@ -45,7 +44,7 @@ default: sentinel
 # If any class is missing, or any source changed since the main classes were
 # compiled, remove all class files and recompile.
 sentinel: $(SRCS)	
-	javac -cp $(CPATH) $(JFLAGS) $(SRCS)
+	javac -cp $(CPATH) -sourcepath .. $(JFLAGS) $(SRCS)
 	touch $@
 
 # Run Tests.
