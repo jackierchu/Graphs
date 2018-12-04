@@ -60,7 +60,8 @@ public abstract class Traversal {
                     }
                 }
             } else {
-                if (shouldPostVisit(current) && !_postVisited.contains(current)) {
+                if (shouldPostVisit(current)
+                        && !_postVisited.contains(current)) {
                     if (!_postVisited.contains(current)) {
                         postVisit(current);
                         _postVisited.add(current);
