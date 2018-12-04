@@ -45,22 +45,23 @@ public abstract class Traversal {
     public void traverse(Collection<Integer> V0) {
         _fringe.clear();
         _fringe.addAll(V0);
+
         while (!_fringe.isEmpty()) {
-            int curr = _fringe.remove();
-            if (!marked(curr)) {
-                mark(curr);
-                visit(curr);
-                _fringe.add(curr);
-                for (int adj: _G.successors(curr)) {
-                    if (processSuccessor(curr, adj)) {
-                        _fringe.add(adj);
+            int current = _fringe.remove();
+            if (!marked(current)) {
+                mark(current);
+                visit(current);
+                _fringe.add(current);
+                for (int value: _G.successors(current)) {
+                    if (processSuccessor(current, value)) {
+                        _fringe.add(value);
                     }
                 }
             } else {
-                if (shouldPostVisit(curr) && !_postVisited.contains(curr)) {
-                    if (!_postVisited.contains(curr)) {
-                        postVisit(curr);
-                        _postVisited.add(curr);
+                if (shouldPostVisit(current) && !_postVisited.contains(current)) {
+                    if (!_postVisited.contains(current)) {
+                        postVisit(current);
+                        _postVisited.add(current);
                     }
                 }
             }
