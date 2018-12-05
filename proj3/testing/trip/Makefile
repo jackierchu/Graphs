@@ -8,7 +8,7 @@ TESTER := $(PYTHON) tester.py
 
 TESTER_FLAGS =
 
-CPATH = '../..:$(CLASSPATH):;..\..;$(CLASSPATH)'
+CPATH = "../..:$(CLASSPATH):;..\..;$(CLASSPATH)"
 
 check:
 	@echo "Testing application trip..."

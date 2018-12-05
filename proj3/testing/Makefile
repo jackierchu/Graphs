@@ -33,8 +33,8 @@ default:
 
 check:
 	$(RM) _ERROR_FLAG_;
-	$(MAKE) -C make check || touch _ERROR_FLAG_
-	$(MAKE) -C trip check || touch _ERROR_FLAG_
+	"$(MAKE)" -C make check || touch _ERROR_FLAG_
+	"$(MAKE)" -C trip check || touch _ERROR_FLAG_
 	test ! -e _ERROR_FLAG_
 
 # 'make clean' will clean up stuff you can reconstruct.
