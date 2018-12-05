@@ -12,7 +12,7 @@ CPATH = '../..:$(CLASSPATH):;..\..;$(CLASSPATH)'
 
 check:
 	@echo "Testing application trip..."
-	CLASSPATH=$(CPATH) $(TESTER) $(TESTER_FLAGS) *.in
+	CLASSPATH="$(CPATH)" $(TESTER) $(TESTER_FLAGS) *.in
 
 clean:
 	$(RM) -r _* *~
