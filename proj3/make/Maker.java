@@ -189,6 +189,21 @@ class Maker {
             _depends.getLabel(v0).rebuild();
             return true;
         }
+
+        @Override
+        protected boolean shouldPostVisit(int v) {
+            return true;
+        }
+
+        @Override
+        protected void processSuccessors(int u) {
+            for (int v : _depends.successors(u)) {
+                if (processSuccessor(u, v)) {
+                    _fringe.add(v);
+                }
+            }
+        }
     }
 
 }
+    
