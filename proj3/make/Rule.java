@@ -96,7 +96,7 @@ class Rule {
 
         if (outOfDate()) {
             if (_commands.isEmpty()) {
-                error("%s needs to be rebuilt, but has no commands",
+                error("Error: %s needs to be rebuilt, but has no commands",
                       _target);
             } else {
                 _time = _maker.getCurrentTime();
