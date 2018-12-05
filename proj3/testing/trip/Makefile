@@ -8,11 +8,11 @@ TESTER := $(PYTHON) tester.py
 
 TESTER_FLAGS =
 
-CPATH = '../..:$(CLASSPATH):;..\..;$(CLASSPATH)'
+CPATH = "../..:$(CLASSPATH):;..\..;$(CLASSPATH)"
 
 check:
 	@echo "Testing application trip..."
-	CLASSPATH="$(CPATH)" $(TESTER) $(TESTER_FLAGS) *.in
+	CLASSPATH=$(CPATH) $(TESTER) $(TESTER_FLAGS) *.in
 
 clean:
 	$(RM) -r _* *~
